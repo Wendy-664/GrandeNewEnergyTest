@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" data-whatsapp="8612345678900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High Bay &amp; Flood Light Series - Grande Micro</title>
+  <meta name="description" content="YE-01 high bay and flood light luminaires, 50W and 100W verified designs with YT2181GTE5 driver IC. 100-440Vac input, PF > 0.95, 4kV surge — lab test reports downloadable. Finished luminaires or SKD/CKD kits for India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* ===== PDP 局部样式（只作用于本页） ===== */
+    .pdp { padding: 56px 0 0; }
+    .pdp-hero { display: grid; grid-template-columns: 480px 1fr; gap: 48px; align-items: start; }
+    .pdp-stage {
+      position: relative; background: #F1F2F4; border-radius: var(--radius);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      width: 100%; aspect-ratio: 4 / 5; border: 1px solid var(--border);
+    }
+    .pdp-stage img { width: 100%; height: 100%; object-fit: contain; padding: 26px; }
+    .pdp-badge {
+      position: absolute; top: 14px; left: 14px; background: rgba(10,37,64,.9); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 5px 11px; border-radius: 999px;
+    }
+    .pdp-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+    .pdp-thumbs button {
+      position: relative; width: 100%; aspect-ratio: 1; border-radius: 8px; padding: 0; cursor: pointer;
+      border: 2px solid transparent; background: var(--bg-alt); overflow: hidden; font-family: inherit;
+    }
+    .pdp-thumbs button.active { border-color: var(--accent); }
+    .pdp-thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+
+    .pdp-info .kicker {
+      display: inline-block; background: var(--cyan-light); color: var(--cyan);
+      font-size: .75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1rem;
+    }
+    .pdp-info h1 { font-size: 2.5rem; font-weight: 800; color: var(--primary); line-height: 1.15; margin-bottom: 1rem; }
+    .pdp-info .lead { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1rem; }
+    .pdp-meta { font-size: .9rem; color: var(--text-muted); margin-bottom: 1.75rem; }
+    .pdp-label { font-size: .85rem; font-weight: 700; color: var(--primary); margin-bottom: .6rem; }
+    .pdp-variants { display: flex; gap: .75rem; margin-bottom: 1.75rem; }
+    .pdp-variants button {
+      padding: .7rem 1.4rem; border-radius: 999px; border: 1px solid var(--border); background: #fff;
+      font-family: inherit; font-size: .9rem; font-weight: 600; color: var(--text); cursor: pointer; transition: .2s;
+    }
+    .pdp-variants button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .pdp-info ul { margin-bottom: 1.75rem; }
+    .pdp-info ul li { font-size: .95rem; color: var(--text); padding-left: 1.15rem; position: relative; margin-bottom: .45rem; }
+    .pdp-info ul li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .pdp-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .pdp-certs { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .85rem; color: var(--text-muted); }
+    .pdp-certs span {
+      background: var(--bg-alt); color: var(--primary); border: 1px solid var(--border);
+      font-size: .75rem; font-weight: 700; padding: .3rem .7rem; border-radius: 999px;
+    }
+
+    /* 型号矩阵表 */
+    .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); }
+    .cmp-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+    .cmp-table thead th { background: var(--primary); color: #fff; font-size: .8rem; font-weight: 600; text-align: left; padding: 1rem 1.1rem; letter-spacing: .3px; white-space: nowrap; }
+    .cmp-table tbody td { padding: .9rem 1.1rem; font-size: .9rem; border-top: 1px solid var(--border); vertical-align: middle; }
+    .cmp-table tbody tr:hover { background: #FAFBFC; }
+    .cmp-table tbody td:first-child { color: var(--primary); font-weight: 700; white-space: nowrap; }
+    .cmp-bar { display: flex; align-items: center; gap: .6rem; }
+    .cmp-bar .v { width: 78px; font-weight: 600; white-space: nowrap; font-size: .85rem; }
+    .cmp-bar .track { height: 9px; border-radius: 5px; background: var(--accent); min-width: 10px; }
+    .cmp-bar .track.cyan { background: var(--cyan); }
+
+    /* 分段切换 */
+    .seg-tabs { display: flex; gap: .6rem; justify-content: center; margin-bottom: 1.75rem; flex-wrap: wrap; }
+    .seg-tabs button {
+      padding: .55rem 1.3rem; border-radius: 999px; border: 1px solid var(--border);
+      background: #fff; font-family: inherit; font-size: .875rem; font-weight: 600;
+      color: var(--text-muted); cursor: pointer;
+    }
+    .seg-tabs button.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* 架构 / 配光 图 */
+    .figure { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 1.5rem; }
+    .figure svg { width: 100%; height: auto; display: block; }
+    .figure figcaption { margin-top: 1.25rem; font-size: .875rem; color: var(--text-muted); text-align: center; }
+
+    /* SKD / CKD */
+    .kit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .kit-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-sm); }
+    .kit-card h3 { font-size: 1.25rem; color: var(--primary); margin-bottom: .6rem; }
+    .kit-card p { color: var(--text-muted); font-size: .95rem; margin-bottom: 1rem; }
+    .kit-card .tag { font-size: .85rem; font-weight: 700; color: var(--accent-hover); }
+    .kit-card ul { margin: .75rem 0 1rem; }
+    .kit-card ul li { font-size: .9rem; color: var(--text-muted); padding-left: 1.1rem; position: relative; margin-bottom: .35rem; }
+    .kit-card ul li::before { content: "·"; position: absolute; left: .25rem; font-weight: 800; color: var(--accent); }
+
+    /* Downloads */
+    .dl-row { display: flex; align-items: center; gap: 1rem; padding: .95rem 1.25rem; background: #fff; border: 1px solid var(--border); border-top: none; }
+    .dl-row:first-of-type { border-top: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; }
+    .dl-row:last-of-type { border-radius: 0 0 var(--radius) var(--radius); }
+    .dl-ic { width: 38px; height: 38px; border-radius: 8px; background: var(--cyan-light); color: var(--cyan); display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 800; flex-shrink: 0; }
+    .dl-name { flex: 1; font-size: .95rem; font-weight: 600; color: var(--primary); }
+    .dl-size { font-size: .85rem; color: var(--text-muted); }
+    .dl-row a { font-size: .85rem; font-weight: 700; color: var(--accent-hover); }
+
+    /* 安装场景卡 */
+    .inst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .inst-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+    .inst-card .num { font-size: .75rem; font-weight: 800; letter-spacing: 1px; color: var(--cyan); }
+    .inst-card h4 { font-size: 1.05rem; color: var(--primary); margin: .4rem 0 .5rem; }
+    .inst-card p { font-size: .9rem; color: var(--text-muted); }
+    .inst-card .spec { display: block; margin-top: .75rem; font-size: .8rem; font-weight: 700; color: var(--accent-hover); }
+
+    /* QC 条 */
+    .qc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .qc-item { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; text-align: center; }
+    .qc-item strong { display: block; font-size: 1.15rem; color: var(--primary); margin-bottom: .25rem; }
+    .qc-item span { font-size: .8rem; color: var(--text-muted); }
+
+    @media (max-width: 1000px) {
+      .pdp-hero { grid-template-columns: 1fr; gap: 2rem; }
+      .pdp-info h1 { font-size: 2rem; }
+      .kit-grid, .inst-grid { grid-template-columns: 1fr; }
+      .qc-grid { grid-template-columns: 1fr 1fr; }
+      .cmp-table thead th, .cmp-table tbody td { padding: .7rem .8rem; font-size: .82rem; }
+      .cmp-bar .v { width: 62px; font-size: .78rem; }
+      .cmp-table thead th:nth-child(4), .cmp-table tbody td:nth-child(4) { display: none; }
+      .dl-row { flex-wrap: wrap; }
+      .dl-name { flex: 1 1 60%; }
+      .figure { padding: 1.25rem .75rem; }
+    }
+  </style>
+</head>
+
+<body>
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/img/logo.png" alt="Grande Micro">
+      <span>Grande Micro</span>
+    </a>
+    <nav class="nav"><a href="index.html" class="">Home</a><a href="products.html" class="active">Products</a><a href="applications.html" class="">Applications</a><a href="about.html" class="">About</a><a href="contact.html" class="">Contact</a></nav>
+    <div class="header-cta">
+      <a href="contact.html" class="btn btn-primary btn-sm">Request Quote</a>
+      <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="breadcrumb">
+  <div class="container">
+    <a href="index.html">Home</a> <span class="sep">/</span>
+    <a href="products.html">Products</a> <span class="sep">/</span>
+    <span>High Bay &amp; Flood Light</span>
+  </div>
+</section>
+
+<section class="pdp">
+  <div class="container">
+    <div class="pdp-hero">
+      <div class="pdp-info" style="max-width:100%;">
+        <span class="kicker">Outdoor Luminaires · SKD / CKD</span>
+        <h1>High Bay &amp; Flood Light</h1>
+        <p class="lead">Two verified reference designs on the YE-01 platform, both lab-tested with our in-house YT2181GTE5 driver IC. Choose the product below to see its full specification, measured test data and downloadable lab report.</p>
+        <p class="pdp-meta">MOQ 300 pcs &nbsp;·&nbsp; Lead time 25 days &nbsp;·&nbsp; FOB Shanghai / Nhava Sheva</p>
+        <div class="card-grid" style="margin-top:1.5rem;">
+          <div class="card">
+            <div class="card-img"><img src="assets/img/rl-highbay-100w.png" alt="High Bay 100W" style="object-fit:contain;background:#F1F2F4;height:220px;"></div>
+            <div class="card-body">
+              <span class="card-tag">High Bay · 100 W</span>
+              <h3>FL-YE-01W0100V144V01</h3>
+              <p>144V / 610mA · PF 0.956 · 4kV surge · ≥91.8% efficiency</p>
+              <a href="product-high-bay.html" class="btn btn-primary btn-sm">View High Bay 100W</a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img"><img src="assets/img/rl-flood-50w.png" alt="Flood Light 50W" style="object-fit:contain;background:#F1F2F4;height:220px;"></div>
+            <div class="card-body">
+              <span class="card-tag">Flood Light · 50 W</span>
+              <h3>FL-YE-01W050V144V01</h3>
+              <p>144V / 310mA · PF 0.957 · 4kV surge · ≥91.4% efficiency</p>
+              <a href="product-flood-light.html" class="btn btn-primary btn-sm">View Flood Light 50W</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="models" style="margin-top:64px;">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Two verified designs — measured, not estimated</h2>
+      <p class="section-subtitle" style="margin:0 auto;">Every number below comes from our own 18-page lab test reports (Rev. A2). Other wattages run on the same YE-01 platform — tell us the target and we will run the design.</p>
+    </div>
+
+    <div class="cmp-scroll">
+      <table class="cmp-table" id="modelTable">
+        <thead>
+          <tr><th>Part number</th><th>Type</th><th>Output</th><th>LED load</th><th>Driver IC</th><th>Efficiency @ 230 Vac</th><th>PF</th><th>Surge</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr data-family="hb">
+            <td>FL-YE-01W0100V144V01</td><td>High Bay · 100 W</td>
+            <td>144 V / 610 mA ±5 %</td>
+            <td>24C6B · 6 V LEDs</td>
+            <td>YT2181GTE5</td>
+            <td>≥ 91.8 %</td><td>0.956</td><td>4 kV</td>
+            <td><a href="product-high-bay.html" style="color:var(--accent-hover);font-weight:600;">Details</a></td>
+          </tr>
+          <tr data-family="fl">
+            <td>FL-YE-01W050V144V01</td><td>Flood Light · 50 W</td>
+            <td>144 V / 310 mA ±5 %</td>
+            <td>24C3B · 6 V LEDs</td>
+            <td>YT2181GTE5</td>
+            <td>≥ 91.4 %</td><td>0.957</td><td>4 kV</td>
+            <td><a href="product-flood-light.html" style="color:var(--accent-hover);font-weight:600;">Details</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-top:1rem;">Driver board size: 191.5 × 165 mm (100 W) · 132 × 134.5 mm (50 W). Component stress verified at ≤ 650 V (MOSFET) and ≤ 620 V (diode). Full input/output test grids, thermal data and BOM are in the downloadable reports. Part numbers follow the FL-YE-01 naming: flood light / enclosure YE-01 / wattage / output voltage.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="split-2">
+      <div>
+        <img src="assets/img/hb-warehouse.jpg" alt="High bay luminaires installed in a logistics warehouse" style="border-radius:var(--radius);border:1px solid var(--border);">
+      </div>
+      <div>
+        <h2 class="section-title">Built for the ceiling it hangs from</h2>
+        <p class="section-subtitle mb-3">Indian warehouses, textile units and fabrication shops run hot and dusty. The thermal path and driver margins matter more than the lumen number on the box.</p>
+        <div class="feature-grid" style="grid-template-columns:1fr;gap:1.25rem;">
+          <div class="feature"><div class="feature-icon">🌡️</div><div><h4>50 °C ambient, no derating surprises</h4><p>Finned die-cast body, phase-change thermal pad and 105 °C capacitors; driver OTP curve matched to the housing.</p></div></div>
+          <div class="feature"><div class="feature-icon">⚡</div><div><h4>440V line-fault survival</h4><p>High-line cutoff plus current foldback, proven on Indian feeders where neutral failure pushes line voltage above 400V.</p></div></div>
+          <div class="feature"><div class="feature-icon">🛡️</div><div><h4>IP66 with a serviceable gasket</h4><p>Jet and immersion tested; gasket and lens replaceable in the field instead of scrapping the whole fixture.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">What's on the board</h2>
+      <p class="section-subtitle" style="margin:0 auto;">We are an IC design house first. The driver inside every YE-01 luminaire is built around a Grande Micro controller — not a bought-in module.</p>
+    </div>
+
+    <div class="figure mb-4" style="margin-bottom:2.5rem;">
+      <svg viewBox="0 0 680 200" role="img" aria-label="Non-isolated high-PF buck driver architecture">
+        <defs>
+          <marker id="arw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 z" fill="#9CA3AF"/>
+          </marker>
+        </defs>
+        <!-- 连接线 -->
+        <line x1="106" y1="88" x2="130" y2="88" stroke="#9CA3AF" stroke-width="1.6" marker-end="url(#arw)"/>
+        <line x1="244" y1="88" x2="266" y2="88" stroke="#9CA3AF" stroke-width="1.6" marker-end="url(#arw)"/>
+        <line x1="420" y1="88" x2="442" y2="88" stroke="#9CA3AF" stroke-width="1.6" marker-end="url(#arw)"/>
+        <line x1="542" y1="88" x2="564" y2="88" stroke="#9CA3AF" stroke-width="1.6" marker-end="url(#arw)"/>
+        <!-- 方框 -->
+        <rect x="18" y="60" width="88" height="56" rx="8" fill="#F6F9FC" stroke="#E5E7EB"/>
+        <text x="62" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#0A2540">90–440</text>
+        <text x="62" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#0A2540">Vac</text>
+
+        <rect x="130" y="60" width="114" height="56" rx="8" fill="#F6F9FC" stroke="#E5E7EB"/>
+        <text x="187" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="#1F2937">EMI filter +</text>
+        <text x="187" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="#1F2937">bridge</text>
+
+        <rect x="266" y="52" width="154" height="72" rx="8" fill="#E0F7FA" stroke="#06B6D4" stroke-width="1.5"/>
+        <text x="343" y="76" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="#0A2540">High-PF BUCK</text>
+        <text x="343" y="93" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#0891B2">Grande Micro IC</text>
+        <text x="343" y="110" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" fill="#6B7280">+ external MOS</text>
+
+        <rect x="442" y="60" width="100" height="56" rx="8" fill="#F6F9FC" stroke="#E5E7EB"/>
+        <text x="492" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="#1F2937">L / C</text>
+        <text x="492" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="#1F2937">output filter</text>
+
+        <rect x="564" y="60" width="96" height="56" rx="8" fill="#FFF7E6" stroke="#F59E0B"/>
+        <text x="612" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="#0A2540">LED string</text>
+        <text x="612" y="100" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#B45309">144 V platform</text>
+
+        <!-- 底部说明 -->
+        <text x="18" y="152" font-family="Inter,sans-serif" font-size="11" fill="#6B7280">Protection on-chip: OTP (NTC or internal) · OVP · OLP · short-circuit · high-line current foldback</text>
+        <text x="18" y="172" font-family="Inter,sans-serif" font-size="11" fill="#6B7280">Efficiency 92–94 % at 150 W · PF &gt; 0.95 · THD &lt; 10 % · flicker &lt; 5 % (flicker-free option)</text>
+      </svg>
+      <figcaption>Non-isolated high-PF buck architecture used across the YE-01 range. Isolated single-stage PSR is offered for Class II metal housings.</figcaption>
+    </div>
+
+    <div class="cmp-scroll">
+      <table class="cmp-table">
+        <thead>
+          <tr><th>Luminaire output</th><th>Recommended IC</th><th>Topology</th><th>Max loading @ 176–265 Vac</th><th>Where it fits</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>40–60 W</td><td>YT2181GTE5</td><td>BUCK HPF, internal 650V / 2.1 Ω MOS</td>
+            <td>144 V / 310 mA — <strong>verified</strong></td><td>Flood Light 50 W · EOL-free single-board design</td>
+            <td><a href="product-yt2302ehs7.html">Details</a></td>
+          </tr>
+          <tr>
+            <td>80–110 W</td><td>YT2181GTE5</td><td>BUCK HPF, internal 650V / 2.1 Ω MOS</td>
+            <td>144 V / 610 mA — <strong>verified</strong></td><td>High Bay 100 W · same IC, wider transformer</td>
+            <td><a href="product-yt2302ehs7.html">Details</a></td>
+          </tr>
+          <tr>
+            <td>100–200 W</td><td>YT2305CH8</td><td>BUCK HPF, external MOS, 440V input</td>
+            <td>108 V / 1800 mA</td><td>Higher-wattage high bay · India voltage range</td>
+            <td><a href="products.html">Details</a></td>
+          </tr>
+          <tr>
+            <td>100–200 W</td><td>YT2305EH8</td><td>BUCK HPF, external MOS ≤ 20N65</td>
+            <td>90 V / 2200 mA</td><td>Highest-current designs</td>
+            <td><a href="products.html">Details</a></td>
+          </tr>
+          <tr>
+            <td>150–200 W</td><td>YT2276EH8</td><td>BUCK LPF, external MOS ≤ 20N65</td>
+            <td>162 V / 1200 mA</td><td>Cost-down version, less demanding PF spec</td>
+            <td><a href="products.html">Details</a></td>
+          </tr>
+          <tr>
+            <td>Isolated 30–50 W</td><td>YT3110EHS7</td><td>PSR_CC single-stage PFC flyback</td>
+            <td>On request</td><td>Class II metal housings, SELV output</td>
+            <td><a href="product-yt3110ehs7.html">Datasheet</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-top:1rem;">Loading values are from the Grande Micro LED driver selection table at 176–265 Vac input. Final design depends on string voltage, ambient temperature and heatsink — we will run the thermal and derating check against your housing.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Pick the beam before you pick the wattage</h2>
+      <p class="section-subtitle" style="margin:0 auto;">Same fixture, three lenses. Mounting height and the task below decide the beam — not the lumen number.</p>
+    </div>
+
+    <div class="figure mb-4" style="margin-bottom:2.5rem;">
+      <svg viewBox="0 0 680 272" role="img" aria-label="Beam angle comparison at 8 metre mounting height">
+        <!-- 灯具 -->
+        <rect x="300" y="26" width="80" height="18" rx="4" fill="#0A2540"/>
+        <rect x="318" y="14" width="44" height="12" rx="3" fill="#6B7280"/>
+        <!-- 120° -->
+        <polygon points="340,44 92,168 588,168" fill="#F59E0B" opacity="0.10"/>
+        <!-- 90° -->
+        <polygon points="340,44 214,168 466,168" fill="#06B6D4" opacity="0.16"/>
+        <!-- 60° -->
+        <polygon points="340,44 288,168 392,168" fill="#0A2540" opacity="0.14"/>
+        <!-- 地面 -->
+        <line x1="40" y1="168" x2="640" y2="168" stroke="#9CA3AF" stroke-width="1.6"/>
+        <text x="40" y="186" font-family="Inter,sans-serif" font-size="10" fill="#9CA3AF">ground</text>
+
+        <!-- 地面上的三段光斑直径（宽的先画，窄的后画，避免互相覆盖） -->
+        <line x1="92" y1="168" x2="588" y2="168" stroke="#F59E0B" stroke-width="3"/>
+        <line x1="214" y1="168" x2="466" y2="168" stroke="#06B6D4" stroke-width="3"/>
+        <line x1="288" y1="168" x2="392" y2="168" stroke="#0A2540" stroke-width="3"/>
+
+        <!-- 图例（同一行排列） -->
+        <circle cx="96" cy="196" r="5" fill="#0A2540"/>
+        <text x="110" y="200" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#0A2540">60° · Ø 9.2 m</text>
+
+        <circle cx="300" cy="196" r="5" fill="#06B6D4"/>
+        <text x="314" y="200" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#0891B2">90° · Ø 16.0 m</text>
+
+        <circle cx="500" cy="196" r="5" fill="#F59E0B"/>
+        <text x="514" y="200" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#B45309">120° · Ø 27.7 m</text>
+
+        <!-- 高度标注 -->
+        <line x1="620" y1="44" x2="620" y2="168" stroke="#D1D5DB" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="628" y="112" font-family="Inter,sans-serif" font-size="11" fill="#6B7280">8 m</text>
+
+        <text x="40" y="240" font-family="Inter,sans-serif" font-size="11" fill="#6B7280">Beam angle is the full angle at 50 % peak intensity. Pool diameter = 2 × height × tan(angle / 2).</text>
+        <text x="40" y="260" font-family="Inter,sans-serif" font-size="11" fill="#6B7280">Narrow beams raise centre lux and glare; wide beams even out the floor and cut fixture count.</text>
+      </svg>
+      <figcaption>Illuminance pool at 8 m mounting height — the most common industrial ceiling height in Indian warehouses.</figcaption>
+    </div>
+
+    <div class="inst-grid">
+      <div class="inst-card">
+        <span class="num">01 · WAREHOUSE &amp; LOGISTICS</span>
+        <h4>8–12 m ceiling, racking aisles</h4>
+        <p>90° at 8–10 m gives even floor coverage with fewer fixtures. 60° where racking tops need punch.</p>
+        <span class="spec">High Bay 100 W · 90° · 150–200 lx on floor</span>
+      </div>
+      <div class="inst-card">
+        <span class="num">02 · PRODUCTION HALL</span>
+        <h4>6–8 m truss, task visibility</h4>
+        <p>Narrower beam keeps light on the work plane instead of the walls; flicker-free driver for camera inspection.</p>
+        <span class="spec">High Bay 100 W · 60°–90°</span>
+      </div>
+      <div class="inst-card">
+        <span class="num">03 · YARD, FACADE, PERIMETER</span>
+        <h4>3–8 m pole or wall bracket</h4>
+        <p>Asymmetric and 120° flood for wide wash; adjustable bracket gives 180° aiming without re-drilling.</p>
+        <span class="spec">Flood Light 50 W · 90°–120°</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">SKD or CKD — same fixture, different local content</h2>
+      <p class="section-subtitle" style="margin:0 auto;">The luminaire is deliberately designed for local assembly: no glued driver, plug-in connectors, standard screws.</p>
+    </div>
+    <div class="kit-grid">
+      <div class="kit-card">
+        <h3>SKD Kit</h3>
+        <p>Semi-knocked-down. Housing, LED board and driver arrive pre-assembled and tested — your line does final QC, branding and pack-out.</p>
+        <ul>
+          <li>Fastest ramp-up, lowest line investment</li>
+          <li>100% photometric and hipot test before shipment</li>
+          <li>Your logo on housing, label and carton</li>
+        </ul>
+        <span class="tag">→ Best for a first container</span>
+      </div>
+      <div class="kit-card">
+        <h3>CKD Kit</h3>
+        <p>Completely-knocked-down. Die-cast body, lens, gasket, LED board, driver board and hardware ship loose for full local assembly.</p>
+        <ul>
+          <li>Lowest duty and highest in-country value</li>
+          <li>Driver board and LED board supplied separately for local SMT</li>
+          <li>Assembly manual, jig drawings and test fixtures provided</li>
+        </ul>
+        <span class="tag">→ Best for local-content and PLI requirements</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Verified in our own lab — not a datasheet promise</h2>
+      <p class="section-subtitle" style="margin:0 auto;">These are the measured results from the 18-page test reports you can download below.</p>
+    </div>
+    <div class="qc-grid">
+      <div class="qc-item"><strong>4 kV surge · pass</strong><span>5 counts per polarity, at 0 / 90 / 180 / 270° phase</span></div>
+      <div class="qc-item"><strong>0.956 – 0.957 PF</strong><span>Measured at 230 Vac full load; THD &lt; 29 %</span></div>
+      <div class="qc-item"><strong>≤ 85.2 °C IC temp</strong><span>90-min thermal run at 32 °C ambient</span></div>
+      <div class="qc-item"><strong>≤ 650 V stress</strong><span>MOSFET / diode voltage stress verified with margin</span></div>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-top:1.25rem;text-align:center;">Also covered in the reports: full input-voltage test grid (100–265 V+), short-circuit protection, transformer spec, PCB layout and complete BOM.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Measured across the full India grid — 100 to 440 Vac</h2>
+      <p class="section-subtitle" style="margin:0 auto;">Every input-voltage point below is a real lab measurement from the 100 W High Bay report, not an estimate. Note how efficiency stays above 90 % and PF above 0.95 across the 176–265 Vac operating band.</p>
+    </div>
+
+    <div class="cmp-scroll">
+      <table class="cmp-table">
+        <thead>
+          <tr><th>Vin (Vac)</th><th>Iin (A)</th><th>Pin (W)</th><th>PF</th><th>Vout (V)</th><th>Iout (A)</th><th>Pout (W)</th><th>Efficiency</th><th>THD</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>100</td><td>0.056</td><td>3.69</td><td>0.662</td><td>125.8</td><td>0.026</td><td>3.27</td><td>88.57 %</td><td>109.93 %</td></tr>
+          <tr><td>140</td><td>0.433</td><td>51.42</td><td>0.851</td><td>137.6</td><td>0.341</td><td>46.92</td><td>91.25 %</td><td>58.32 %</td></tr>
+          <tr><td>176</td><td>0.637</td><td>97.74</td><td>0.906</td><td>143.0</td><td>0.609</td><td>87.09</td><td>89.10 %</td><td>44.25 %</td></tr>
+          <tr><td>200</td><td>0.514</td><td>95.94</td><td>0.938</td><td>142.7</td><td>0.612</td><td>87.33</td><td>91.03 %</td><td>35.06 %</td></tr>
+          <tr><td>220</td><td>0.456</td><td>95.11</td><td>0.951</td><td>142.7</td><td>0.612</td><td>87.33</td><td>91.82 %</td><td>30.49 %</td></tr>
+          <tr><td><strong>230</strong></td><td><strong>0.435</strong></td><td><strong>95.15</strong></td><td><strong>0.956</strong></td><td><strong>142.7</strong></td><td><strong>0.614</strong></td><td><strong>87.62</strong></td><td><strong>92.08 %</strong></td><td><strong>28.53 %</strong></td></tr>
+          <tr><td>240</td><td>0.414</td><td>95.12</td><td>0.959</td><td>142.6</td><td>0.615</td><td>87.70</td><td>92.19 %</td><td>27.11 %</td></tr>
+          <tr><td>265</td><td>0.362</td><td>94.18</td><td>0.968</td><td>142.5</td><td>0.612</td><td>87.21</td><td>92.60 %</td><td>22.79 %</td></tr>
+          <tr><td>300</td><td>0.259</td><td>74.37</td><td>0.952</td><td>139.8</td><td>0.494</td><td>69.06</td><td>92.86 %</td><td>24.46 %</td></tr>
+          <tr><td>350</td><td>0.184</td><td>58.70</td><td>0.914</td><td>137.2</td><td>0.394</td><td>54.06</td><td>92.09 %</td><td>29.09 %</td></tr>
+          <tr><td>400</td><td>0.144</td><td>49.59</td><td>0.863</td><td>135.8</td><td>0.330</td><td>44.81</td><td>90.37 %</td><td>36.28 %</td></tr>
+          <tr><td>440</td><td>0.119</td><td>42.35</td><td>0.815</td><td>134.6</td><td>0.285</td><td>38.36</td><td>90.59 %</td><td>43.21 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-top:1rem;">FL-YE-01W0100V144V01 · 24C6B LED string · measured at 50–60 Hz. Output current holds 610 mA ±5 % from 176–265 Vac; the driver enters programmable current foldback above ~280 Vac to protect components during neutral-failure overvoltage. Full 22-point grid is in the downloadable report.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Thermal performance — 90 minutes, real temperatures</h2>
+      <p class="section-subtitle" style="margin:0 auto;">Measured component temperatures after a 90-minute soak at 32 °C ambient, at the three key Indian line voltages. The hottest part is the transformer winding, not the IC.</p>
+    </div>
+
+    <div class="cmp-scroll">
+      <table class="cmp-table">
+        <thead>
+          <tr><th>Component</th><th>176 Vac</th><th>230 Vac</th><th>265 Vac</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>IC — YT2181GTE5 (U1 / U2)</td><td>85.2 / 84.5 °C</td><td>82.5 / 82.5 °C</td><td>82.9 / 83.5 °C</td></tr>
+          <tr><td>Transformer winding — EE16 (T1 / T2)</td><td>98.4 / 96.6 °C</td><td>100.6 / 99.5 °C</td><td>104.3 / 103.6 °C</td></tr>
+          <tr><td>Transformer core — EE16 (T1 / T2)</td><td>90.3 / 89.3 °C</td><td>91.6 / 91.5 °C</td><td>94.4 / 95.0 °C</td></tr>
+          <tr><td>Bridge — TMBF410</td><td>91.1 °C</td><td>84.8 °C</td><td>83.6 °C</td></tr>
+          <tr><td>Rectifier diode — ES2J (D1 / D2)</td><td>83.1 / 83.2 °C</td><td>82.3 / 81.2 °C</td><td>83.5 / 82.0 °C</td></tr>
+          <tr><td>Fuse resistor — FR3 / FR4</td><td>94.0 / 100.1 °C</td><td>80.5 / 85.8 °C</td><td>77.4 / 82.5 °C</td></tr>
+          <tr><td>Capacitor — CE1</td><td>77.1 °C</td><td>78.8 °C</td><td>78.0 °C</td></tr>
+          <tr><td>LED module — hottest spot</td><td>95.8 °C</td><td>94.1 °C</td><td>93.5 °C</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-top:1rem;">FL-YE-01W0100V144V01 · ambient 32 °C · 90-minute soak. All components stay within rated temperature with margin; the 50 W Flood Light report shows the same pattern (hottest = EE16 winding at 93.4 °C). Full per-component table in the downloadable report.</p>
+  </div>
+</section>
+
+<section class="section section-alt" id="downloads">
+  <div class="container">
+    <h2 class="section-title mb-1">Downloads</h2>
+    <p class="section-subtitle mb-3">Full lab test reports, free to download — the same documents our engineers sign off.</p>
+    <div class="dl-row"><div class="dl-ic">PDF</div><div class="dl-name">Test Report — Flood Light 50 W (FL-YE-01W050V144V01 · YT2181GTE5)</div><div class="dl-size">PDF · 1.7 MB · 18 pages</div><a href="assets/dl/GrandeMicro-TestReport-50W-FloodLight-YT2181GTE5.pdf" download>Download</a></div>
+    <div class="dl-row"><div class="dl-ic">PDF</div><div class="dl-name">Test Report — High Bay 100 W (FL-YE-01W0100V144V01 · YT2181GTE5)</div><div class="dl-size">PDF · 1.8 MB · 18 pages</div><a href="assets/dl/GrandeMicro-TestReport-100W-HighBay-YT2181GTE5.pdf" download>Download</a></div>
+    <div class="dl-row"><div class="dl-ic">IES</div><div class="dl-name">Photometric files (IES / LDT)</div><div class="dl-size">ZIP · per beam angle</div><a href="contact.html">Request</a></div>
+    <div class="dl-row"><div class="dl-ic">ZIP</div><div class="dl-name">Driver Reference Design + BOM</div><div class="dl-size">ZIP · schematic, BOM, layout</div><a href="contact.html">Request</a></div>
+    <div class="dl-row"><div class="dl-ic">PDF</div><div class="dl-name">SKD / CKD Assembly Manual</div><div class="dl-size">PDF · 3.8 MB</div><a href="contact.html">Request</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title mb-1">Related products</h2>
+    <p class="section-subtitle mb-4">Buy the luminaire, or just the controller inside it.</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-img"><img src="assets/img/app-floodlight-opt.jpg" alt="YT2302EHS7"></div>
+        <div class="card-body">
+          <span class="card-tag">LED Lighting</span>
+          <h3>YT2302EHS7</h3>
+          <p>Non-isolated high-PF buck LED driver, 100–440Vac input with current foldback.</p>
+          <a href="product-yt2302ehs7.html" class="btn btn-primary btn-sm">View Details</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="assets/img/driver-board-crop.jpg" alt="YT3110EHS7 driver board"></div>
+        <div class="card-body">
+          <span class="card-tag">LED Lighting</span>
+          <h3>YT3110EHS7</h3>
+          <p>Isolated single-stage PSR PFC driver for Class II metal housings.</p>
+          <a href="product-yt3110ehs7.html" class="btn btn-primary btn-sm">View Details</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="assets/img/bldc-fan-main.jpg" alt="GF-56 BLDC fan kit"></div>
+        <div class="card-body">
+          <span class="card-tag">Complete Kits</span>
+          <h3>GF-56 BLDC Fan Kit</h3>
+          <p>The same SKD / CKD model, applied to ceiling fans instead of luminaires.</p>
+          <a href="product-bldc-fan.html" class="btn btn-outline btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Need a landed-cost quote for the YE-01 series?</h2>
+    <p>Tell us the model, wattage, beam angle and annual volume — our export team replies within 1 business day with an FOB and landed-cost breakdown.</p>
+    <a href="contact.html" class="btn btn-white">Request a Quote</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <img src="assets/img/logo.png" alt="Grande Micro">
+          <span>Grande Micro</span>
+        </div>
+        <p style="font-size:0.9rem;line-height:1.6;margin-bottom:1rem;">Power semiconductor IC design company delivering LED drivers, AC-DC, DC-DC, MOSFETs and BLDC solutions for the Indian market.</p>
+        <p style="font-size:0.85rem;opacity:0.6;">ISO 9001 quality system · India grid-ready designs</p>
+      </div>
+      <div>
+        <h5>Products</h5>
+        <a href="products.html">LED Lighting ICs</a>
+        <a href="products.html">AC-DC Converters</a>
+        <a href="products.html">DC-DC Converters</a>
+        <a href="products.html">Power MOSFETs</a>
+        <a href="product-yt91002nh7.html">BLDC Driver ICs</a>
+        <a href="product-bldc-fan.html">BLDC Fan Kits</a>
+      </div>
+      <div>
+        <h5>Solutions</h5>
+        <a href="product-high-bay-flood.html">High Bay &amp; Flood Light</a>
+        <a href="applications.html">Street Lighting</a>
+        <a href="applications.html">Fan Light</a>
+        <a href="applications.html">E-Bike Display</a>
+        <a href="applications.html">Industrial Power</a>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <a href="mailto:Sales@grandemicro.com">Sales@grandemicro.com</a>
+        <a href="tel:+8651085388846">+86-510-85388846</a>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">Wuxi Grandemicro Technology Co., Ltd.<br>530 Building A, Taihu Science Park<br>Wuxi, Jiangsu, China</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Wuxi Grandemicro Technology Co., Ltd. All rights reserved.</span>
+      <span>Domain: gmtne.com</span>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/8612345678900?text=Hello%2C%20I%20am%20interested%20in%20the%20YE-01%20high%20bay%20and%20flood%20light%20series." class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+<script src="assets/js/site-config.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-whatsapp="8612345678900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GF-56 SKD/CKD BLDC Ceiling Fan Kit - Grande Micro</title>
+  <meta name="description" content="Grande Micro 56-inch smart BLDC ceiling fan, shipped as SKD or CKD kits for local assembly in India. 35W, 8500 m3/h, BIS ready, fan driver board designed in-house.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* ===== PDP 局部样式（只作用于 .pdp） ===== */
+    .pdp { padding: 56px 0 0; }
+    .pdp-hero { display: grid; grid-template-columns: 520px 1fr; gap: 48px; align-items: start; }
+    .pdp-stage {
+      position: relative; background: var(--bg-alt); border-radius: var(--radius);
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      width: 100%; aspect-ratio: 4 / 5; border: 1px solid var(--border);
+    }
+    .pdp-stage img, .pdp-stage video { width: 100%; height: 100%; object-fit: contain; }
+    .pdp-live {
+      position: absolute; top: 14px; left: 14px; background: #C62828; color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 5px 11px;
+      border-radius: 999px; display: flex; align-items: center; gap: 6px;
+    }
+    .pdp-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pdpBlink 1.2s infinite; }
+    @keyframes pdpBlink { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+    .pdp-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+    .pdp-thumbs button {
+      position: relative; width: 100%; aspect-ratio: 1; border-radius: 8px; padding: 0; cursor: pointer;
+      border: 2px solid transparent; background: var(--bg-alt); overflow: hidden; font-family: inherit;
+    }
+    .pdp-thumbs button.active { border-color: var(--accent); }
+    .pdp-thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+    .pdp-thumbs .ph {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: 11px; color: #9CA3AF; padding: 8px; line-height: 1.35;
+    }
+    .pdp-thumbs .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,24,42,.28); }
+    .pdp-thumbs .play svg { width: 26px; height: 26px; fill: #fff; }
+
+    .pdp-info .kicker {
+      display: inline-block; background: var(--cyan-light); color: var(--cyan);
+      font-size: .75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1rem;
+    }
+    .pdp-info h1 { font-size: 2.5rem; font-weight: 800; color: var(--primary); line-height: 1.15; margin-bottom: 1rem; }
+    .pdp-info .lead { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1rem; }
+    .pdp-meta { font-size: .9rem; color: var(--text-muted); margin-bottom: 1.75rem; }
+    .pdp-label { font-size: .85rem; font-weight: 700; color: var(--primary); margin-bottom: .6rem; }
+    .pdp-variants { display: flex; gap: .75rem; margin-bottom: 1.75rem; }
+    .pdp-variants button {
+      padding: .7rem 1.4rem; border-radius: 999px; border: 1px solid var(--border); background: #fff;
+      font-family: inherit; font-size: .9rem; font-weight: 600; color: var(--text); cursor: pointer; transition: .2s;
+    }
+    .pdp-variants button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .pdp-info ul { margin-bottom: 1.75rem; }
+    .pdp-info ul li { font-size: .95rem; color: var(--text); padding-left: 1.15rem; position: relative; margin-bottom: .45rem; }
+    .pdp-info ul li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .pdp-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .pdp-certs { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .85rem; color: var(--text-muted); }
+    .pdp-certs span {
+      background: var(--bg-alt); color: var(--primary); border: 1px solid var(--border);
+      font-size: .75rem; font-weight: 700; padding: .3rem .7rem; border-radius: 999px;
+    }
+
+    /* 型号对比表 */
+    .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); }
+    .cmp-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+    .cmp-table thead th { background: var(--primary); color: #fff; font-size: .8rem; font-weight: 600; text-align: left; padding: 1rem 1.1rem; letter-spacing: .3px; }
+    .cmp-table tbody td { padding: .9rem 1.1rem; font-size: .9rem; border-top: 1px solid var(--border); vertical-align: middle; }
+    .cmp-table tbody tr.current { background: #FFFBF0; box-shadow: inset 0 0 0 1px rgba(245,158,11,.45); }
+    .cmp-table tbody tr.current td:first-child { color: var(--accent-hover); font-weight: 700; }
+    .cmp-bar { display: flex; align-items: center; gap: .6rem; }
+    .cmp-bar .v { width: 86px; font-weight: 600; white-space: nowrap; font-size: .85rem; }
+    .cmp-bar .track { height: 9px; border-radius: 5px; background: var(--accent); }
+    .cmp-bar .track.red { background: #C62828; }
+
+    /* SKD / CKD 双卡 */
+    .kit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .kit-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-sm); }
+    .kit-card h3 { font-size: 1.25rem; color: var(--primary); margin-bottom: .6rem; }
+    .kit-card p { color: var(--text-muted); font-size: .95rem; margin-bottom: 1rem; }
+    .kit-card .tag { font-size: .85rem; font-weight: 700; color: var(--accent-hover); }
+
+    /* Downloads */
+    .dl-row { display: flex; align-items: center; gap: 1rem; padding: .95rem 1.25rem; background: #fff; border: 1px solid var(--border); border-top: none; }
+    .dl-row:first-of-type { border-top: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; }
+    .dl-row:last-of-type { border-radius: 0 0 var(--radius) var(--radius); }
+    .dl-ic { width: 38px; height: 38px; border-radius: 8px; background: var(--cyan-light); color: var(--cyan); display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 800; flex-shrink: 0; }
+    .dl-name { flex: 1; font-size: .95rem; font-weight: 600; color: var(--primary); }
+    .dl-size { font-size: .85rem; color: var(--text-muted); }
+    .dl-row a { font-size: .85rem; font-weight: 700; color: var(--accent-hover); }
+
+    @media (max-width: 1000px) {
+      .pdp-hero { grid-template-columns: 1fr; gap: 2rem; }
+      .kit-grid { grid-template-columns: 1fr; }
+      .pdp-info h1 { font-size: 2rem; }
+      .cmp-table thead th:nth-child(5), .cmp-table tbody td:nth-child(5),
+      .cmp-table thead th:nth-child(6), .cmp-table tbody td:nth-child(6) { display: none; }
+      .cmp-table thead th, .cmp-table tbody td { padding: .7rem .8rem; font-size: .82rem; }
+      .cmp-bar .v { width: 62px; font-size: .78rem; }
+      .cmp-bar .track { height: 8px; min-width: 34px; }
+      .dl-row { flex-wrap: wrap; }
+      .dl-name { flex: 1 1 60%; }
+    }
+  </style>
+</head>
+
+<body>
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/img/logo.png" alt="Grande Micro">
+      <span>Grande Micro</span>
+    </a>
+    <nav class="nav"><a href="index.html" class="">Home</a><a href="products.html" class="active">Products</a><a href="applications.html" class="">Applications</a><a href="about.html" class="">About</a><a href="contact.html" class="">Contact</a></nav>
+    <div class="header-cta">
+      <a href="contact.html" class="btn btn-primary btn-sm">Request Quote</a>
+      <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<section class="breadcrumb">
+  <div class="container">
+    <a href="index.html">Home</a> <span class="sep">/</span>
+    <a href="products.html">Products</a> <span class="sep">/</span>
+    <span>BLDC Ceiling Fan Kits</span>
+  </div>
+</section>
+
+<section class="pdp">
+  <div class="container">
+    <div class="pdp-hero">
+
+      <div>
+        <div class="pdp-stage" id="stage">
+          <img id="stageImg" src="assets/img/bldc-fan-main.jpg" alt="GF-56 BLDC ceiling fan">
+          <video id="stageVideo" src="assets/img/bldc-packing.mp4" poster="assets/img/bldc-packing.png" muted loop playsinline style="display:none"></video>
+          <span class="pdp-live" id="liveBadge" style="display:none">LIVE PACKING</span>
+        </div>
+        <div class="pdp-thumbs">
+          <button class="active" data-type="img" data-src="assets/img/bldc-fan-main.jpg"><img src="assets/img/bldc-fan-main.jpg" alt="GF-56 main"></button>
+          <button data-type="img" data-src="assets/img/bldc-skd-flatlay.png"><img src="assets/img/bldc-skd-flatlay.png" alt="SKD kit flat-lay"></button>
+          <button data-type="video" data-src="assets/img/bldc-packing.mp4"><img src="assets/img/bldc-packing.png" alt="Carton packing"><span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></button>
+          <button data-type="img" data-src=""><span class="ph">Motor detail<br>(photo pending)</span></button>
+        </div>
+      </div>
+
+      <div class="pdp-info">
+        <span class="kicker">Complete Kit · SKD / CKD</span>
+        <h1>GF-56 Smart BLDC Ceiling Fan Kit</h1>
+        <p class="lead">Our own BLDC driver board inside. Shipped as a semi-knocked-down or completely-knocked-down kit, so your line does the final assembly, branding and pack-out.</p>
+        <p class="pdp-meta">MOQ 500 kits &nbsp;·&nbsp; Lead time 25 days &nbsp;·&nbsp; FOB Shanghai / Nhava Sheva</p>
+
+        <p class="pdp-label">Configuration</p>
+        <div class="pdp-variants">
+          <button class="active">SKD Kit</button>
+          <button>CKD Kit</button>
+        </div>
+
+        <ul>
+          <li>Up to 50% energy saving versus a conventional AC induction fan</li>
+          <li>Silent BLDC outer-rotor motor, below 35 dB</li>
+          <li>6 speeds with RF remote and app control</li>
+          <li>Wide 100–240V input, tolerant of Indian grid swings</li>
+          <li>Driver board designed and tested in-house by Grande Micro</li>
+        </ul>
+
+        <div class="pdp-actions">
+          <a href="contact.html" class="btn btn-primary">Request a Quote</a>
+          <a href="#downloads" class="btn btn-outline">Download Datasheet</a>
+        </div>
+
+        <div class="pdp-certs">Compliant:
+          <span>CE</span><span>RoHS</span><span>BIS (on request)</span><span>ISO 9001</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" style="margin-top:64px;">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">Compare the GF series</h2>
+      <p class="section-subtitle" style="margin:0 auto;">One platform, four blade sizes — power and airflow scale with diameter. All models: 6 speeds, remote &amp; app, 100–240V wide voltage. The highlighted row is this model.</p>
+    </div>
+    <div class="cmp-scroll">
+    <table class="cmp-table">
+      <thead>
+        <tr><th>Model</th><th>Blade size</th><th>Rated power</th><th>Airflow</th><th>Noise</th><th>Certificates</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>GF-42</strong></td><td>42″ / 1050 mm</td>
+          <td><div class="cmp-bar"><span class="v">28 W</span><div class="track" style="width:62px"></div></div></td>
+          <td><div class="cmp-bar"><span class="v">6,800 m³/h</span><div class="track red" style="width:69px"></div></div></td>
+          <td>&lt; 32 dB</td><td>CE · RoHS · BIS</td>
+        </tr>
+        <tr>
+          <td><strong>GF-48</strong></td><td>48″ / 1200 mm</td>
+          <td><div class="cmp-bar"><span class="v">32 W</span><div class="track" style="width:71px"></div></div></td>
+          <td><div class="cmp-bar"><span class="v">7,600 m³/h</span><div class="track red" style="width:77px"></div></div></td>
+          <td>&lt; 33 dB</td><td>CE · RoHS · BIS</td>
+        </tr>
+        <tr class="current">
+          <td>GF-56 &nbsp;← this model</td><td><strong>56″ / 1400 mm</strong></td>
+          <td><div class="cmp-bar"><span class="v">35 W</span><div class="track" style="width:77px"></div></div></td>
+          <td><div class="cmp-bar"><span class="v">8,500 m³/h</span><div class="track red" style="width:86px"></div></div></td>
+          <td><strong>&lt; 35 dB</strong></td><td>CE · RoHS · BIS</td>
+        </tr>
+        <tr>
+          <td><strong>GF-60</strong></td><td>60″ / 1500 mm</td>
+          <td><div class="cmp-bar"><span class="v">45 W</span><div class="track" style="width:99px"></div></div></td>
+          <td><div class="cmp-bar"><span class="v">9,800 m³/h</span><div class="track red" style="width:99px"></div></div></td>
+          <td>&lt; 38 dB</td><td>CE · RoHS · BIS</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title mb-3">Key specifications — GF-56</h2>
+    <table class="specs-table">
+      <tr><th>Rated voltage</th><td>100–240V AC, 50/60 Hz</td></tr>
+      <tr><th>Rated power</th><td>35 W (max)</td></tr>
+      <tr><th>Motor</th><td>BLDC outer-rotor, copper winding</td></tr>
+      <tr><th>Driver</th><td>Grande Micro BLDC driver board (in-house design)</td></tr>
+      <tr><th>Speed control</th><td>6 speeds, RF remote &amp; app (Wi-Fi optional)</td></tr>
+      <tr><th>Airflow</th><td>8,500 m³/h</td></tr>
+      <tr><th>Blade</th><td>56″ / 1400 mm, 3 ABS blades</td></tr>
+      <tr><th>Noise</th><td>&lt; 35 dB</td></tr>
+      <tr><th>Certifications</th><td>CE · RoHS · BIS (on request)</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="section-title">SKD vs CKD — what you get</h2>
+      <p class="section-subtitle" style="margin:0 auto;">Pick the kit that fits your assembly line, duty profile and local-content requirement.</p>
+    </div>
+    <div class="kit-grid">
+      <div class="kit-card">
+        <h3>SKD Kit</h3>
+        <p>Semi-knocked-down. Motor and blades pre-assembled — your line does the final fitting, branding and pack-out.</p>
+        <span class="tag">→ Faster to market · moderate duty saving</span>
+      </div>
+      <div class="kit-card">
+        <h3>CKD Kit</h3>
+        <p>Completely-knocked-down. All parts shipped loose for full local assembly — maximum in-country content.</p>
+        <span class="tag">→ Lowest duty · meets local-content rules</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="downloads">
+  <div class="container">
+    <h2 class="section-title mb-1">Downloads</h2>
+    <p class="section-subtitle mb-3">Everything your team needs to evaluate and specify the kit.</p>
+    <div class="dl-row"><div class="dl-ic">PDF</div><div class="dl-name">GF-56 Datasheet</div><div class="dl-size">PDF · 1.2 MB</div><a href="contact.html">Request</a></div>
+    <div class="dl-row"><div class="dl-ic">PDF</div><div class="dl-name">Assembly Manual (SKD / CKD)</div><div class="dl-size">PDF · 3.4 MB</div><a href="contact.html">Request</a></div>
+    <div class="dl-row"><div class="dl-ic">3D</div><div class="dl-name">CAD 3D Model</div><div class="dl-size">STEP</div><a href="contact.html">Request</a></div>
+    <div class="dl-row"><div class="dl-ic">ZIP</div><div class="dl-name">Test Reports &amp; Certificates</div><div class="dl-size">ZIP · 0.8 MB</div><a href="contact.html">Request</a></div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <h2 class="section-title mb-1">Related products</h2>
+    <p class="section-subtitle mb-4">The driver board inside this fan is available separately.</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-img"><img src="assets/img/app-fanlight2-opt.png" alt="YT91002NH7"></div>
+        <div class="card-body">
+          <span class="card-tag">AC-DC / BLDC Power</span>
+          <h3>YT91002NH7</h3>
+          <p>High-PF constant voltage IC for BLDC &amp; fan-light power supply.</p>
+          <a href="product-yt91002nh7.html" class="btn btn-primary btn-sm">View Details</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="assets/img/app-floodlight-opt.jpg" alt="YT2181GTE5"></div>
+        <div class="card-body">
+          <span class="card-tag">LED Lighting</span>
+          <h3>YT2181GTE5</h3>
+          <p>50–200W India floodlight driver, 100–440Vac with built-in MOS.</p>
+          <a href="product-high-bay-flood.html" class="btn btn-primary btn-sm">View Details</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="assets/img/unsplash-chip-opt.jpg" alt="Custom design"></div>
+        <div class="card-body">
+          <span class="card-tag">Custom Design</span>
+          <h3>Driver Board Customization</h3>
+          <p>Adapt protection thresholds, OTP curves and pinouts to your fan platform.</p>
+          <a href="contact.html" class="btn btn-outline btn-sm">Talk to Engineering</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Need a landed-cost quote for GF-56 kits?</h2>
+    <p>Send your target market and annual volume — our export team replies within 1 business day with an FOB and landed-cost breakdown.</p>
+    <a href="contact.html" class="btn btn-white">Request a Quote</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <img src="assets/img/logo.png" alt="Grande Micro">
+          <span>Grande Micro</span>
+        </div>
+        <p style="font-size:0.9rem;line-height:1.6;margin-bottom:1rem;">Power semiconductor IC design company delivering LED drivers, AC-DC, DC-DC, MOSFETs and BLDC solutions for the Indian market.</p>
+        <p style="font-size:0.85rem;opacity:0.6;">ISO 9001 quality system · India grid-ready designs</p>
+      </div>
+      <div>
+        <h5>Products</h5>
+        <a href="products.html">LED Lighting ICs</a>
+        <a href="products.html">AC-DC Converters</a>
+        <a href="products.html">DC-DC Converters</a>
+        <a href="products.html">Power MOSFETs</a>
+        <a href="product-bldc-fan.html">BLDC Fan Kits</a>
+      </div>
+      <div>
+        <h5>Solutions</h5>
+        <a href="applications.html">Street Lighting</a>
+        <a href="product-high-bay-flood.html">High Bay &amp; Flood Light</a>
+        <a href="applications.html">Fan Light</a>
+        <a href="applications.html">E-Bike Display</a>
+        <a href="applications.html">Industrial Power</a>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <a href="mailto:Sales@grandemicro.com">Sales@grandemicro.com</a>
+        <a href="tel:+8651085388846">+86-510-85388846</a>
+        <p style="font-size:0.85rem;margin-top:0.5rem;">Wuxi Grandemicro Technology Co., Ltd.<br>530 Building A, Taihu Science Park<br>Wuxi, Jiangsu, China</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Wuxi Grandemicro Technology Co., Ltd. All rights reserved.</span>
+      <span>Domain: gmtne.com</span>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/8612345678900?text=Hello%2C%20I%20am%20interested%20in%20the%20GF-56%20BLDC%20ceiling%20fan%20kit." class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+<script src="assets/js/site-config.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  (function () {
+    var stageImg = document.getElementById('stageImg');
+    var stageVideo = document.getElementById('stageVideo');
+    var liveBadge = document.getElementById('liveBadge');
+    var thumbs = document.querySelectorAll('.pdp-thumbs button');
+
+    thumbs.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        thumbs.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var type = btn.dataset.type;
+        var src = btn.dataset.src;
+        if (type === 'video') {
+          stageImg.style.display = 'none';
+          stageVideo.style.display = 'block';
+          liveBadge.style.display = 'flex';
+          stageVideo.play();
+        } else if (src) {
+          stageVideo.pause();
+          stageVideo.style.display = 'none';
+          liveBadge.style.display = 'none';
+          stageImg.src = src;
+          stageImg.style.display = 'block';
+        }
+      });
+    });
+
+    document.querySelectorAll('.pdp-variants button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.pdp-variants button').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
