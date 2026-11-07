@@ -250,7 +250,7 @@ async function ghPut(path,b64,message,sha){
 
 /* ---- 字段定义 ---- */
 var SITE_FIELDS=[
-  {k:'site.brandName',l:'品牌名称'},{k:'site.legalName',l:'公司全称（页脚显示）'},
+  {k:'site.brandName',l:'品牌名称（仅改 logo 图片文字；SEO 标题需另改 HTML）'},{k:'site.legalName',l:'公司全称（页脚地址栏 + 版权行，改完需点「发布到网站」）'},
   {k:'site.email',l:'联系邮箱'},{k:'site.phone',l:'联系电话（显示用）'},
   {k:'site.phoneLink',l:'拨号链接（纯数字，用于 tel:）'},{k:'site.whatsapp',l:'WhatsApp 号码（不含 + 号）'},
   {k:'site.whatsappMessage',l:'WhatsApp 预设消息',w:1},
@@ -394,7 +394,7 @@ async function publish(){
     var res=await ghPut(CONTENT_PATH,utf8ToBase64(text),'Update site content via admin panel',cur.sha||lastSha);
     lastSha=(res.content&&res.content.sha)||lastSha;
     setBusy(false); setStatus('',false);
-    toast('已发布成功！GitHub Pages 约 1–2 分钟后更新。','ok');
+    toast('已发布成功！等待 1–2 分钟后按 Ctrl+F5 强制刷新；仍无变化请看仓库 Actions 构建状态。','ok');
   }catch(e){ setBusy(false); toast('发布失败：'+e.message,'err'); }
 }
 
@@ -448,6 +448,22 @@ function onFieldChange(e){
   var el=e.target, p=el.getAttribute('data-path');
   if(!p||!D) return;
   setPath(D,p,el.value); markDirty();
+
+  // 改「公司全称」时同步页脚版权行里的公司名。
+  // 版权行若是 {{legalName}} 模板则保持模板（由前端渲染时替换）；
+  // 若是旧版写死公司名的格式，则重建为「© 年份 新公司名 All rights reserved.」。
+  if(p==='site.legalName' && el.value){
+    var cr=getPath(D,'site.footer.copyright')||'';
+    if(cr && !/\{\{\s*legalName\s*\}\}/.test(cr)){
+      var rebuilt=cr.replace(/(©\s*\d{4}\s+).*?(\s+All rights reserved\.?\s*$)/i,
+        function(m,a,b){ return a+el.value+b; });
+      if(rebuilt!==cr){
+        setPath(D,'site.footer.copyright',rebuilt);
+        var box=document.querySelector('[data-path="site.footer.copyright"]');
+        if(box) box.value=rebuilt;
+      }
+    }
+  }
 }
 function onActionClick(e){
   var b=e.target.closest ? e.target.closest('button[data-action]') : null;

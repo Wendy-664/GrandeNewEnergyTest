@@ -1,10 +1,10 @@
 {
   "site": {
     "brandName": "Grande New Energy",
-    "legalName": "Grandemicro New Energy Technology Co., Ltd.",
+    "legalName": "Wuxi Grandemicro Technology Co., Ltd.",
     "email": "Sales@grandemicro.com",
-    "phone": "+86-8888888",
-    "phoneLink": "+86 111111111111",
+    "phone": "+86-510-85388846",
+    "phoneLink": "+8651085388846",
     "whatsapp": "8618154614514",
     "whatsappMessage": "Hello, I am interested in your LED lighting solutions.",
     "linkedin": "https://www.linkedin.com/company/grandenewenergy",
@@ -13,34 +13,16 @@
       "line2": "Wuxi, Jiangsu, China"
     },
     "footer": {
-      "copyright": "© 2026 Wuxi Grandemicro Technology Co., Ltd. All rights reserved.",
+      "copyright": "© 2026 {{legalName}} All rights reserved.",
       "domainNote": "Domain: gmtne.com"
     },
     "nav": [
-      {
-        "label": "Home",
-        "href": "index.html"
-      },
-      {
-        "label": "Products",
-        "href": "products.html"
-      },
-      {
-        "label": "SKD / CKD",
-        "href": "skd-ckd.html"
-      },
-      {
-        "label": "Resources",
-        "href": "resources/index.html"
-      },
-      {
-        "label": "About",
-        "href": "about.html"
-      },
-      {
-        "label": "Contact",
-        "href": "contact.html"
-      }
+      { "label": "Home", "href": "index.html" },
+      { "label": "Products", "href": "products.html" },
+      { "label": "SKD / CKD", "href": "skd-ckd.html" },
+      { "label": "Resources", "href": "resources/index.html" },
+      { "label": "About", "href": "about.html" },
+      { "label": "Contact", "href": "contact.html" }
     ]
   },
   "resources": {

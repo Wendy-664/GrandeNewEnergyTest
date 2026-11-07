@@ -111,9 +111,29 @@
     // 注意：footer 的「简介 / 标语」各页文案不同（exporter / solutions company 等），
     // 属于页面级文案，不在本轮统一范围内，避免静默改掉现有文案。
     var f = site.footer || {};
-    if (f.copyright) txt('copyright', f.copyright);
+    if (f.copyright) {
+      var rawCr = String(f.copyright);
+      var hasTpl = /\{\{\s*legalName\s*\}\}/.test(rawCr);
+      var cr = hasTpl ? rawCr.replace(/\{\{\s*legalName\s*\}\}/g, site.legalName || '') : rawCr;
+      // 兼容旧版 content.json：版权行里把公司名写死时，仍以「公司全称」为准，
+      // 否则会出现「改了公司全称，页脚最底部那行还是旧名字」。
+      if (!hasTpl && site.legalName) {
+        cr = cr.replace(/(©\s*\d{4}\s+).*?(\s+All rights reserved\.?\s*$)/i,
+          function (m, a, b) { return a + site.legalName + b; });
+      }
+      txt('copyright', cr);
+    }
     if (f.domainNote) txt('domainNote', f.domainNote);
-    if (site.legalName) txt('legalName', site.legalName);
+  }
+
+  /* 品牌名称只作用于 logo 图片的替代文字。
+     页面 <title> / description / og: / JSON-LD 里的品牌名是给搜索引擎读的，
+     用 JS 动态改不会被抓取，所以故意保留在 HTML 中，不纳入后台管理。 */
+  function renderBrand(site) {
+    if (!site.brandName) return;
+    document.querySelectorAll('.logo img, .footer-logo img').forEach(function (img) {
+      img.setAttribute('alt', site.brandName);
+    });
   }
 
   function renderWhatsApp(site) {
@@ -205,6 +225,7 @@
 
     // 全站通用
     renderNav(site);
+    renderBrand(site);
     renderFooterContact(site);
     renderWhatsApp(site);
     renderLinkedIn(site);
@@ -219,7 +240,9 @@
   }
 
   function load() {
-    fetch(CONTENT_PATH)
+    // 带时间戳 + no-store：绕过 GitHub Pages 对静态文件约 10 分钟的 CDN 缓存，
+    // 保证后台发布后刷新页面即可看到新内容（content.json 仅几 KB，流量可忽略）。
+    fetch(CONTENT_PATH + '?v=' + Date.now(), { cache: 'no-store' })
       .then(function (resp) {
         if (!resp.ok) throw new Error('content.json HTTP ' + resp.status);
         return resp.json();

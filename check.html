@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>发布生效检查 · gmtne.com</title>
+<style>
+:root{--primary:#061F32;--cyan:#08A6F6;--ink:#16232E;--muted:#5F6B76;--line:#E2E8EE;--bg:#F4F7FA;
+--ok-bg:#E1F5EE;--ok:#0F6E56;--warn-bg:#FAEEDA;--warn:#854F0B;--fail-bg:#FCEBEB;--fail:#A32D2D}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 Arial,"Microsoft YaHei",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px 60px}
+.top{background:var(--primary);color:#fff;border-radius:12px;padding:22px 26px;margin-bottom:18px}
+.top h1{margin:0 0 6px;font-size:20px;font-weight:600}
+.top p{margin:0;color:#A9CBDF;font-size:13px}
+.bar{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+button{font:13px Arial,"Microsoft YaHei",sans-serif;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;padding:8px 14px;border-radius:7px;cursor:pointer}
+button:hover{background:rgba(255,255,255,.2)}
+button.primary{background:var(--cyan);border-color:var(--cyan);font-weight:600}
+button.primary:hover{background:#0A93D8}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:14px}
+.card h2{margin:0 0 14px;font-size:14px;font-weight:600;color:var(--primary)}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:7px;font:13px Arial,"Microsoft YaHei",sans-serif;color:var(--ink)}
+input[type=text]:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(8,166,246,.12)}
+.verdict{border-radius:12px;padding:20px 24px;margin-bottom:14px;border:1px solid}
+.verdict .big{font-size:19px;font-weight:600;margin-bottom:6px}
+.verdict .sub{font-size:13px;line-height:1.7}
+.v-ok{background:var(--ok-bg);border-color:#9FE1CB;color:var(--ok)}
+.v-warn{background:var(--warn-bg);border-color:#FAC775;color:var(--warn)}
+.v-fail{background:var(--fail-bg);border-color:#F7C1C1;color:var(--fail)}
+.v-idle{background:#fff;border-color:var(--line);color:var(--muted)}
+.row{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.dot{width:9px;height:9px;border-radius:50%;flex:0 0 9px;margin-top:6px}
+.d-ok{background:#1D9E75}.d-warn{background:#EF9F27}.d-fail{background:#E24B4A}.d-idle{background:#B4B2A9}
+.row .body{flex:1;min-width:0}
+.row .name{font-size:13px;font-weight:600;color:var(--primary)}
+.row .detail{font-size:12px;color:var(--muted);margin-top:3px;word-break:break-all}
+.row .tag{font-size:11px;padding:2px 9px;border-radius:20px;white-space:nowrap;flex:0 0 auto}
+.t-ok{background:var(--ok-bg);color:var(--ok)}.t-warn{background:var(--warn-bg);color:var(--warn)}
+.t-fail{background:var(--fail-bg);color:var(--fail)}.t-idle{background:#F1EFE8;color:var(--muted)}
+code{font:12px Consolas,Monaco,monospace;background:#F1EFE8;padding:1px 5px;border-radius:4px}
+.note{font-size:12px;color:var(--muted);line-height:1.8}
+.note b{color:var(--primary)}
+#frame{display:none}
+pre#machineResult{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>发布生效检查</h1>
+    <p>打开这一页，自动判断后台的改动有没有真正显示到网站上。无需登录、无需令牌。</p>
+    <div class="bar">
+      <button class="primary" id="btnRun">重新检查</button>
+      <button id="btnHard">强制刷新并重新检查</button>
+      <button id="btnCopy">复制检查结果</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <label for="expectYou">你在后台填的新公司全称（选填，填了能直接判断"有没有发布成功"）</label>
+    <input type="text" id="expectYou" placeholder="例：Wuxi Grandemicro Technology Co., Ltd. 改成的新名字">
+  </div>
+
+  <div class="verdict v-idle" id="verdict">
+    <div class="big" id="verdictTitle">正在检查…</div>
+    <div class="sub" id="verdictText">正在读取网站内容和页脚渲染结果，请稍候。</div>
+  </div>
+
+  <div class="card">
+    <h2>检查明细</h2>
+    <div id="rows"></div>
+  </div>
+
+  <div class="card">
+    <h2>这个页面在查什么</h2>
+    <p class="note">
+      ① <b>仓库 / 线上文件</b>：直接读取 <code>assets/data/content.json</code>，看公司全称是不是新值。<br>
+      ② <b>CDN 缓存</b>：读响应头里的 <code>age</code> / <code>x-cache</code>，并对比一次普通请求与一次绕过缓存的请求。<br>
+      ③ <b>页面渲染</b>：在后台静默打开首页，读页脚 <b>Contact 地址栏</b> 和 <b>最底部版权行</b>，确认两处都显示了新公司名。<br><br>
+      必须把这个文件放在<b>网站根目录、和 index.html 同级</b>，并且访问<b>线上域名</b>才有意义。本地打开或双击打开时，结果不代表线上。
+    </p>
+  </div>
+
+</div>
+
+<iframe id="frame" title="渲染检测" src="about:blank"></iframe>
+<pre id="machineResult"></pre>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(s){ return document.querySelector(s); };
+  var CONTENT = 'assets/data/content.json', HOME = 'index.html';
+  var rows = [], verdict = {level:'idle', title:'', text:''}, lastText = '';
+
+  function esc(s){
+    return String(s===null||s===undefined?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function add(name, level, detail){
+    rows.push({name:name, level:level, detail:detail});
+  }
+  function label(level){
+    return {ok:'通过', warn:'注意', fail:'未通过', idle:'—'}[level] || '—';
+  }
+  function isLocal(){
+    return location.protocol === 'file:' ||
+           /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname);
+  }
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+
+  async function getJson(bust){
+    var url = CONTENT + (bust ? '?t=' + Date.now() : '');
+    var opt = bust ? {cache:'no-store'} : {cache:'default'};
+    var r = await fetch(url, opt);
+    var out = {
+      ok:r.ok, status:r.status, url:url,
+      age:r.headers.get('age'), xcache:r.headers.get('x-cache'),
+      cc:r.headers.get('cache-control'), data:null, error:''
+    };
+    try{ out.data = await r.json(); }
+    catch(e){ out.error = 'JSON 解析失败：' + e.message; }
+    return out;
+  }
+
+  async function readFooter(){
+    var f = $('#frame');
+    return new Promise(function(resolve){
+      var done = false;
+      function finish(addr, cr, err){
+        if(done) return; done = true;
+        resolve({addr:addr||'', cr:cr||'', error:err||''});
+      }
+      f.onload = async function(){
+        for(var i=0;i<10;i++){
+          await sleep(350);
+          try{
+            var d = f.contentDocument;
+            if(!d) continue;
+            var a = d.querySelector('[data-c="address"]');
+            var c = d.querySelector('[data-c="copyright"]');
+            if(a && c) return finish(a.textContent, c.textContent, '');
+          }catch(e){ return finish('','','无法读取首页内容（跨域或加载失败）'); }
+        }
+        finish('','','等待首页页脚元素超时');
+      };
+      f.onerror = function(){ finish('','','首页加载失败'); };
+      f.src = HOME + '?diag=' + Date.now();
+      setTimeout(function(){ finish('','','首页加载超时'); }, 9000);
+    });
+  }
+
+  function paint(){
+    $('#rows').innerHTML = rows.map(function(r){
+      return '<div class="row"><span class="dot d-'+r.level+'"></span>'+
+        '<div class="body"><div class="name">'+esc(r.name)+'</div>'+
+        '<div class="detail">'+esc(r.detail)+'</div></div>'+
+        '<span class="tag t-'+r.level+'">'+label(r.level)+'</span></div>';
+    }).join('');
+    $('#verdict').className = 'verdict v-' + verdict.level;
+    $('#verdictTitle').textContent = verdict.title;
+    $('#verdictText').textContent = verdict.text;
+    lastText = '【发布生效检查】' + new Date().toLocaleString('zh-CN') + '\n' +
+      '地址：' + location.href + '\n结论：' + verdict.title + ' — ' + verdict.text + '\n\n' +
+      rows.map(function(r){ return '[' + label(r.level) + '] ' + r.name + '：' + r.detail; }).join('\n');
+    $('#machineResult').textContent = JSON.stringify({
+      verdict:verdict, rows:rows, local:isLocal(), href:location.href
+    });
+  }
+
+  async function run(){
+    rows = [];
+    verdict = {level:'idle', title:'正在检查…', text:'正在读取网站内容和页脚渲染结果，请稍候。'};
+    paint();
+    await sleep(120);
+
+    var expect = ($('#expectYou').value || '').trim();
+    var local = isLocal();
+    var fresh, cached, footer;
+
+    try{ fresh = await getJson(true); }
+    catch(e){ fresh = {ok:false,status:0,error:'请求失败：'+e.message,data:null}; }
+    try{ cached = await getJson(false); }
+    catch(e){ cached = {ok:false,status:0,error:'请求失败：'+e.message,data:null}; }
+    try{ footer = await readFooter(); }
+    catch(e){ footer = {addr:'',cr:'',error:e.message}; }
+
+    /* 1 访问环境 */
+    if(local){
+      add('访问环境', 'fail',
+        '当前是 ' + location.protocol + '//' + location.host + '（本地或双击打开），这里的结果不能代表线上网站。请上传到 GitHub Pages 后，用线上域名打开本页。');
+    }else{
+      add('访问环境', 'ok', '线上地址 ' + location.host + location.pathname + '，检查结果可用于判断真实访客看到的内容。');
+    }
+
+    /* 2 content.json 可读取 */
+    var legal = fresh.data && fresh.data.site ? String(fresh.data.site.legalName || '') : '';
+    var crField = fresh.data && fresh.data.site && fresh.data.site.footer
+      ? String(fresh.data.site.footer.copyright || '') : '';
+    if(!fresh.ok || !fresh.data){
+      add('读取 content.json', 'fail',
+        'HTTP ' + fresh.status + ' ' + (fresh.error || '文件读取失败') +
+        '。检查文件是否在 assets/data/ 目录、仓库是否已提交、Pages 是否构建完成。');
+    }else{
+      add('读取 content.json', 'ok',
+        'HTTP ' + fresh.status + '，解析成功。当前公司全称：' + (legal || '(空)') +
+        '；版权行字段：' + (crField || '(空)'));
+    }
+
+    /* 3 期望值对比 */
+    if(expect){
+      if(legal === expect){
+        add('仓库 / 线上文件里的值', 'ok', '已是你填的新公司名，说明「发布到网站」这一步成功了。');
+      }else{
+        add('仓库 / 线上文件里的值', 'fail',
+          '期望「' + expect + '」，实际是「' + (legal || '(空)') +
+          '」。改动没写进仓库：回后台点「发布到网站」，确认出现绿色「已发布成功」提示；若是红色报错，多半是令牌权限、仓库名或分支填错。');
+      }
+    }else{
+      add('仓库 / 线上文件里的值', 'idle',
+        '没填期望值，跳过这一步。把你在后台填的新公司名填进上方输入框，就能直接判断有没有发布成功。当前值：' + (legal || '(空)'));
+    }
+
+    /* 4 CDN 缓存 */
+    if(fresh.data && cached.data){
+      var cachedLegal = cached.data.site ? String(cached.data.site.legalName || '') : '';
+      var hdr = [fresh.age!==null?'age='+fresh.age:null,
+                 fresh.xcache?'x-cache='+fresh.xcache:null,
+                 fresh.cc?'cache-control='+fresh.cc:null].filter(Boolean).join(' · ') || '无缓存相关响应头';
+      if(cachedLegal === legal){
+        add('CDN 缓存', 'ok', '普通请求与绕过缓存的请求内容一致，缓存里没有旧版本。响应头：' + hdr);
+      }else{
+        add('CDN 缓存', 'warn',
+          '普通请求拿到「' + cachedLegal + '」，绕过缓存拿到「' + legal +
+          '」，说明 CDN 还缓存着旧文件。等 5～10 分钟或按 Ctrl+F5；网站加载器已加时间戳，正常刷新即可取到新值。响应头：' + hdr);
+      }
+    }else{
+      add('CDN 缓存', 'idle', 'content.json 未能读取，跳过缓存比对。');
+    }
+
+    /* 5 页脚实际渲染 */
+    if(!fresh.data || !legal){
+      add('页脚实际渲染', 'idle', '没有可用的公司名，跳过比对。');
+    }else if(footer.error){
+      add('页脚实际渲染', 'fail', footer.error + '。请确认 index.html 与本页在同一目录。');
+    }else{
+      var aOk = footer.addr.indexOf(legal) !== -1;
+      var cOk = footer.cr.indexOf(legal) !== -1;
+      add('页脚实际渲染', (aOk && cOk) ? 'ok' : 'fail',
+        'Contact 地址栏：' + (aOk ? '已是新名' : '仍是「' + footer.addr.split('\n')[0].slice(0,60) + '」') +
+        '；最底部版权行：' + (cOk ? '已是新名' : '仍是「' + footer.cr.slice(0,70) + '」') +
+        ((aOk && !cOk) ? '。地址栏变了但版权行没变，说明线上的 content-loader.js 还是旧版，请把修复后的加载器同步到仓库。' : ''));
+    }
+
+    /* 汇总结论 */
+    var fails = rows.filter(function(r){ return r.level === 'fail'; });
+    var warns = rows.filter(function(r){ return r.level === 'warn'; });
+    if(local){
+      var others = fails.filter(function(r){ return r.name !== '访问环境'; });
+      verdict = {level:'warn', title:'这是本地页面，结果不能代表线上',
+        text:'下面各项只能反映本机文件。请把 check.html 上传到网站根目录，再用线上域名打开。' +
+          (others.length ? ' 另外还有 ' + others.length + ' 项未通过（' +
+            others.map(function(r){ return r.name; }).join('、') + '），见下方明细。' : '')};
+    }else if(fails.length){
+      var f0 = fails[0];
+      verdict = {level:'fail', title:'未生效：' + f0.name,
+        text:f0.detail + '  （共 ' + fails.length + ' 项未通过，看下方明细逐条处理。）'};
+    }else if(warns.length){
+      verdict = {level:'warn', title:'基本生效，但有缓存延迟',
+        text:'改动已经写进网站文件，只是 CDN 还留着旧副本。按 Ctrl+F5 或等 5～10 分钟通常就好。'};
+    }else{
+      verdict = {level:'ok', title:'已生效',
+        text:'线上 content.json 是新内容，页脚两处也正确渲染。如果浏览器里还看到旧文字，按 Ctrl+F5 强制刷新一次即可。'};
+    }
+    paint();
+  }
+
+  $('#btnRun').addEventListener('click', run);
+  $('#btnHard').addEventListener('click', function(){
+    var v = $('#expectYou').value;
+    try{ sessionStorage.setItem('gmtne_diag_expect', v); }catch(e){}
+    location.href = location.pathname + '?r=' + Date.now();
+  });
+  $('#btnCopy').addEventListener('click', function(){
+    var btn = $('#btnCopy'), old = btn.textContent;
+    function done(ok){ btn.textContent = ok ? '已复制' : '复制失败'; setTimeout(function(){ btn.textContent = old; }, 1800); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(lastText).then(function(){ done(true); },function(){ done(false); });
+    }else{
+      var ta = document.createElement('textarea'); ta.value = lastText;
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+      document.body.removeChild(ta); done(ok);
+    }
+  });
+
+  try{
+    var q = new URLSearchParams(location.search), qe = q.get('expect');
+    if(qe) $('#expectYou').value = qe;
+    else{
+      var saved = sessionStorage.getItem('gmtne_diag_expect');
+      if(saved) $('#expectYou').value = saved;
+    }
+  }catch(e){}
+  run();
+})();
+</script>
+</body>
+</html>
