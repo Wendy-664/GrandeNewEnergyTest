@@ -84,6 +84,6 @@ function highlightLayer(idx, items, svg) {
 function openWhatsApp(message) {
   const num = document.documentElement.dataset.whatsapp || '';
   if (!num) return;
-  const text = encodeURIComponent(message || 'Hello, I am interested in your power semiconductor solutions for India market.');
+  const text = encodeURIComponent(message || 'Hello, I am interested in your power semiconductor solutions.');
   window.open(`https://wa.me/${num}?text=${text}`, '_blank');
 }

@@ -3,16 +3,15 @@
    上线前请把下面几项替换为真实信息，全站会自动生效。
    =========================================================== */
 window.SITE_CONFIG = {
-  // TODO: 当前为占位号码（8612345678900），上线前必须换成真实的 WhatsApp Business 号码
-  // 格式：国家码 + 号码，不带 + 和空格，例如 "8613851234567"
-  whatsapp: '8612345678900',
+  // WhatsApp Business 号码（国家码 + 号码，不带 + 和空格）
+  whatsapp: '8618154614514',
 
   // TODO: Formspree 表单 endpoint（contact.html 里现在写死为 formspree.io/f/xnqevwrb）
   formEndpoint: 'https://formspree.io/f/xnqevwrb',
 
-  // 印度本地联系信息（如有代理/办事处，填这里；留空则前台不展示该栏）
-  indiaOfficeCity: '',
-  indiaPhone: ''
+  // 海外本地联系信息（如有代理/办事处，填这里；留空则前台不展示该栏）
+  regionalOfficeCity: '',
+  regionalPhone: ''
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.querySelectorAll('a[href*="wa.me"]').forEach(function (a) {
     var m = a.getAttribute('href').match(/[?&]text=([^&]*)/);
-    var text = m ? decodeURIComponent(m[1]) : 'Hello, I am interested in your power semiconductor solutions for India market.';
+    var text = m ? decodeURIComponent(m[1]) : 'Hello, I am interested in your power semiconductor solutions.';
     a.setAttribute('href', 'https://wa.me/' + cfg.whatsapp + '?text=' + encodeURIComponent(text));
   });
 });

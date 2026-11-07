@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>FAQ 写法示例 — Street Light 40/60W</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+  .pv-banner {
+    background: #0A2540; color: #fff; padding: 14px 0;
+    font-size: 14px; line-height: 1.7;
+  }
+  .pv-banner b { color: #F59E0B; }
+  .pv-banner code {
+    background: rgba(255,255,255,.12); padding: 1px 6px;
+    border-radius: 4px; font-size: 13px;
+  }
+
+  .faq-list { max-width: 900px; margin: 0 auto; }
+
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  .faq-item[open] {
+    border-color: #CBD5E1;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 52px 18px 22px;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1.5;
+    position: relative;
+    user-select: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+";
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--text-muted);
+    transition: transform .2s ease, color .2s ease;
+  }
+  .faq-item[open] summary::after {
+    content: "−";
+    color: var(--accent);
+  }
+  .faq-item summary:hover { color: var(--primary-light); }
+  .faq-item summary:hover::after { color: var(--accent); }
+
+  .faq-answer {
+    padding: 0 22px 20px;
+    font-size: 0.9688rem;
+    line-height: 1.75;
+    color: var(--text);
+    border-top: 1px solid transparent;
+  }
+  .faq-answer p { margin: 0 0 10px; }
+  .faq-answer p:last-child { margin-bottom: 0; }
+  .faq-answer strong { color: var(--primary); font-weight: 600; }
+
+  .faq-foot {
+    max-width: 900px; margin: 28px auto 0;
+    padding: 20px 24px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .faq-foot p { margin: 0; color: var(--text-muted); font-size: 0.9375rem; }
+
+  .pv-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .pv-table th, .pv-table td {
+    text-align: left; padding: 11px 14px;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .pv-table thead th {
+    background: #fff; color: var(--primary); font-weight: 600;
+    font-size: 0.82rem; letter-spacing: .03em; text-transform: uppercase;
+  }
+  .pv-table td:first-child { width: 44px; color: var(--text-muted); font-weight: 600; }
+  .pv-table td.wc { width: 70px; color: var(--text-muted); }
+  .pv-bad { color: #B91C1C; }
+  .pv-good { color: #047857; }
+
+  .pv-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pv-cmp > div {
+    padding: 18px 20px; border-radius: var(--radius);
+    font-size: 0.9375rem; line-height: 1.7;
+  }
+  .pv-cmp .bad { background: #FEF2F2; border: 1px solid #FECACA; }
+  .pv-cmp .good { background: #F0FDF4; border: 1px solid #BBF7D0; }
+  .pv-cmp h4 { margin: 0 0 8px; font-size: 0.82rem; letter-spacing: .04em; text-transform: uppercase; }
+  .pv-cmp .bad h4 { color: #B91C1C; }
+  .pv-cmp .good h4 { color: #047857; }
+  .pv-cmp q { font-style: italic; display: block; margin-bottom: 8px; }
+
+  @media (max-width: 760px) {
+    .pv-cmp { grid-template-columns: 1fr; }
+    .faq-item summary { padding: 16px 46px 16px 18px; font-size: 1rem; }
+    .faq-answer { padding: 0 18px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="pv-banner">
+  <div class="container">
+    <b>这是一份写法示例</b>，不是站点页面。上面的英文就是客户会看到的全部内容，可以直接点击展开／收起。
+    下方的表格是我对每一条的字数与写作意图批注。看完请告诉我哪几条答得不对。
+  </div>
+</div>
+
+<section class="section section-alt">
+  <div class="container">
+    <div style="max-width:900px;margin:0 auto 34px;">
+      <span class="kicker">Street Light 40 / 60 W · YE-01</span>
+      <h2 class="section-title">Frequently asked questions</h2>
+      <p class="section-subtitle">Eight questions buyers actually ask before requesting a sample. Answers use the same platform data as the specification table above — nothing here is a marketing claim.</p>
+    </div>
+
+    <div class="faq-list">
+
+      <details class="faq-item" open>
+        <summary>How does the driver behave on a 440 V feeder?</summary>
+        <div class="faq-answer">
+          <p>The YE-01 driver holds constant current from roughly 165 to 280 Vac. Below that it folds back to protect itself; above 290 Vac output is deliberately derated, so a fixture running on a 440 V feeder will light up and stay stable — it simply will not deliver full rated wattage.</p>
+          <p>On our 100 W high bay test unit, output settled near <strong>38 W at 440 Vac</strong>. We publish the full 22-point grid rather than a single headline voltage because that is the honest picture: wide input means the light survives, not that it performs identically everywhere.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can one driver cover both the 40 W and the 60 W version?</summary>
+        <div class="faq-answer">
+          <p>Yes. Both wattages sit on the same single-board driver; the difference is the output current setting and the LED board string configuration. That means one driver reel and one assembly procedure covers your whole street-light range, which is usually the difference between holding two spare-part lines and holding one.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What pole height and spacing does the 60 W version suit?</summary>
+        <div class="faq-answer">
+          <p>Typically 6–8 m mounting height for secondary and residential roads. Type II distribution for carriageways up to about 9 m wide, Type III where the pole sits on one side and the beam has to reach further across.</p>
+          <p>We do not publish a lux grid for a reference design, because spacing depends on your road class and local lighting code. Send us the road width, pole height and target lux level, and we will run the layout with you.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>IP65 or IP66 — which one do I actually need?</summary>
+        <div class="faq-answer">
+          <p>IP65 is protection against water jets; IP66 against powerful jets, such as driving rain at an exposed coastal or elevated site. For inland towns IP65 is normally enough and costs less. For coastal roads, or anywhere the housing faces monsoon wind directly, specify IP66 — the gasket and cable-gland cost difference is small next to a field failure.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Does the housing survive salt spray and monsoon humidity?</summary>
+        <div class="faq-answer">
+          <p>The body is die-cast aluminium with a powder coating, which is the right starting point for coastal installations. Salt-spray endurance depends on coating thickness and pretreatment, so we confirm the exact hours against your site conditions rather than quoting a generic number.</p>
+          <p>If your project is within a few kilometres of the coast, tell us at inquiry stage and we will specify the coating accordingly.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>With 4 kV surge immunity, do I still need a separate SPD?</summary>
+        <div class="faq-answer">
+          <p>For most urban distribution circuits, no — 4 kV on the driver covers the switching transients you normally see. For poles at the end of an overhead line, in high-lightning regions, or on the same circuit as large welding or pumping loads, we recommend an external surge protector at the pole. It is a low-cost part and it protects the whole fixture, not just the driver.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Who files the certification in my country — you or me?</summary>
+        <div class="faq-answer">
+          <p>You do, because registration schemes such as BIS, SIRIM, TISI and SNI require a locally registered entity as the applicant. Our job is to make that filing fast: we hand over the test data, BOM, driver specifications and technical file your lab and agent need.</p>
+          <p>Filing as the registrant also means the certificate sits in your company name, which is worth more to you than a supplier's certificate ever would be.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can the LED module or driver be replaced in the field?</summary>
+        <div class="faq-answer">
+          <p>Yes — and this is the practical advantage of SKD construction. The LED board and the driver are separate assemblies held by screws and connectors, so a failed driver is a 10-minute swap by a technician with a screwdriver, not a fixture replacement. Both parts can be ordered separately in your maintenance quantities.</p>
+        </div>
+      </details>
+
+    </div>
+
+    <div class="faq-foot">
+      <p><strong>Still have a question?</strong> Tell us the road width and voltage conditions and we will answer with test data, not adjectives.</p>
+      <a href="https://wa.me/8618154614514?text=Hello%2C%20I%20have%20a%20question%20about%20the%20YE-01%20street%20light." class="btn btn-primary" target="_blank">Ask on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title" style="font-size:1.6rem;">批注：每条在答什么</h2>
+    <p class="section-subtitle" style="margin-bottom:26px;">这一栏不会出现在正式页面上，只是给你核对内容准确性用。</p>
+
+    <div style="overflow-x:auto;">
+      <table class="pv-table">
+        <thead>
+          <tr><th>#</th><th>问题 / 在回答什么</th><th class="wc">词数</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>440V 上是什么表现</strong> — 全站最硬的一条。主动承认降额，并给出 100W 高棚的实测 38W，同时说明街灯专属曲线待项目确认，与规格表下的 note 口径一致</td><td class="wc">78</td></tr>
+          <tr><td>2</td><td><strong>一个驱动能不能覆盖两个功率</strong> — 直接对应 SKD 客户的库存与备件成本，是采购经理会算的账</td><td class="wc">48</td></tr>
+          <tr><td>3</td><td><strong>杆高与配光怎么选</strong> — 给区间但明确说不发布参考设计的 lux 网格，把定制模拟变成下一个动作</td><td class="wc">58</td></tr>
+          <tr><td>4</td><td><strong>IP65 还是 IP66</strong> — 给出判断规则（沿海选 IP66）而非罗列参数</td><td class="wc">50</td></tr>
+          <tr><td>5</td><td><strong>盐雾与潮湿</strong> — 不编具体小时数，改为按项目确认涂层规格，这是可信度关键</td><td class="wc">56</td></tr>
+          <tr><td>6</td><td><strong>4kV 还需要外加防雷吗</strong> — 回答"什么情况下需要"，比单纯宣称 4kV 更专业</td><td class="wc">54</td></tr>
+          <tr><td>7</td><td><strong>认证谁申请</strong> — 承接你 SKD 模式的核心口径：注册人是客户，我们是数据提供方</td><td class="wc">56</td></tr>
+          <tr><td>8</td><td><strong>现场能不能换模块</strong> — 把 SKD 结构优势翻译成运维成本</td><td class="wc">50</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="section-title" style="font-size:1.6rem;margin-top:52px;">反面示例：别这样写</h2>
+    <p class="section-subtitle" style="margin-bottom:24px;">同一个位置，两种写法的差别。</p>
+
+    <div class="pv-cmp">
+      <div class="bad">
+        <h4>✗ 常见写法</h4>
+        <q>Q: Is your LED street light good quality?</q>
+        <p>A: Yes, we are a professional manufacturer with strict quality control and our products are very popular in many countries.</p>
+        <p style="margin-top:10px;font-size:.85rem;color:#B91C1C;">没有任何信息量。客户读完不会更懂，也不会因此询价；这类词也不会有任何人搜索。</p>
+      </div>
+      <div class="good">
+        <h4>✓ 正确写法</h4>
+        <q>Q: With 4 kV surge immunity, do I still need a separate SPD?</q>
+        <p>A: For most urban circuits, no. For poles at the end of an overhead line or in high-lightning regions, yes — an external SPD at the pole is cheap and protects the whole fixture.</p>
+        <p style="margin-top:10px;font-size:.85rem;color:#047857;">给出了判断条件。客户读完能自己做决定，或带着更具体的问题来问你。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

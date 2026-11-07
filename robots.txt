@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# 芯片型号页不对外收录
+Disallow: /product-yt
+
+Sitemap: https://www.gmtne.com/sitemap.xml

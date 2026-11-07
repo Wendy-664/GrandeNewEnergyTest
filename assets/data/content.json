@@ -1,0 +1,110 @@
+{
+  "site": {
+    "brandName": "Grande New Energy",
+    "legalName": "Wuxi Grandemicro Technology Co., Ltd.",
+    "email": "Sales@grandemicro.com",
+    "phone": "+86-510-85388846",
+    "phoneLink": "+8651085388846",
+    "whatsapp": "8618154614514",
+    "whatsappMessage": "Hello, I am interested in your LED lighting solutions.",
+    "linkedin": "https://www.linkedin.com/company/grandenewenergy",
+    "address": {
+      "line1": "530 Building A, Taihu Science Park",
+      "line2": "Wuxi, Jiangsu, China"
+    },
+    "footer": {
+      "copyright": "© 2026 Wuxi Grandemicro Technology Co., Ltd. All rights reserved.",
+      "domainNote": "Domain: gmtne.com"
+    },
+    "nav": [
+      { "label": "Home", "href": "index.html" },
+      { "label": "Products", "href": "products.html" },
+      { "label": "SKD / CKD", "href": "skd-ckd.html" },
+      { "label": "Resources", "href": "resources/index.html" },
+      { "label": "About", "href": "about.html" },
+      { "label": "Contact", "href": "contact.html" }
+    ]
+  },
+  "resources": {
+    "hero": {
+      "tag": "Resources",
+      "title": "Data, guides and documents — published, not promised",
+      "standfirst": "Most LED suppliers describe their products. We publish the measurements: 22-point voltage grids, 90-minute thermal soaks, surge results and the full lab reports. Use them to compare us against whatever else you are evaluating."
+    },
+    "articles": [
+      {
+        "title": "Why 100–440 Vac input matters — 22 measured points",
+        "tag": "Test data · 8 min",
+        "href": "wide-input-voltage.html"
+      },
+      {
+        "title": "Where the heat actually is: 90-minute thermal soak",
+        "tag": "Test data · 7 min",
+        "href": "thermal-performance.html"
+      }
+    ],
+    "downloads": [
+      {
+        "title": "Test report — 100W high bay",
+        "product": "FL-YE-01W0100V144V01",
+        "pages": "18",
+        "type": "pdf",
+        "href": "../assets/dl/GrandeNewEnergy-TestReport-100W-HighBay-YT2181GTE5.pdf",
+        "action": "PDF"
+      },
+      {
+        "title": "Test report — 50W flood light",
+        "product": "FL-YE-01W050V144V01",
+        "pages": "18",
+        "type": "pdf",
+        "href": "../assets/dl/GrandeNewEnergy-TestReport-50W-FloodLight-YT2181GTE5.pdf",
+        "action": "PDF"
+      },
+      {
+        "title": "Specification sheet — 100W high bay",
+        "product": "FL-YE-01W0100V144V01",
+        "pages": "2",
+        "type": "page",
+        "href": "../product-high-bay.html",
+        "action": "View page"
+      },
+      {
+        "title": "Specification sheet — 50W flood light",
+        "product": "FL-YE-01W050V144V01",
+        "pages": "2",
+        "type": "page",
+        "href": "../product-flood-light.html",
+        "action": "View page"
+      },
+      {
+        "title": "SKD / CKD kit contents & assembly",
+        "product": "All platforms",
+        "pages": "—",
+        "type": "page",
+        "href": "../skd-ckd.html",
+        "action": "View page"
+      }
+    ],
+    "comingNext": [
+      "SKD vs CKD: what the import duty difference actually costs (with a worked example)",
+      "4 kV surge test — waveform capture and pass criteria",
+      "Local assembly in four steps — video walkthrough"
+    ],
+    "faq": [
+      {
+        "q": "How often do you publish new resources?",
+        "a": "Test data, technical guides and downloadable documents are added as our engineering team completes new measurements. Check back periodically, or contact us for a document that is not listed yet."
+      },
+      {
+        "q": "Do I need to register to download your documents?",
+        "a": "No. Every published document is free to download with no email gate. Certification files, IES/LDT photometric data, installation drawings and BOMs are available on request."
+      }
+    ],
+    "cta": {
+      "title": "Looking for a document that is not here?",
+      "text": "Certification files, IES/LDT photometric data, installation drawings and BOMs are available on request. Tell us the project and we will send the right pack.",
+      "button": "Request documents",
+      "href": "../contact.html"
+    }
+  }
+}
