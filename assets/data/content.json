@@ -9,20 +9,38 @@
     "whatsappMessage": "Hello, I am interested in your LED lighting solutions.",
     "linkedin": "https://www.linkedin.com/company/grandenewenergy",
     "address": {
-      "line1": "530 Building A, Taihu Science Park",
-      "line2": "Wuxi, Jiangsu, China"
+      "line1": "ROOM 704,Buliding 2,No.11,Sihai Road,Bixi Street",
+      "line2": "Changshu, Jiangsu, China"
     },
     "footer": {
       "copyright": "© 2026 {{legalName}} All rights reserved.",
       "domainNote": "Domain: gmtne.com"
     },
     "nav": [
-      { "label": "Home", "href": "index.html" },
-      { "label": "Products", "href": "products.html" },
-      { "label": "SKD / CKD", "href": "skd-ckd.html" },
-      { "label": "Resources", "href": "resources/index.html" },
-      { "label": "About", "href": "about.html" },
-      { "label": "Contact", "href": "contact.html" }
+      {
+        "label": "Home",
+        "href": "index.html"
+      },
+      {
+        "label": "Products",
+        "href": "products.html"
+      },
+      {
+        "label": "SKD / CKD",
+        "href": "skd-ckd.html"
+      },
+      {
+        "label": "Resources",
+        "href": "resources/index.html"
+      },
+      {
+        "label": "About",
+        "href": "about.html"
+      },
+      {
+        "label": "Contact",
+        "href": "contact.html"
+      }
     ]
   },
   "resources": {
