@@ -57,6 +57,74 @@
     return ROOT_PREFIX + href;                                  // 其余目标在上一层
   }
 
+  /* 图片路径兼容两种写法：
+     - '../assets/img/x.jpg' 页面级相对（与下载清单 href 写法一致）
+     - 'assets/img/x.jpg'    站点根相对（后台媒体库「复制路径」得到的写法）
+     旧版 content.json 没有 image 字段，因此这里不影响任何既有页面。 */
+  function resolveMedia(src) {
+    if (!src) return '';
+    if (/^(https?:|data:|\/|#)/.test(src)) return src;
+    if (!ROOT_PREFIX || src.indexOf('../') === 0) return src;
+    return ROOT_PREFIX + src;
+  }
+
+  /* ==TEXT_ENUM_START==
+     全站文字定位算法。后台 admin.html 里的 ptEnumerate() 使用完全相同的一份规则，
+     首次启用时读线上真实页面生成索引，运行时也用同一段代码枚举，
+     保证顺序完全一致 —— 因此不需要给任何 HTML 加标记。
+     排除：脚本/样式/SVG、已由 content.json 驱动的区块、表格（实验室测试数据）、
+           含子元素的容器、过短或纯符号文本。
+     ⚠ 改动这里的规则时，必须同步改 admin.html 的 ptEnumerate()，否则索引会错位。 */
+  function enumerateTextElements(root) {
+    var SKIP = {SCRIPT:1,STYLE:1,SVG:1,TITLE:1,META:1,NOSCRIPT:1,TEMPLATE:1,
+                TEXTAREA:1,OPTION:1,SELECT:1,BR:1,HR:1,IMG:1,INPUT:1};
+    var EXCLUDE = '[data-c],[data-content],nav.nav,table,script,style,svg,noscript,template';
+    var out = [], all = root.querySelectorAll('*');
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (SKIP[el.tagName]) continue;
+      if (el.closest(EXCLUDE)) continue;
+      if (el.children.length > 0) continue;
+      var t = (el.textContent || '').trim();
+      if (t.length < 3) continue;
+      if (!/[A-Za-z\u4e00-\u9fff]/.test(t)) continue;
+      out.push(el);
+    }
+    return out;
+  }
+  /* ==TEXT_ENUM_END== */
+
+  /* 页面 id 只取路径末段，兼容自定义域名 / GitHub Pages 项目子路径 / 目录 URL */
+  function currentPageId() {
+    var parts = window.location.pathname.split('/').filter(Boolean);
+    var last = parts[parts.length - 1] || 'index.html';
+    if (last === 'resources') return 'resources/index.html';
+    if (parts.length >= 2 && parts[parts.length - 2] === 'resources') return 'resources/' + last;
+    return last;
+  }
+
+  /* 全站正文文字：只在 content.json 带 pages 段时才接管，旧线上 JSON 完全不受影响。
+     数量校验防止 HTML 结构变化后把文字写到错误位置 —— 不一致就整页跳过并告警。 */
+  function renderPageTexts(data) {
+    if (!data.pages) return;
+    var arr = data.pages[currentPageId()];
+    if (!Array.isArray(arr)) return;
+    var els = enumerateTextElements(document.body);
+    if (els.length !== arr.length) {
+      if (window.console && console.warn) {
+        console.warn('[content-loader] 页面结构与文字索引不一致（当前 ' + els.length +
+          ' 条 / 索引 ' + arr.length + ' 条），已跳过该页文字渲染，页面仍显示 HTML 原文。' +
+          '若刚改过 HTML 结构，请到管理后台「页面文字」点「重新从线上读取」后再发布。');
+      }
+      return;
+    }
+    for (var i = 0; i < els.length; i++) {
+      if (arr[i] !== null && arr[i] !== undefined && arr[i] !== '' && els[i].textContent !== arr[i]) {
+        els[i].textContent = arr[i];
+      }
+    }
+  }
+
   /* ---------- 站点通用信息：导航 / footer / 悬浮按钮 ---------- */
 
   function renderNav(site) {
@@ -170,8 +238,14 @@
     var wrap = document.querySelector('[data-content="articles"]');
     if (!wrap || !res.articles) return;
     wrap.innerHTML = res.articles.map(function (a) {
+      // 可选封面图：只有 content.json 里填了 image 才输出 <img>。
+      // 旧数据没有这个字段时，生成的卡片与改造前逐字节一致。
+      var img = a.image
+        ? '<img src="' + esc(resolveMedia(a.image)) + '" alt="' + esc(a.title) + '" loading="lazy" ' +
+          'style="display:block;width:100%;height:150px;object-fit:cover;border-radius:6px;margin-bottom:10px">'
+        : '';
       // 文章页与 resources 首页同目录，直接写文件名即可
-      return '<a href="' + esc(a.href) + '"><span>' + esc(a.tag) + '</span><strong>' +
+      return '<a href="' + esc(a.href) + '">' + img + '<span>' + esc(a.tag) + '</span><strong>' +
         esc(a.title) + '</strong></a>';
     }).join('');
   }
@@ -237,6 +311,9 @@
     renderFaq(res);
     renderComingNext(res);
     renderCta(res);
+
+    // 最后接管全站正文文字：此时动态区块已渲染完毕，排除规则与索引构建时一致
+    renderPageTexts(data);
   }
 
   function load() {
