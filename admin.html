@@ -20,6 +20,7 @@ button{font-family:inherit;cursor:pointer}
 .brand span{font-size:11px;font-weight:400;opacity:.6;margin-left:8px}
 .status{font-size:12px;color:#9FC4DC;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .status.dirty{color:var(--accent)}
+.status.blocked{color:#FCA5A5;font-weight:700}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:1px solid var(--border);background:#fff;color:var(--text);padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;white-space:nowrap;transition:.15s}
 .btn:hover{border-color:var(--cyan);color:var(--cyan)}
@@ -29,7 +30,7 @@ button{font-family:inherit;cursor:pointer}
 .btn.ghost:hover{border-color:#fff;color:#fff}
 .btn.add{width:100%;border-style:dashed;background:#FBFDFF;color:var(--cyan);padding:11px;margin-top:4px}
 .btn.danger{color:var(--err)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .layout{display:flex;min-height:calc(100vh - 64px)}
 .sidebar{width:212px;background:#fff;border-right:1px solid var(--border);padding:18px 12px;flex-shrink:0}
 .sidebar .grp{font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin:6px 10px 10px}
@@ -38,6 +39,7 @@ button{font-family:inherit;cursor:pointer}
 .tab.active{background:var(--cyan-light);color:#0369A1;font-weight:700}
 .side-foot{margin-top:28px;padding:12px;border-top:1px solid var(--border);font-size:11.5px;line-height:1.65;color:var(--muted)}
 .side-foot b{color:var(--text)}
+.side-foot .rule{background:#FEF2F2;border-left:3px solid var(--err);padding:9px 10px;border-radius:0 5px 5px 0;color:#991B1B;margin-bottom:12px}
 .content{flex:1;padding:26px 32px 80px;max-width:1080px}
 .panel{display:none}
 .panel.active{display:block}
@@ -63,7 +65,13 @@ button{font-family:inherit;cursor:pointer}
 .mini.danger:hover{border-color:var(--err);color:var(--err)}
 .check{display:flex;align-items:center;gap:8px;font-size:13px;margin:14px 0;color:#475569}
 .note{font-size:12px;color:var(--muted);line-height:1.7;background:#FFFBEB;border-left:3px solid var(--accent);padding:11px 14px;border-radius:0 6px 6px 0;margin-top:14px}
+.note.red{background:#FEF2F2;border-left-color:var(--err);color:#7F1D1D}
+.note.green{background:#F0FDF4;border-left-color:var(--ok);color:#14532D}
 .hint{font-size:12.5px;color:var(--muted);line-height:1.7}
+.srcbar{border-radius:8px;padding:11px 15px;font-size:12.5px;line-height:1.7;margin-bottom:18px}
+.srcbar.ok{background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D}
+.srcbar.bad{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B}
+.srcbar b{font-weight:800}
 .modal{display:none;position:fixed;inset:0;background:rgba(6,31,50,.55);z-index:50;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
 .modal-box{background:#fff;border-radius:12px;width:min(560px,100%);max-height:90vh;overflow:auto;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
@@ -77,6 +85,12 @@ button{font-family:inherit;cursor:pointer}
 .toast{position:fixed;right:22px;top:78px;z-index:80;background:#fff;border-left:4px solid var(--cyan);box-shadow:0 8px 30px rgba(0,0,0,.16);border-radius:8px;padding:13px 18px;font-size:13px;max-width:420px;line-height:1.6;display:none}
 .toast.show{display:block}
 .toast.ok{border-left-color:var(--ok)} .toast.err{border-left-color:var(--err)} .toast.warn{border-left-color:var(--warn)}
+.mrow{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--border);border-radius:7px;margin-bottom:6px;background:#fff;flex-wrap:wrap}
+.mrow .fn{font-weight:600;font-size:12.5px;word-break:break-all;flex:1;min-width:190px;color:var(--primary)}
+.mrow .sz{font-size:11px;color:var(--muted);white-space:nowrap}
+.dirpill{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--cyan-light);color:#0369A1;white-space:nowrap}
+.dirpill.dl{background:#FEF3C7;color:#92400E}
+.mops{display:flex;gap:5px}
 #selftestResult{background:#0B2239;color:#7EE2A8;padding:16px;border-radius:8px;font-size:12px;white-space:pre-wrap;margin:20px 32px}
 @media(max-width:900px){
   .topbar{height:auto;padding:12px 16px;flex-wrap:wrap}
@@ -88,6 +102,29 @@ button{font-family:inherit;cursor:pointer}
   .content{padding:20px 16px 60px}
   .fields{grid-template-columns:1fr}
 }
+/* 页面文字编辑器 */
+.pt-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.pt-item:last-child{border-bottom:0}
+.pt-meta{font-size:11.5px;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:.02em}
+.pt-changed{color:var(--ok);font-weight:700}
+.pt-item input,.pt-item textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;
+  font-size:13.5px;font-family:inherit;color:var(--text);background:#fff;outline:none;resize:vertical}
+.pt-item input:focus,.pt-item textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(8,166,246,.12)}
+.pt-orig{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.6;word-break:break-word}
+#ptList{max-height:620px;overflow:auto;padding-right:6px}
+
+/* 新建文章：可视化区块编辑器 */
+.na-block{border:1px solid var(--border);border-radius:9px;padding:13px 15px 15px;margin-bottom:11px;background:#FCFDFE}
+.na-block .na-head{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+.na-block .na-idx{font-size:11.5px;font-weight:700;color:var(--cyan);letter-spacing:.5px;margin-right:auto}
+.na-block .na-head select{width:auto;min-width:200px;border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:inherit;background:#fff;color:var(--text);outline:none}
+.na-block textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-size:13px;font-family:inherit;color:var(--text);background:#fff;outline:none;resize:vertical;line-height:1.6;min-height:78px}
+.na-block textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(8,166,246,.12)}
+.na-help{font-size:11.5px;color:var(--muted);margin:7px 0 0;line-height:1.6}
+.na-result{margin-top:16px;border-radius:9px;padding:14px 16px;background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D;font-size:13px;line-height:1.85;display:none}
+.na-result.show{display:block}
+.na-result a{color:#0369A1;font-weight:700;word-break:break-all}
+
 </style>
 </head>
 <body>
@@ -98,8 +135,8 @@ button{font-family:inherit;cursor:pointer}
   <div class="actions">
     <button class="btn ghost" id="btnSettings">连接 GitHub</button>
     <button class="btn ghost" id="btnPull">拉取最新</button>
-    <button class="btn ghost" id="btnImport">导入 JSON</button>
-    <button class="btn ghost" id="btnExport">导出 JSON</button>
+    <button class="btn ghost" id="btnImport" title="导入本地 JSON 仅供查看/对照，导入后不能发布">导入（只读）</button>
+    <button class="btn ghost" id="btnExport">导出备份</button>
     <button class="btn primary" id="btnPublish">发布到网站</button>
   </div>
 </header>
@@ -110,15 +147,21 @@ button{font-family:inherit;cursor:pointer}
     <button class="tab active" data-tab="site">站点信息</button>
     <button class="tab" data-tab="nav">导航菜单</button>
     <button class="tab" data-tab="resources">Resource 页</button>
+    <button class="tab" data-tab="newarticle">新建文章（不写 HTML）</button>
+    <button class="tab" data-tab="pagetext">页面文字</button>
     <button class="tab" data-tab="faq">常见问题 FAQ</button>
-    <button class="tab" data-tab="upload">上传 PDF</button>
+    <button class="tab" data-tab="upload">上传附件</button>
+    <button class="tab" data-tab="media">图片与媒体库</button>
     <div class="side-foot">
+      <div class="rule"><b>唯一入口就是这里。</b><br>本页永远以 GitHub 仓库里的内容为准。<br><b>不要把电脑上的 content.json 上传到 GitHub</b>，它是旧快照，会覆盖掉你在这里改好的内容。</div>
       <b>改动只在本页生效，</b><br>点右上角「发布到网站」才会写入 GitHub，约 1–2 分钟后线上更新。<br><br>
       <b>令牌安全：</b>只保存在你这台电脑的浏览器里，不会写进网站文件。
     </div>
   </aside>
 
   <main class="content" id="main">
+
+    <div class="srcbar ok" id="srcbar"><b>正在确认数据来源…</b></div>
 
     <section class="panel active" data-panel="site">
       <div class="panel-head"><h2>站点信息</h2><p>改这里，全站 14 个页面的页脚联系方式、悬浮按钮和导航会一起更新。</p></div>
@@ -131,12 +174,76 @@ button{font-family:inherit;cursor:pointer}
     </section>
 
     <section class="panel" data-panel="resources">
-      <div class="panel-head"><h2>Resource 页</h2><p>文章入口、PDF 下载清单、待更新计划、底部引导区，全部在这里改。</p></div>
+      <div class="panel-head"><h2>Resource 页</h2><p>文章入口、附件下载清单、待更新计划、底部引导区，全部在这里改。</p></div>
       <div class="card"><h3>页面顶部标题</h3><div id="heroFields"></div></div>
-      <div class="card"><h3>文章入口卡片</h3><p class="sub">新增文章标题只需在这里加一条；但文章正文仍需一个对应的 .html 文件。</p><div id="articlesList"></div></div>
-      <div class="card"><h3>PDF / 文档下载清单</h3><p class="sub">先到「上传 PDF」标签页传文件，再在这里登记；或直接在下方手工加一条。</p><div id="downloadsList"></div></div>
+      <div class="card"><h3>文章入口卡片</h3><p class="sub">在这里调整卡片顺序与文字。<b>要新增一整篇文章，不用再写 HTML</b>：点下面按钮，用表单填内容，后台会自动生成和现有两篇技术文章同样式的新页面，并自动加好这张卡片。</p>
+        <button class="btn primary" id="naGo" style="margin-bottom:14px">＋ 新建一篇文章（不用写 HTML）</button>
+        <div id="articlesList"></div></div>
+      <div class="card"><h3>附件 / 文档下载清单</h3><p class="sub">先到「上传附件」标签页传文件，再在这里登记；或直接在下方手工加一条。</p><div id="downloadsList"></div></div>
       <div class="card"><h3>Coming next（待更新计划）</h3><div id="comingList"></div></div>
       <div class="card"><h3>底部引导区 CTA</h3><div id="ctaFields"></div></div>
+    </section>
+
+    <section class="panel" data-panel="newarticle">
+      <div class="panel-head"><h2>新建文章（不用写 HTML）</h2><p>填一张表，后台自动生成和现有两篇技术文章<b>完全同款样式</b>的新页面，写进网站仓库，并自动在 Resource 页加好入口卡片。全程不用写 HTML、不用打开 GitHub。</p></div>
+
+      <div class="note green" style="margin-bottom:18px">
+        <b>它会替你做三件事：</b>① 生成 <code>resources/文件名.html</code>（样式、导航、页脚、手机适配、SEO 全部自动带好）；② 在 Resource 页文章列表加一张卡片；③ 把你填的内容存进后台，以后要改这篇文章，在下面「编辑已有文章」里选中它、改完再发布即可，仍然不用碰 HTML。
+      </div>
+
+      <div class="card">
+        <h3>① 先选：新建还是修改</h3>
+        <div class="fields">
+          <div class="field wide"><label>编辑已有文章（选中后自动把上次填的内容载回表单）</label><select id="naExisting"></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>② 文章基本信息</h3>
+        <p class="sub">带 * 的必填。正文建议用英文，和现有两篇保持一致。</p>
+        <div class="fields">
+          <div class="field"><label>文章文件名 *（英文小写 / 数字 / 连字符，不用写 .html）</label><input id="naSlug" type="text" placeholder="例：high-temperature-soak"></div>
+          <div class="field"><label>文章标题 *（页面大标题，一句话）</label><input id="naTitle" type="text" placeholder="例：Why 100–440 Vac input matters"></div>
+          <div class="field"><label>标签 *（卡片和文章顶部都会显示）</label><input id="naTag" type="text" placeholder="例：Test data · 8 min"></div>
+          <div class="field"><label>面包屑短标题（留空自动用 Article）</label><input id="naCrumb" type="text" placeholder="例：Thermal"></div>
+          <div class="field wide"><label>导语 *（标题下方那段灰色大字，1–2 句）</label><textarea id="naStandfirst" rows="2" placeholder="例：We soaked a 100 W high bay for 90 minutes. Here is where the heat actually goes."></textarea></div>
+          <div class="field"><label>元信息（用 | 分隔，留空自动填日期）</label><input id="naMeta" type="text" placeholder="例：8 min read | Lab report"></div>
+          <div class="field"><label>封面图路径（可选，例 ../assets/img/xx.jpg；留空为纯文字卡片）</label><input id="naImage" type="text" placeholder="../assets/img/"></div>
+          <div class="field wide"><label>SEO 摘要（可选，留空自动用导语；给搜索引擎看的一句话）</label><input id="naDesc" type="text" placeholder="留空即可"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>③ 正文内容（按顺序往下排）</h3>
+        <p class="sub">一个「区块」就是文章里的一块。用下拉选类型、下面填内容；可以加、删、上下移。<b>不用写任何 HTML 标签</b>。</p>
+        <div id="naBlocks"></div>
+        <button class="btn add" id="naBtnAdd">+ 再加一个区块</button>
+        <div class="note">小技巧：段落里用 <code>**文字**</code> 包起来会自动变粗体（和现有文章的强调样式一样）；数据表格直接从 Excel 复制粘贴即可，第一行当表头；图片路径可以用「图片与媒体库」里复制的路径。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ 文章底部（一般保留默认即可）</h3>
+        <label class="check"><input type="checkbox" id="naCtaOn" checked> 加一个深蓝色的「联系我们」框</label>
+        <div class="fields">
+          <div class="field wide"><label>框内标题</label><input id="naCtaTitle" type="text"></div>
+          <div class="field wide"><label>框内说明</label><textarea id="naCtaText" rows="2"></textarea></div>
+          <div class="field"><label>按钮文字</label><input id="naCtaBtn" type="text"></div>
+        </div>
+        <label class="check"><input type="checkbox" id="naRelOn" checked> 加「相关阅读」链接（每行一条：标签 | 标题 | 链接）</label>
+        <div class="field wide"><textarea id="naRel" rows="3"></textarea></div>
+      </div>
+
+      <div class="card">
+        <h3>⑤ 预览并发布</h3>
+        <p class="sub">先点「预览效果」看样式对不对，再点「发布这篇文章」。发布后等 1–2 分钟 GitHub Pages 构建完成即可在线上看到。</p>
+        <div style="display:flex;gap:9px;flex-wrap:wrap">
+          <button class="btn" id="naBtnPreview">预览效果</button>
+          <button class="btn primary" id="naBtnPublish">发布这篇文章</button>
+          <button class="btn" id="naBtnReset">清空表单</button>
+        </div>
+        <div id="naResult" class="na-result"></div>
+        <div class="note red">发布需要已连接 GitHub 且顶部显示绿色「数据来源：GitHub 仓库」。若提示禁止发布，先点右上角「拉取最新」。<br>同一个文件名再次发布会<b>覆盖</b>那篇旧页面，文章卡片也会更新、不会重复添加。</div>
+      </div>
     </section>
 
     <section class="panel" data-panel="faq">
@@ -145,19 +252,68 @@ button{font-family:inherit;cursor:pointer}
     </section>
 
     <section class="panel" data-panel="upload">
-      <div class="panel-head"><h2>上传 PDF 附件</h2><p>选文件后直接传到仓库的 assets/dl/ 目录，可自动生成一条下载记录。</p></div>
+      <div class="panel-head"><h2>上传附件</h2><p>PDF、规格书、图片、压缩包等任意格式，直接传到 GitHub 仓库，不需要再到网页上拖文件。</p></div>
       <div class="card">
         <h3>选择文件</h3>
-        <p class="sub">需要已连接 GitHub。上传完成后，请记得点「发布到网站」，下载清单的改动才会生效。</p>
+        <p class="sub">需要已连接 GitHub。上传完成后，若勾选了「加入下载清单」，请记得点「发布到网站」。</p>
         <div class="fields">
-          <div class="field wide"><label>PDF 文件</label><input type="file" id="pdfFile" accept="application/pdf,.pdf"></div>
+          <div class="field wide"><label>文件</label><input type="file" id="pdfFile"></div>
+          <div class="field"><label>存放到</label><select id="pdfDir">
+            <option value="assets/dl/">assets/dl/ — 下载附件（默认）</option>
+            <option value="assets/img/">assets/img/ — 图片</option>
+          </select></div>
           <div class="field"><label>文档标题</label><input type="text" id="pdfTitle" placeholder="例：Test report — 100W high bay"></div>
           <div class="field"><label>型号 / 产品</label><input type="text" id="pdfProduct" placeholder="例：FL-YE-01W0100V144V01"></div>
-          <div class="field"><label>页数</label><input type="text" id="pdfPages" placeholder="例：18"></div>
+          <div class="field"><label>页数 / 备注</label><input type="text" id="pdfPages" placeholder="例：18"></div>
         </div>
         <label class="check"><input type="checkbox" id="pdfAddToList" checked> 同时加入下载清单</label>
-        <button class="btn primary" id="btnUploadPdf">上传 PDF</button>
-        <div class="note">文件名会保留原样，建议用英文、数字、连字符，避免空格和中文，链接更稳。<br>同名文件再次上传会覆盖仓库里的旧版本。</div>
+        <button class="btn primary" id="btnUploadPdf">上传文件</button>
+        <div class="note">文件名建议用英文、数字、连字符，避免空格和中文，链接更稳。同名文件再次上传会覆盖仓库里的旧版本。<br>通过 GitHub 接口上传的单个文件建议控制在 <b>1 MB 以内</b>；更大的文件请先用压缩工具处理，否则接口会报错。</div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="media">
+      <div class="panel-head"><h2>图片与媒体库</h2><p>换图、传图、查看仓库里已有的文件，都在这里完成。全程不需要改 HTML，也不需要打开 GitHub 网页。</p></div>
+      <div class="card">
+        <h3>① 替换站点现有图片</h3>
+        <p class="sub">选中一张图 → 上传新图 → 覆盖仓库里的同名文件。<b>全站所有引用这张图的地方会一起更新</b>，因为 HTML 里的路径没变，只是文件内容换了。</p>
+        <div class="fields">
+          <div class="field wide"><label>要替换的图片</label><select id="imgTarget"></select></div>
+          <div class="field wide"><label>新图片文件</label><input type="file" id="imgFile" accept="image/*"></div>
+        </div>
+        <button class="btn primary" id="btnReplaceImg">替换这张图片</button>
+        <div class="note red">请保持<b>相同格式</b>（.png 换 .png、.jpg 换 .jpg）和相近尺寸，否则版式可能跑掉。上传后按 Ctrl+F5 强制刷新才看得到新图。同名文件会直接覆盖，仓库里留有历史版本，可随时还原。</div>
+      </div>
+      <div class="card">
+        <h3>② 仓库里已有的图片与附件</h3>
+        <p class="sub">实时读取 GitHub 仓库的 <code>assets/img/</code> 和 <code>assets/dl/</code>。可复制路径填到文章封面图或下载清单里。</p>
+        <button class="btn" id="btnRefreshMedia" style="margin-bottom:12px">刷新列表</button>
+        <div id="mediaList" class="hint">点「刷新列表」读取仓库文件。</div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="pagetext">
+      <div class="panel-head"><h2>页面文字</h2><p>首页、产品页、关于、联系、SKD、技术文章里的正文文字，全部在这里改。</p></div>
+      <div class="card">
+        <h3>按页面编辑</h3>
+        <div id="ptInitBox"></div>
+        <p class="sub">下面的输入框是<b>当前值</b>，改过的条目会显示「原文」方便对照。测试数据表格、SVG 图表、以及给搜索引擎看的页面标题（&lt;title&gt; / description）不在这里。</p>
+        <div class="fields">
+          <div class="field"><label>选择页面</label><select id="ptPage"></select></div>
+          <div class="field"><label>搜索文字（按当前值或原文过滤）</label><input type="text" id="ptSearch" placeholder="例：warranty / Request Quote"></div>
+        </div>
+        <div class="hint" id="ptCount" style="margin:12px 0 6px"></div>
+        <div id="ptList"></div>
+      </div>
+      <div class="card">
+        <h3>批量替换重复文案</h3>
+        <p class="sub">像 "Request Quote"、"Contact" 这种每页都出现的按钮文字，一次改完全站。</p>
+        <div class="fields">
+          <div class="field"><label>查找</label><input type="text" id="ptFind" placeholder="例：Request Quote"></div>
+          <div class="field"><label>替换为</label><input type="text" id="ptReplace" placeholder="例：Get a Quote"></div>
+        </div>
+        <button class="btn" id="ptBulk" style="margin-top:12px">批量替换</button>
+        <div class="note">替换范围是全站所有页面的文字，改完仍需点「发布到网站」。留空「替换为」等于删除这段词。</div>
       </div>
     </section>
 
@@ -193,6 +349,7 @@ button{font-family:inherit;cursor:pointer}
 
 <div class="toast" id="toast"></div>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
+<input type="file" id="replaceFile" accept="image/*" hidden>
 
 <script>
 (function(){
@@ -200,7 +357,197 @@ button{font-family:inherit;cursor:pointer}
 
 var CONTENT_PATH = 'assets/data/content.json';
 var CFG_KEY = 'gmtne_admin_cfg_v1';
-var D = null, cfg = null, lastSha = null, dirty = false, busy = false;
+var MEDIA_DIRS = ['assets/img','assets/dl'];
+
+/* ==PAGE_TEXTS_START==
+   全站正文文字索引。枚举规则与 content-loader.js 的 enumerateTextElements 完全一致
+   （同一份排除表、同一套过滤条件），因此不需要给任何 HTML 加标记。
+   首次启用时用同源 iframe 读取「当前线上正在展示的页面」原文，
+   绝不使用电脑上的本地文件，避免把旧内容带回线上。 */
+var PT_PAGES = [
+  'index.html','products.html','skd-ckd.html','about.html','contact.html',
+  'product-high-bay.html','product-flood-light.html','product-street-light.html',
+  'product-batten.html','product-emergency-lamp.html','product-linear-bulb.html',
+  'resources/index.html','resources/wide-input-voltage.html','resources/thermal-performance.html'
+];
+function ptEnumerate(root){
+  var SKIP = {SCRIPT:1,STYLE:1,SVG:1,TITLE:1,META:1,NOSCRIPT:1,TEMPLATE:1,
+              TEXTAREA:1,OPTION:1,SELECT:1,BR:1,HR:1,IMG:1,INPUT:1};
+  var EXCLUDE = '[data-c],[data-content],nav.nav,table,script,style,svg,noscript,template';
+  var out = [], all = root.querySelectorAll('*');
+  for (var i = 0; i < all.length; i++) {
+    var el = all[i];
+    if (SKIP[el.tagName]) continue;
+    if (el.closest(EXCLUDE)) continue;
+    if (el.children.length > 0) continue;
+    var t = (el.textContent || '').trim();
+    if (t.length < 3) continue;
+    if (!/[A-Za-z\u4e00-\u9fff]/.test(t)) continue;
+    out.push(t);
+  }
+  return out;
+}
+function ptEnabled(){ return !!(D && D.pages && Object.keys(D.pages).length); }
+function ptScanOne(path){
+  return new Promise(function(resolve){
+    var f=document.createElement('iframe');
+    f.setAttribute('data-pt-scan','1');
+    f.style.cssText='position:absolute;left:-99999px;top:0;width:900px;height:600px;border:0';
+    var done=false;
+    function finish(texts,err){
+      if(done) return; done=true;
+      try{ if(f.parentNode) f.parentNode.removeChild(f); }catch(e){}
+      resolve({path:path,texts:texts||null,err:err||''});
+    }
+    var timer=setTimeout(function(){ finish(null,'读取超时'); },8000);
+    f.onload=function(){
+      clearTimeout(timer);
+      try{
+        var d=f.contentDocument;
+        if(!d||!d.body) throw new Error('无法读取页面内容');
+        finish(ptEnumerate(d.body));
+      }catch(e){ finish(null,e.message); }
+    };
+    f.onerror=function(){ clearTimeout(timer); finish(null,'页面不存在或无法访问'); };
+    document.body.appendChild(f);
+    f.src=path;
+  });
+}
+async function ptScanAll(onProgress){
+  var res={}, failed=[];
+  for(var i=0;i<PT_PAGES.length;i++){
+    if(onProgress) onProgress(i+1,PT_PAGES.length,PT_PAGES[i]);
+    var r=await ptScanOne(PT_PAGES[i]);
+    if(r.texts && r.texts.length) res[r.path]=r.texts; else failed.push(r.path+'（'+r.err+'）');
+    await new Promise(function(z){ setTimeout(z,0); });
+  }
+  return {data:res,failed:failed};
+}
+async function ptInit(force){
+  if(ptEnabled() && !force){ toast('页面文字已启用，无需重复初始化','warn'); return; }
+  if(source!=='github'){ toast('请先连接 GitHub：初始化要读取线上正在展示的页面，本地快照不能作为来源','err'); return; }
+  if(force && !window.confirm('重新读取会覆盖后台里改过的正文文字（以线上当前显示的为准），确定继续？')) return;
+  var btn=$('#ptInit'); if(btn) btn.disabled=true;
+  var box=$('#ptCount');
+  try{
+    var r=await ptScanAll(function(n,total,p){ if(box) box.textContent='正在读取线上页面 '+n+' / '+total+' … '+p; });
+    if(!Object.keys(r.data).length){
+      if(box) box.textContent='';
+      toast('没有读到任何页面，请确认后台是通过网站网址（http/https）打开的','err');
+      if(btn) btn.disabled=false; return;
+    }
+    D.pages=r.data;
+    D.pagesMeta=JSON.parse(JSON.stringify(r.data));
+    ptRenderInitBox(); ptRenderOptions(); ptRenderList();
+    markDirty();
+    var total=0; Object.keys(r.data).forEach(function(k){ total+=r.data[k].length; });
+    toast('已读取 '+Object.keys(r.data).length+' 个页面、'+total+' 段文字，记得点「发布到网站」','ok');
+    if(r.failed.length) toast('有 '+r.failed.length+' 个页面没读到：'+r.failed.join('、'),'warn');
+  }catch(e){ toast('初始化失败：'+e.message,'err'); if(btn) btn.disabled=false; }
+}
+function ptRenderInitBox(){
+  var b=$('#ptInitBox'); if(!b) return;
+  if(ptEnabled()){
+    b.innerHTML='<div class="note green">已启用：全站正文文字由后台管理，共 '+Object.keys(D.pages).length+
+      ' 个页面。下面改完点右上角「发布到网站」即可生效；<b>不需要再碰任何 HTML 文件</b>。</div>'+
+      '<div class="hint" style="margin-top:10px">如果以后改过 HTML 结构（增删了按钮、段落），点这里重新对齐：'+
+      '<button class="btn" id="ptRescan" style="margin-left:8px">重新从线上读取</button></div>';
+    var rs=$('#ptRescan'); if(rs) rs.addEventListener('click',function(){ ptInit(true); });
+  }else{
+    b.innerHTML='<div class="note">第一次使用请点下面按钮。它会读取<b>网站上正在展示的页面</b>原文（不是电脑上的本地文件），'+
+      '生成可编辑清单。之后所有正文文字都能在这里改。</div>'+
+      '<button class="btn primary" id="ptInit" style="margin-top:12px">① 从线上网站读取全部页面文字</button>';
+    var btn=$('#ptInit'); if(btn) btn.addEventListener('click',function(){ ptInit(false); });
+  }
+}
+function ptRenderOptions(){
+  var s=$('#ptPage'); if(!s) return;
+  var keys=ptEnabled()?Object.keys(D.pages).filter(function(k){return !!PAGE_LABELS[k];}):PT_PAGES;
+  if(keys.indexOf(currentTextPage)<0) currentTextPage=keys[0]||'index.html';
+  s.innerHTML=keys.map(function(k){
+    return '<option value="'+esc(k)+'"'+(k===currentTextPage?' selected':'')+'>'+esc(PAGE_LABELS[k]||k)+'</option>';
+  }).join('');
+}
+function ptRenderList(){
+  var box=$('#ptList'); if(!box) return;
+  if(!ptEnabled()){
+    box.innerHTML='<div class="hint">初始化后这里会列出该页所有可编辑文字。</div>';
+    var c=$('#ptCount'); if(c) c.textContent='';
+    return;
+  }
+  var page=currentTextPage;
+  if(!D.pages[page]){ page=currentTextPage=Object.keys(D.pages)[0]||''; }
+  var arr=D.pages[page]||[], meta=(D.pagesMeta&&D.pagesMeta[page])||arr;
+  var se=$('#ptSearch'), q=se?se.value.trim().toLowerCase():'';
+  var html='', shown=0;
+  arr.forEach(function(v,i){
+    var orig=meta[i]||'';
+    if(q && String(v).toLowerCase().indexOf(q)<0 && String(orig).toLowerCase().indexOf(q)<0) return;
+    shown++;
+    var long=(String(v).length>90||String(orig).length>90);
+    html+='<div class="pt-item"><div class="pt-meta">#'+(i+1)+
+      (orig!==v?' · <span class="pt-changed">已改</span>':'')+'</div>'+
+      (long?'<textarea data-pt-index="'+i+'" rows="3">'+esc(v)+'</textarea>':
+            '<input type="text" data-pt-index="'+i+'" value="'+esc(v)+'">')+
+      (orig!==v?'<div class="pt-orig">原文：'+esc(String(orig).slice(0,160))+(String(orig).length>160?'…':'')+'</div>':'')+
+      '</div>';
+  });
+  box.innerHTML=html||'<div class="hint">没有匹配的文字。</div>';
+  var c2=$('#ptCount'); if(c2) c2.textContent='本页共 '+arr.length+' 段文字'+(q?('，匹配 '+shown+' 段'):'')+
+    ' · 输入框里是当前值，改完点「发布到网站」。';
+}
+function ptBulkReplace(){
+  if(!ptEnabled()){ toast('请先初始化页面文字','warn'); return; }
+  var find=val('ptFind'), rep=val('ptReplace');
+  if(!find){ toast('请填写要查找的文字','warn'); return; }
+  var n=0;
+  Object.keys(D.pages).forEach(function(p){
+    D.pages[p]=D.pages[p].map(function(v){
+      var s=String(v); if(s.indexOf(find)<0) return v;
+      n+=s.split(find).length-1; return s.split(find).join(rep);
+    });
+  });
+  ptRenderList();
+  if(n) markDirty();
+  toast(n?('已替换 '+n+' 处，点「发布到网站」生效'):'没有找到匹配的文字',n?'ok':'warn');
+}
+/* ==PAGE_TEXTS_END== */
+
+var PAGE_LABELS = {
+  'index.html':'首页', 'products.html':'产品列表', 'skd-ckd.html':'SKD / CKD',
+  'about.html':'关于我们', 'contact.html':'联系我们',
+  'product-high-bay.html':'产品 · 工矿灯 100W', 'product-flood-light.html':'产品 · 投光灯 50W',
+  'product-street-light.html':'产品 · 路灯', 'product-batten.html':'产品 · 条形灯',
+  'product-emergency-lamp.html':'产品 · 应急灯', 'product-linear-bulb.html':'产品 · 线性灯泡',
+  'resources/index.html':'Resource 首页',
+  'resources/wide-input-voltage.html':'文章 · 宽压输入测试',
+  'resources/thermal-performance.html':'文章 · 热性能'
+};
+var currentTextPage = 'index.html';
+var pagesSeeded = false;
+
+/* 站点当前实际引用的图片。替换时覆盖同名文件即可全站生效，无需改 HTML。 */
+var SITE_IMAGES = [
+  {p:'assets/img/logo.png',              n:'页眉 / 页脚 Logo（浅色背景）', c:14},
+  {p:'assets/img/logo-light.png',        n:'Logo 浅色版（深色背景）',      c:13},
+  {p:'assets/img/skd-kit-flood.png',     n:'SKD / CKD 套件图',             c:7},
+  {p:'assets/img/street-light-main.png', n:'路灯产品主图',                 c:5},
+  {p:'assets/img/gmtne-bulb-1.png',      n:'LED 灯泡产品图',               c:5},
+  {p:'assets/img/gmtne-batten-1.png',    n:'条形灯产品图',                 c:5},
+  {p:'assets/img/gmtne-emergency-1.png', n:'应急灯产品图',                 c:5},
+  {p:'assets/img/rl-highbay-100w.png',   n:'100W 工矿灯图',                c:4},
+  {p:'assets/img/rl-flood-50w.png',      n:'50W 投光灯图',                 c:4},
+  {p:'assets/img/about-qc.jpg',          n:'关于我们 · 质检',              c:1},
+  {p:'assets/img/about-warehouse.jpg',   n:'关于我们 · 仓库',              c:1},
+  {p:'assets/img/about-shipping.jpg',    n:'关于我们 · 出货',              c:1},
+  {p:'assets/img/pcb-flood-50w.png',     n:'50W 投光灯 PCB 图',            c:1},
+  {p:'assets/img/hero-bg2-opt.jpg',      n:'首页主视觉背景',               c:1}
+];
+
+/* source: github=线上仓库(可发布) / local=本地快照(只读) / imported=导入文件(只读)
+   / error=线上读取失败(禁止发布) / none=无数据                              */
+var D = null, cfg = null, baseSha = null, source = 'none', dirty = false, busy = false;
+var pendingReplace = '';
 
 function $(s){ return document.querySelector(s); }
 function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
@@ -229,7 +576,10 @@ function saveCfg(){ localStorage.setItem(CFG_KEY,JSON.stringify(cfg)); }
 function clearCfg(){ localStorage.removeItem(CFG_KEY); cfg=null; }
 
 /* ---- GitHub Contents API ---- */
-function apiUrl(path){ return 'https://api.github.com/repos/'+encodeURIComponent(cfg.owner)+'/'+encodeURIComponent(cfg.repo)+'/contents/'+path; }
+function apiUrl(path){
+  var seg=String(path).split('/').map(encodeURIComponent).join('/');
+  return 'https://api.github.com/repos/'+encodeURIComponent(cfg.owner)+'/'+encodeURIComponent(cfg.repo)+'/contents/'+seg;
+}
 function ghHeaders(withBody){
   var h={ 'Authorization':'Bearer '+cfg.token, 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28' };
   if(withBody) h['Content-Type']='application/json';
@@ -246,6 +596,18 @@ async function ghPut(path,b64,message,sha){
   var r=await fetch(apiUrl(path),{ method:'PUT', headers:ghHeaders(true), body:JSON.stringify(body) });
   if(!r.ok){ var e=await r.json().catch(function(){return {};}); throw new Error((r.status+' '+(e.message||r.statusText))); }
   return r.json();
+}
+async function ghDelete(path,sha,message){
+  var r=await fetch(apiUrl(path),{ method:'DELETE', headers:ghHeaders(true),
+    body:JSON.stringify({ message:message, sha:sha, branch:cfg.branch }) });
+  if(!r.ok){ var e=await r.json().catch(function(){return {};}); throw new Error((r.status+' '+(e.message||r.statusText))); }
+  return r.json();
+}
+async function ghListDir(dir){
+  var r=await fetch(apiUrl(dir)+'?ref='+encodeURIComponent(cfg.branch)+'&t='+Date.now(),{ headers:ghHeaders(false) });
+  if(!r.ok) return [];
+  var j=await r.json();
+  return Array.isArray(j) ? j.filter(function(x){ return x.type==='file'; }) : [];
 }
 
 /* ---- 字段定义 ---- */
@@ -268,9 +630,10 @@ var CTA_FIELDS=[
 ];
 var LIST_DEFS={
   'site.nav':{ el:'navList', fields:[{k:'label',l:'菜单文字'},{k:'href',l:'链接地址'}], blank:function(){return {label:'',href:''};} },
-  'resources.articles':{ el:'articlesList', fields:[{k:'title',l:'文章标题',w:1},{k:'tag',l:'标签（例：Test data · 8 min）'},{k:'href',l:'文章文件名（例：wide-input-voltage.html）'}], blank:function(){return {title:'',tag:'',href:''};} },
+  'resources.articles':{ el:'articlesList', fields:[{k:'title',l:'文章标题',w:1},{k:'tag',l:'标签（例：Test data · 8 min）'},{k:'href',l:'文章文件名（例：wide-input-voltage.html）'},
+      {k:'image',l:'封面图路径（可选，例：../assets/img/xxx.jpg；留空为纯文字卡片）',w:1}], blank:function(){return {title:'',tag:'',href:'',image:''};} },
   'resources.downloads':{ el:'downloadsList', fields:[{k:'title',l:'文档名称',w:1},{k:'product',l:'型号 / 产品'},{k:'pages',l:'页数'},
-      {k:'type',l:'类型',t:'select',o:[{v:'pdf',t:'PDF 文件（下载）'},{v:'page',t:'跳转网页'}]},{k:'action',l:'链接文字'},
+      {k:'type',l:'类型',t:'select',o:[{v:'pdf',t:'文件下载'},{v:'page',t:'跳转网页'}]},{k:'action',l:'链接文字'},
       {k:'href',l:'文件路径',w:1}], blank:function(){return {title:'',product:'',pages:'—',type:'pdf',href:'../assets/dl/',action:'PDF'};} },
   'resources.comingNext':{ el:'comingList', single:true, blank:function(){return '';} },
   'resources.faq':{ el:'faqList', fields:[{k:'q',l:'问题',w:1},{k:'a',l:'回答',t:'textarea',w:1}], blank:function(){return {q:'',a:''};} }
@@ -317,88 +680,150 @@ function blankData(){
     site:{ brandName:'',legalName:'',email:'',phone:'',phoneLink:'',whatsapp:'',whatsappMessage:'',linkedin:'',
       address:{line1:'',line2:''}, footer:{copyright:'',domainNote:''}, nav:[] },
     resources:{ hero:{tag:'',title:'',standfirst:''}, articles:[], downloads:[], comingNext:[], faq:[],
-      cta:{title:'',text:'',button:'',href:''} }
+      cta:{title:'',text:'',button:'',href:''}, articleDrafts:{} },
+    pages:{}, pagesMeta:{}
   };
 }
+/* 以线上内容为主，只补齐缺失结构；不丢任何未知字段（向后兼容）。 */
 function setData(obj){
-  var base=blankData();
-  if(obj&&obj.site) Object.keys(base.site).forEach(function(k){ if(obj.site[k]!==undefined) base.site[k]=obj.site[k]; });
-  if(obj&&obj.resources) Object.keys(base.resources).forEach(function(k){ if(obj.resources[k]!==undefined) base.resources[k]=obj.resources[k]; });
-  D=base; renderAll();
+  var base = (obj && typeof obj==='object') ? JSON.parse(JSON.stringify(obj)) : {};
+  var def = blankData();
+  if(!base.site || typeof base.site!=='object') base.site={};
+  if(!base.resources || typeof base.resources!=='object') base.resources={};
+  Object.keys(def.site).forEach(function(k){ if(base.site[k]===undefined) base.site[k]=def.site[k]; });
+  Object.keys(def.resources).forEach(function(k){ if(base.resources[k]===undefined) base.resources[k]=def.resources[k]; });
+  D=base; renderAll(); ptRenderInitBox(); ptRenderOptions(); ptRenderList(); naRenderExisting();
+}
+function canPublish(){ return !busy && cfgReady() && source==='github' && !!baseSha; }
+function shortSha(){ return baseSha ? baseSha.slice(0,7) : '—'; }
+function refreshPublishBtn(){
+  var b=$('#btnPublish');
+  if(!b) return;
+  b.disabled=!canPublish();
+  b.title=canPublish() ? '把当前内容写入 GitHub 仓库' :
+    (source==='local' ? '本地快照是只读的。请先点「连接 GitHub」拉取线上内容，再编辑发布。' :
+     source==='error' ? '无法读取线上仓库，为防止旧数据覆盖，已禁止发布。请点「拉取最新」重试。' :
+     source==='imported' ? '导入的本地文件是只读的。请点「拉取最新」以线上内容为准再修改。' :
+     '请先连接 GitHub 并载入线上内容。');
+}
+function refreshSrcBar(){
+  var e=$('#srcbar'); if(!e) return;
+  if(source==='github'){
+    e.className='srcbar ok';
+    e.innerHTML='<b>数据来源：GitHub 仓库（唯一权威）</b> · '+esc(cfg.owner+'/'+cfg.repo)+' · '+esc(cfg.branch)+
+      ' · 线上版本 '+esc(shortSha())+'<br>本页所有编辑都基于这份线上内容，发布时会自动检查有没有被别处改过。电脑上的 content.json 是旧快照，<b>永远不要上传它</b>。';
+  }else if(source==='local'){
+    e.className='srcbar bad';
+    e.innerHTML='<b>只读预览：电脑上的本地快照</b><br>这份文件不会跟着线上更新，<b>已禁止发布</b>，以免把旧内容覆盖到网站。要修改网站内容，请点右上角「连接 GitHub」拉取线上版本。';
+  }else if(source==='error'){
+    e.className='srcbar bad';
+    e.innerHTML='<b>读不到线上仓库，已禁止发布</b><br>这是保护措施：宁可不让发，也不能把本地旧数据推上去。请检查连接信息后点「拉取最新」重试。';
+  }else if(source==='imported'){
+    e.className='srcbar bad';
+    e.innerHTML='<b>只读：导入的本地 JSON</b><br>这份文件可能比线上旧，<b>已禁止发布</b>。仅供查看对照。要改网站请点「拉取最新」。';
+  }else{
+    e.className='srcbar bad';
+    e.innerHTML='<b>尚未载入内容</b> · 请点「连接 GitHub」。';
+  }
 }
 function setStatus(t,isDirty){
   var e=$('#status'); e.textContent=t;
-  if(isDirty!==undefined){ dirty=isDirty; e.className='status'+(dirty?' dirty':''); if(dirty) e.textContent='● 有未发布的改动'; }
+  if(isDirty!==undefined){ dirty=isDirty; }
+  e.className='status'+(dirty?' dirty':'')+(!canPublish()&&!busy?' blocked':'');
 }
-function markDirty(){ setStatus('',true); }
+function markDirty(){ setStatus('',true); refreshPublishBtn(); }
 function toast(msg,kind){
   var e=$('#toast'); e.textContent=msg; e.className='toast show'+(kind?' '+kind:'');
-  clearTimeout(toast._t); toast._t=setTimeout(function(){ e.className='toast'; },4200);
+  clearTimeout(toast._t); toast._t=setTimeout(function(){ e.className='toast'; },5200);
 }
 function setBusy(on,msg){
   busy=on; $$('.topbar .btn').forEach(function(b){ b.disabled=on; });
-  if(on) $('#status').textContent=msg||'处理中…';
-  else setStatus(cfgReady()?('已连接 '+cfg.owner+'/'+cfg.repo+' · '+cfg.branch):'本地模式',dirty);
+  if(on){ $('#status').textContent=msg||'处理中…'; return; }
+  if(dirty) setStatus('',true);
+  else setStatus(source==='github' ? ('已连接 '+cfg.owner+'/'+cfg.repo+' · '+cfg.branch+' · 线上版本 '+shortSha()) : '只读模式',false);
+  refreshPublishBtn();
 }
 
-/* ---- 载入 ---- */
+/* ---- 载入：线上优先，本地只读 ---- */
 async function pull(silent){
   if(!cfgReady()) throw new Error('尚未连接 GitHub');
   var r=await ghGet(CONTENT_PATH);
   setData(JSON.parse(base64ToUtf8(r.content)));
-  lastSha=r.sha;
-  setStatus('已连接 '+cfg.owner+'/'+cfg.repo+' · '+cfg.branch,false);
+  baseSha=r.sha; source='github'; dirty=false;
+  setStatus('已连接 '+cfg.owner+'/'+cfg.repo+' · '+cfg.branch+' · 线上版本 '+shortSha(),false);
+  refreshSrcBar(); refreshPublishBtn();
   if(!silent) toast('已拉取仓库里的最新内容','ok');
 }
 async function loadInitial(){
   if(cfgReady()){
     try{ await pull(true); return; }
-    catch(e){ toast('从 GitHub 拉取失败：'+e.message+'（已改用本地文件）','warn'); }
+    catch(e){
+      source='error'; baseSha=null;
+      setData(blankData());
+      setStatus('无法读取线上仓库 · 已禁止发布',false);
+      refreshSrcBar(); refreshPublishBtn();
+      toast('从 GitHub 拉取失败：'+e.message+'。已禁止发布，请检查连接后点「拉取最新」。','err');
+      return;
+    }
   }
+  /* 未连接 GitHub：本地文件只作只读快照，绝不作为发布源 */
   try{
     var r=await fetch('assets/data/content.json',{cache:'no-store'});
-    if(r.ok){ setData(await r.json()); setStatus('本地模式 · 从站点文件载入（发布需先连接 GitHub）',false); return; }
-  }catch(e){}
-  setData(blankData());
-  setStatus('未载入数据 · 请点「导入 JSON」或「连接 GitHub」',false);
+    if(r.ok){ setData(await r.json()); source='local'; baseSha=null;
+      setStatus('本地快照 · 只读预览（发布需先连接 GitHub）',false); }
+    else throw new Error('no file');
+  }catch(e){ source='none'; baseSha=null; setData(blankData()); setStatus('未载入数据 · 请点「连接 GitHub」',false); }
+  refreshSrcBar(); refreshPublishBtn();
 }
 
 /* ---- 导出 / 导入 ---- */
 function exportJson(){
   var blob=new Blob([JSON.stringify(D,null,2)+'\n'],{type:'application/json;charset=utf-8'});
-  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='content.json';
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='content-backup.json';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(function(){ URL.revokeObjectURL(a.href); },1500);
-  toast('已导出 content.json，上传到仓库 assets/data/ 覆盖原文件即可','ok');
+  toast('已导出备份（content-backup.json）。仅供留档，不要把这个文件上传到仓库覆盖线上内容。','ok');
 }
 function importJson(file){
+  if(!window.confirm('你正在导入一个本地文件。\n\n它可能比 GitHub 仓库里的版本旧，导入后仅可查看、不能发布，以免覆盖线上已更新的内容。\n\n确认继续？')) return;
   var fr=new FileReader();
   fr.onload=function(){
-    try{ setData(JSON.parse(fr.result)); toast('已导入，检查无误后点「发布到网站」','ok'); }
-    catch(e){ toast('导入失败：不是合法的 JSON 文件','err'); }
+    try{
+      setData(JSON.parse(fr.result)); source='imported'; baseSha=null; dirty=false;
+      setStatus('导入的本地 JSON · 只读，禁止发布',false);
+      refreshSrcBar(); refreshPublishBtn();
+      toast('已导入，仅供查看对照。要修改网站请点「拉取最新」。','warn');
+    }catch(e){ toast('导入失败：不是合法的 JSON 文件','err'); }
   };
   fr.readAsText(file,'utf-8');
 }
 
-/* ---- 发布 ---- */
+/* ---- 发布：带基底版本校验，杜绝覆盖别人/别处的新改动 ---- */
 async function publish(){
-  if(!cfgReady()){
-    toast('还没连接 GitHub。可以点「导出 JSON」手动提交，或先连接仓库实现一键发布。','warn');
-    openSettings(); return;
+  if(!canPublish()){
+    toast(source==='local' ? '本地快照是旧数据，已禁止发布。请先点「连接 GitHub」拉取线上内容。' :
+         source==='error' ? '读不到线上仓库，已禁止发布。请点「拉取最新」重试。' :
+         '请先连接 GitHub 并载入线上内容后再发布。','warn');
+    return;
   }
   var text;
   try{ text=JSON.stringify(D,null,2)+'\n'; }catch(e){ toast('内容序列化失败：'+e.message,'err'); return; }
   setBusy(true,'正在发布…');
   try{
     var cur=await ghGet(CONTENT_PATH);
-    var res=await ghPut(CONTENT_PATH,utf8ToBase64(text),'Update site content via admin panel',cur.sha||lastSha);
-    lastSha=(res.content&&res.content.sha)||lastSha;
-    setBusy(false); setStatus('',false);
-    toast('已发布成功！等待 1–2 分钟后按 Ctrl+F5 强制刷新；仍无变化请看仓库 Actions 构建状态。','ok');
+    if(cur.sha!==baseSha){
+      setBusy(false);
+      toast('已阻止发布：线上内容在你编辑期间被改动过（可能是另一台设备或另一个后台标签页）。请点「拉取最新」，再改一次后发布。','err');
+      return;
+    }
+    var res=await ghPut(CONTENT_PATH,utf8ToBase64(text),'Update site content via admin panel',cur.sha);
+    baseSha=(res.content&&res.content.sha)||baseSha;
+    dirty=false; setBusy(false);
+    toast('已发布成功！等待 1–2 分钟 Pages 构建，然后按 Ctrl+F5 强制刷新；仍无变化请看仓库 Actions。','ok');
   }catch(e){ setBusy(false); toast('发布失败：'+e.message,'err'); }
 }
 
-/* ---- PDF 上传 ---- */
+/* ---- 文件上传（任意格式） ---- */
 function fileToBase64(file){
   return new Promise(function(resolve,reject){
     var fr=new FileReader();
@@ -407,30 +832,120 @@ function fileToBase64(file){
     fr.readAsDataURL(file);
   });
 }
-async function uploadPdf(){
-  if(!cfgReady()){ toast('上传 PDF 需要先连接 GitHub','warn'); openSettings(); return; }
+function safeName(n){ return String(n).replace(/[^A-Za-z0-9._()\- ]/g,'_').replace(/\s+/g,'_'); }
+async function uploadFile(){
+  if(!cfgReady()){ toast('上传文件需要先连接 GitHub','warn'); openSettings(); return; }
   var f=$('#pdfFile').files[0];
-  if(!f){ toast('请先选择 PDF 文件','warn'); return; }
-  var name=f.name.replace(/[^A-Za-z0-9._()\- ]/g,'_').replace(/\s+/g,'_');
-  if(!/\.pdf$/i.test(name)) name+='.pdf';
-  setBusy(true,'正在上传 PDF…');
+  if(!f){ toast('请先选择文件','warn'); return; }
+  if(f.size>1024*1024 && !window.confirm('这个文件超过 1 MB，GitHub 接口可能拒绝上传（错误提示 content is too large）。\n\n仍要尝试吗？')) return;
+  var dir=val('pdfDir')||'assets/dl/';
+  var name=safeName(f.name);
+  var path=dir+name;
+  setBusy(true,'正在上传文件…');
   try{
     var b64=await fileToBase64(f), sha=null;
-    try{ var old=await ghGet('assets/dl/'+encodeURIComponent(name)); sha=old.sha; }catch(e){}
-    await ghPut('assets/dl/'+encodeURIComponent(name),b64,'Add/Update PDF: '+name,sha);
+    try{ var old=await ghGet(path); sha=old.sha; }catch(e){}
+    await ghPut(path,b64,'Add/Update media: '+name,sha);
     var added=false;
     if($('#pdfAddToList').checked){
+      var ext=(name.split('.').pop()||'').toUpperCase();
       D.resources.downloads.push({
-        title:val('pdfTitle')||name.replace(/\.pdf$/i,''),
-        product:val('pdfProduct')||'—', pages:val('pdfPages')||'—',
-        type:'pdf', href:'../assets/dl/'+name, action:'PDF'
+        title:val('pdfTitle')||name, product:val('pdfProduct')||'—', pages:val('pdfPages')||'—',
+        type:'pdf', href:'../'+path, action:ext||'Download'
       });
       renderRepeatable('resources.downloads'); markDirty(); added=true;
     }
     setBusy(false);
-    toast('PDF 已上传'+(added?'，并加入下载清单 —— 记得点「发布到网站」':'')+'。','ok');
+    toast('文件已上传'+(added?'，并加入下载清单 —— 记得点「发布到网站」':'')+'。路径：'+path,'ok');
     $('#pdfFile').value='';
+    listMedia();
   }catch(e){ setBusy(false); toast('上传失败：'+e.message,'err'); }
+}
+
+/* ---- 图片替换：覆盖同名文件，全站引用一起更新，不改 HTML ---- */
+async function replaceImage(path){
+  if(!cfgReady()){ toast('替换图片需要先连接 GitHub','warn'); openSettings(); return; }
+  if(!path){ toast('请先选择要替换的图片','warn'); return; }
+  var f=$('#imgFile').files[0] || ($('#replaceFile').files[0]);
+  if(!f){ toast('请先选择新图片','warn'); return; }
+  if(f.size>1024*1024 && !window.confirm('这张图超过 1 MB，GitHub 接口可能拒绝上传。\n\n建议先压缩。仍要尝试吗？')) return;
+  var oldExt=(path.split('.').pop()||'').toLowerCase(), newExt=(f.name.split('.').pop()||'').toLowerCase();
+  if(oldExt!==newExt && !window.confirm('格式不一致：原文件是 .'+oldExt+'，新文件是 .'+newExt+'。\n\n浏览器通常能正常显示，但版式可能变化。仍要替换吗？')) return;
+  setBusy(true,'正在替换图片…');
+  try{
+    var b64=await fileToBase64(f), sha=null;
+    try{ var old=await ghGet(path); sha=old.sha; }catch(e){}
+    await ghPut(path,b64,'Replace image: '+path.split('/').pop(),sha);
+    setBusy(false);
+    $('#imgFile').value=''; $('#replaceFile').value=''; pendingReplace='';
+    toast('已替换 '+path.split('/').pop()+'。全站引用这张图的地方都会更新（无需改 HTML），按 Ctrl+F5 强制刷新查看。','ok');
+    listMedia();
+  }catch(e){ setBusy(false); toast('替换失败：'+e.message,'err'); }
+}
+
+/* ---- 仓库媒体列表 ---- */
+function fmtSize(n){ return n<1024?n+' B':(n<1024*1024?(n/1024).toFixed(1)+' KB':(n/1024/1024).toFixed(1)+' MB'); }
+async function listMedia(){
+  if(!cfgReady()){ $('#mediaList').textContent='请先连接 GitHub，再刷新列表。'; return; }
+  var box=$('#mediaList'); box.textContent='正在读取仓库文件…';
+  var rows=[];
+  for(var i=0;i<MEDIA_DIRS.length;i++){
+    var d=MEDIA_DIRS[i];
+    try{
+      var arr=await ghListDir(d);
+      arr.forEach(function(x){ rows.push({dir:d,name:x.name,path:x.path,size:x.size,sha:x.sha}); });
+    }catch(e){}
+  }
+  if(!rows.length){ box.textContent='没有读到文件（可能是令牌权限不足，或目录为空）。'; return; }
+  rows.sort(function(a,b){ return a.path.localeCompare(b.path); });
+  box.innerHTML=rows.map(function(r){
+    return '<div class="mrow">'+
+      '<span class="dirpill'+(r.dir==='assets/dl'?' dl':'')+'">'+esc(r.dir)+'</span>'+
+      '<span class="fn">'+esc(r.name)+'</span>'+
+      '<span class="sz">'+esc(fmtSize(r.size))+'</span>'+
+      '<span class="mops">'+
+        '<button class="mini" data-media="copy" data-path="'+esc(r.path)+'">复制路径</button>'+
+        '<button class="mini" data-media="replace" data-path="'+esc(r.path)+'">替换</button>'+
+        '<button class="mini danger" data-media="del" data-path="'+esc(r.path)+'" data-sha="'+esc(r.sha)+'">删除</button>'+
+      '</span></div>';
+  }).join('')+'<div class="note">「复制路径」得到的是站点根目录相对路径。填到 Resource 页文章封面图或下载清单时，前面要加 <code>../</code>。</div>';
+}
+function copyText(s){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(s).then(function(){ toast('已复制：'+s,'ok'); },function(){ fallbackCopy(s); });
+  }else fallbackCopy(s);
+}
+function fallbackCopy(s){
+  var ta=document.createElement('textarea'); ta.value=s; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('已复制：'+s,'ok'); }catch(e){ toast('复制失败，请手动记下：'+s,'warn'); }
+  document.body.removeChild(ta);
+}
+async function deleteMedia(path,sha){
+  if(!window.confirm('确认从仓库删除 '+path+' ？\n\n如果网站页面还在引用这个文件，相关位置会显示破图。仓库历史版本仍可还原。')) return;
+  setBusy(true,'正在删除…');
+  try{ await ghDelete(path,sha,'Delete media: '+path.split('/').pop()); setBusy(false); toast('已删除 '+path,'ok'); listMedia(); }
+  catch(e){ setBusy(false); toast('删除失败：'+e.message,'err'); }
+}
+function onMediaClick(e){
+  var b=e.target.closest ? e.target.closest('button[data-media]') : null;
+  if(!b) return;
+  var act=b.getAttribute('data-media'), p=b.getAttribute('data-path');
+  if(act==='copy') copyText(p);
+  else if(act==='del') deleteMedia(p,b.getAttribute('data-sha'));
+  else if(act==='replace'){
+    pendingReplace=p;
+    var sel=$('#imgTarget');
+    var found=false;
+    for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===p){ sel.selectedIndex=i; found=true; break; } }
+    if(!found){
+      var opt=document.createElement('option'); opt.value=p; opt.textContent=p+'（仓库文件）'; sel.appendChild(opt); sel.value=p;
+    }
+    $$('.tab').forEach(function(x){x.classList.remove('active');});
+    $$('.panel').forEach(function(x){ x.classList.toggle('active',x.getAttribute('data-panel')==='media'); });
+    $('#imgFile').click();
+    toast('已选中 '+p+'，请选择新图片后点「替换这张图片」。','ok');
+  }
 }
 
 /* ---- 设置弹窗 ---- */
@@ -448,10 +963,6 @@ function onFieldChange(e){
   var el=e.target, p=el.getAttribute('data-path');
   if(!p||!D) return;
   setPath(D,p,el.value); markDirty();
-
-  // 改「公司全称」时同步页脚版权行里的公司名。
-  // 版权行若是 {{legalName}} 模板则保持模板（由前端渲染时替换）；
-  // 若是旧版写死公司名的格式，则重建为「© 年份 新公司名 All rights reserved.」。
   if(p==='site.legalName' && el.value){
     var cr=getPath(D,'site.footer.copyright')||'';
     if(cr && !/\{\{\s*legalName\s*\}\}/.test(cr)){
@@ -478,15 +989,23 @@ function onActionClick(e){
   else return;
   renderRepeatable(list); markDirty();
 }
-
+function initImageSelect(){
+  var sel=$('#imgTarget');
+  sel.innerHTML=SITE_IMAGES.map(function(x){
+    return '<option value="'+esc(x.p)+'">'+esc(x.n)+' — '+esc(x.p.split('/').pop())+'（全站 '+x.c+' 处引用）</option>';
+  }).join('');
+}
 function bind(){
   $('#main').addEventListener('input',onFieldChange);
   $('#main').addEventListener('change',onFieldChange);
   $('#main').addEventListener('click',onActionClick);
+  $('#mediaList').addEventListener('click',onMediaClick);
   $$('.tab').forEach(function(t){ t.addEventListener('click',function(){
     $$('.tab').forEach(function(x){x.classList.remove('active');}); t.classList.add('active');
     var k=t.getAttribute('data-tab');
     $$('.panel').forEach(function(p){ p.classList.toggle('active',p.getAttribute('data-panel')===k); });
+    if(k==='media' && $('#mediaList').textContent.indexOf('刷新列表')>-1) listMedia();
+    if(k==='pagetext'){ ptRenderInitBox(); ptRenderOptions(); ptRenderList(); }
   });});
   $('#btnSettings').addEventListener('click',openSettings);
   $('#btnCloseModal').addEventListener('click',closeSettings);
@@ -495,8 +1014,9 @@ function bind(){
     cfg={ owner:val('cfgOwner'), repo:val('cfgRepo'), branch:val('cfgBranch')||'main', token:val('cfgToken') };
     if(!cfgReady()){ toast('请把四项都填完整','warn'); return; }
     setBusy(true,'正在连接…');
-    try{ saveCfg(); await pull(true); setBusy(false); closeSettings(); toast('连接成功，已载入仓库内容','ok'); }
-    catch(e){ clearCfg(); setBusy(false); toast('连接失败：'+e.message+'（请检查用户名、仓库名、分支和令牌权限）','err'); }
+    try{ saveCfg(); await pull(true); setBusy(false); closeSettings(); toast('连接成功，已载入仓库里的最新内容','ok'); listMedia(); }
+    catch(e){ clearCfg(); source='error'; baseSha=null; setBusy(false); refreshSrcBar(); refreshPublishBtn();
+      toast('连接失败：'+e.message+'（请检查用户名、仓库名、分支和令牌权限）','err'); }
   });
   $('#btnTestConn').addEventListener('click',async function(){
     var prev=cfg;
@@ -509,20 +1029,400 @@ function bind(){
   $('#btnClearCfg').addEventListener('click',function(){
     if(!window.confirm('清除本机保存的仓库信息和令牌？')) return;
     clearCfg(); ['cfgOwner','cfgRepo','cfgToken'].forEach(function(id){$('#'+id).value='';});
-    closeSettings(); setStatus('已清除连接信息 · 本地模式',dirty); toast('已清除','ok');
+    source='local'; baseSha=null; closeSettings();
+    setStatus('已清除连接信息 · 本地快照（只读）',dirty); refreshSrcBar(); refreshPublishBtn(); toast('已清除','ok');
   });
   $('#btnPull').addEventListener('click',async function(){
     if(!cfgReady()){ toast('请先连接 GitHub','warn'); openSettings(); return; }
     if(dirty&&!window.confirm('当前有未发布的改动，拉取会覆盖它们。继续？')) return;
     setBusy(true,'正在拉取…');
-    try{ await pull(false); setBusy(false); }catch(e){ setBusy(false); toast('拉取失败：'+e.message,'err'); }
+    try{ await pull(false); setBusy(false); }catch(e){ setBusy(false); source='error'; baseSha=null; refreshSrcBar(); refreshPublishBtn(); toast('拉取失败：'+e.message,'err'); }
   });
   $('#btnExport').addEventListener('click',exportJson);
   $('#btnImport').addEventListener('click',function(){ $('#importFile').click(); });
   $('#importFile').addEventListener('change',function(e){ if(e.target.files[0]) importJson(e.target.files[0]); e.target.value=''; });
   $('#btnPublish').addEventListener('click',publish);
-  $('#btnUploadPdf').addEventListener('click',uploadPdf);
+  $('#btnUploadPdf').addEventListener('click',uploadFile);
+  $('#btnReplaceImg').addEventListener('click',function(){ replaceImage(val('imgTarget')); });
+  $('#btnRefreshMedia').addEventListener('click',listMedia);
+  $('#ptPage').addEventListener('change',function(){ currentTextPage=this.value; ptRenderList(); });
+  $('#ptSearch').addEventListener('input',ptRenderList);
+  $('#ptList').addEventListener('input',function(e){
+    var idx=e.target.getAttribute('data-pt-index');
+    if(idx===null||!D||!D.pages||!D.pages[currentTextPage]) return;
+    D.pages[currentTextPage][parseInt(idx,10)]=e.target.value;
+    markDirty();
+  });
+  $('#ptBulk').addEventListener('click',ptBulkReplace);
+  initImageSelect();
+  naBind();
 }
+
+
+/* ==================== 新建文章（不写 HTML） ==================== */
+/* === NA:BEGIN === */
+var NA_TYPES=[
+  {v:'p',       t:'段落',              ph:'输入正文。空一行可分两段；用 **文字** 让重点自动变粗体。'},
+  {v:'h2',      t:'小标题',            ph:'例：Why the input range matters'},
+  {v:'h3',      t:'三级小标题',        ph:'例：Test setup'},
+  {v:'ul',      t:'要点列表',          ph:'每行一条要点'},
+  {v:'ol',      t:'编号列表',          ph:'每行一条'},
+  {v:'keyfind', t:'关键结论（黄框）',  ph:'第一行＝小标题（例：Key finding）；第二行起＝结论正文'},
+  {v:'table',   t:'数据表格',          ph:'直接从 Excel 复制粘贴；第一行是表头。也支持用 | 或逗号分列。'},
+  {v:'figure',  t:'图片 / 图表',       ph:'第一行＝图片路径（例：../assets/img/chart.png）；第二行起＝图注文字'}
+];
+
+/* 固定骨架：从 resources/_article-template.html 自动提取，与现有两篇技术文章逐字一致 */
+var ART_STYLE   = "<style>\n    .art { padding: 40px 0 20px; }\n    .crumb { font-size: .82rem; color: var(--text-muted); margin-bottom: 1.5rem; }\n    .crumb a { color: var(--text-muted); }\n    .crumb span { margin: 0 .4rem; opacity: .5; }\n    .art-head { max-width: 800px; margin-bottom: 2rem; }\n    .art-tag { display: inline-block; background: var(--cyan-light); color: var(--cyan); font-size: .72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: .32rem .8rem; border-radius: 999px; margin-bottom: 1rem; }\n    .art-head h1 { font-size: 2.35rem; font-weight: 800; color: var(--primary); line-height: 1.18; margin-bottom: 1rem; }\n    .art-head .standfirst { font-size: 1.08rem; color: var(--text-muted); line-height: 1.65; }\n    .art-meta { font-size: .82rem; color: var(--text-muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .8rem 0; margin: 1.5rem 0 2.2rem; display: flex; gap: 1.6rem; flex-wrap: wrap; }\n    .art-body { max-width: 800px; }\n    .art-body h2 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 2.6rem 0 .9rem; }\n    .art-body h3 { font-size: 1.12rem; font-weight: 700; color: var(--primary); margin: 1.8rem 0 .6rem; }\n    .art-body p { font-size: 1rem; line-height: 1.75; color: var(--text); margin-bottom: 1.05rem; }\n    .art-body ul, .art-body ol { margin: 0 0 1.2rem 1.2rem; }\n    .art-body ul li, .art-body ol li { font-size: 1rem; line-height: 1.7; color: var(--text); margin-bottom: .5rem; }\n    .art-body strong { color: var(--primary); }\n    .chart-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem 1.4rem 1rem; margin: 1.8rem 0; box-shadow: var(--shadow-sm); overflow-x: auto; }\n    .chart-card figcaption { font-size: .82rem; color: var(--text-muted); margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }\n    .keyfind { background: #FFFBEB; border-left: 3px solid var(--accent); padding: 1.1rem 1.3rem; border-radius: 0 8px 8px 0; margin: 1.6rem 0; }\n    .keyfind strong { display: block; font-size: .78rem; letter-spacing: .8px; text-transform: uppercase; color: #92400E; margin-bottom: .4rem; }\n    .keyfind p { margin: 0; font-size: .96rem; color: #422006; line-height: 1.65; }\n    .data-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; font-size: .84rem; }\n    .data-table th { background: var(--primary); color: #fff; font-weight: 600; padding: .6rem .7rem; text-align: right; white-space: nowrap; font-size: .76rem; }\n    .data-table th:first-child { text-align: left; }\n    .data-table td { padding: .5rem .7rem; text-align: right; border-top: 1px solid var(--border); color: var(--text); white-space: nowrap; }\n    .data-table td:first-child { text-align: left; font-weight: 600; color: var(--primary); }\n    .data-table tr:nth-child(even) td { background: #FAFBFC; }\n    .tbl-scroll { overflow-x: auto; margin: 1.6rem 0; border-radius: var(--radius); }\n    .cta-box { background: var(--primary); color: #fff; border-radius: var(--radius); padding: 2rem; margin: 2.6rem 0 1rem; }\n    .cta-box h3 { color: #fff; font-size: 1.3rem; margin-bottom: .6rem; }\n    .cta-box p { color: rgba(255,255,255,.78); font-size: .95rem; margin-bottom: 1.2rem; }\n    .cta-box .btn { display: inline-block; background: var(--accent); color: #0A2540; font-weight: 700; padding: .75rem 1.4rem; border-radius: 8px; font-size: .92rem; }\n    .related { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.6rem 0 2rem; }\n    .related a { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.2rem; box-shadow: var(--shadow-sm); }\n    .related a span { display: block; font-size: .72rem; letter-spacing: .8px; text-transform: uppercase; color: var(--cyan); font-weight: 700; margin-bottom: .35rem; }\n    .related a strong { font-size: .95rem; color: var(--primary); font-weight: 700; }\n    @media (max-width: 900px) {\n      .art-head h1 { font-size: 1.7rem; }\n      .related { grid-template-columns: 1fr; }\n      .data-table { font-size: .74rem; }\n    }\n  </style>";
+var ART_HEADER  = "<header class=\"header\">\n  <div class=\"container header-inner\">\n    <a href=\"../index.html\" class=\"logo\">\n      <img src=\"../assets/img/logo.webp\" alt=\"Grande New Energy\">\n    </a>\n    <nav class=\"nav\"><a href=\"../index.html\">Home</a><a href=\"../products.html\">Products</a><a href=\"../skd-ckd.html\">SKD / CKD</a><a href=\"../resources/index.html\">Resources</a><a href=\"../about.html\">About</a><a href=\"../contact.html\">Contact</a></nav>\n    <div class=\"header-cta\">\n      <a href=\"../contact.html\" class=\"btn btn-primary btn-sm\">Request Quote</a>\n      <button class=\"menu-toggle\" aria-label=\"Menu\"><span></span><span></span><span></span></button>\n    </div>\n  </div>\n</header>";
+var ART_FOOTER  = "<footer class=\"footer\">\n  <div class=\"container\">\n    <div class=\"footer-grid\">\n      <div>\n        <div class=\"footer-logo\">\n          <img src=\"../assets/img/logo-light.webp\" alt=\"Grande New Energy\">\n        </div>\n        <p style=\"font-size:0.9rem;line-height:1.6;margin-bottom:1rem;\">LED lighting solutions company &mdash; luminaires (SKD/CKD) and LED driver ICs, lab-verified for 100&ndash;440 Vac grid conditions.</p>\n        <p style=\"font-size:0.85rem;opacity:0.6;\">ISO 9001 quality system &middot; Wide-grid-ready designs</p>\n      </div>\n      <div>\n        <h5>Products</h5>\n        <a href=\"../product-high-bay.html\">High Bay 100W</a>\n        <a href=\"../product-flood-light.html\">Flood Light 50W</a>\n        <a href=\"../product-street-light.html\">Street Light 40/60W</a>\n        <a href=\"../resources/index.html\">Resources</a>\n      </div>\n      <div>\n        <h5>Luminaires</h5>\n        <a href=\"../product-high-bay.html\">Warehouse &amp; High Bay</a>\n        <a href=\"../product-flood-light.html\">Yard &amp; Flood Light</a>\n        <a href=\"../product-street-light.html\">Road &amp; Street Light</a>\n      </div>\n      <div>\n        <h5>Contact</h5>\n        <a data-c=\"email\" href=\"mailto:Sales@grandemicro.com\">Sales@grandemicro.com</a>\n        <a data-c=\"phone\" href=\"tel:+8651085388846\">+86-510-85388846</a>\n        <p data-c=\"address\" style=\"font-size:0.85rem;margin-top:0.5rem;\">Wuxi Grandemicro Technology Co., Ltd.<br>530 Building A, Taihu Science Park<br>Wuxi, Jiangsu, China</p>\n      </div>\n    </div>\n    <div class=\"footer-bottom\">\n      <span data-c=\"copyright\">&copy; 2026 Wuxi Grandemicro Technology Co., Ltd. All rights reserved.</span>\n      <span data-c=\"domainNote\">Domain: gmtne.com</span>\n    </div>\n  </div>\n</footer>";
+var ART_FLOATS  = "<a href=\"https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20your%20LED%20lighting%20solutions.\" class=\"whatsapp-float\" target=\"_blank\" title=\"Chat on WhatsApp\">💬</a>\n<a href=\"https://www.linkedin.com/company/grandenewenergy\" class=\"linkedin-float\" target=\"_blank\" title=\"Grande New Energy on LinkedIn\">in</a>";
+var ART_SCRIPTS = "<script src=\"../assets/js/site-config.js\"><\/script>\n<script src=\"../assets/js/main.js\"><\/script>\n<script src=\"../assets/js/content-loader.js\"><\/script>";
+
+function naInline(s){
+  return esc(String(s==null?'':s).trim()).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+}
+function naLines(s){
+  return String(s||'').split(/\r?\n/).map(function(x){ return x.trim(); }).filter(Boolean);
+}
+function naTypeOf(v){
+  for(var i=0;i<NA_TYPES.length;i++) if(NA_TYPES[i].v===v) return NA_TYPES[i];
+  return NA_TYPES[0];
+}
+function naUpdateHelp(d){
+  if(!d) return;
+  var o=naTypeOf(d.querySelector('.na-type').value);
+  d.querySelector('.na-content').placeholder=o.ph;
+  d.querySelector('.na-help').textContent='提示：'+o.ph;
+}
+function naBlockNode(type,content){
+  var d=document.createElement('div');
+  d.className='na-block';
+  var opts=NA_TYPES.map(function(o){
+    return '<option value="'+o.v+'"'+(o.v===type?' selected':'')+'>'+esc(o.t)+'</option>';
+  }).join('');
+  d.innerHTML='<div class="na-head"><span class="na-idx"></span>'+
+    '<select class="na-type">'+opts+'</select>'+
+    '<button class="mini" data-na-act="up" title="上移">↑</button>'+
+    '<button class="mini" data-na-act="down" title="下移">↓</button>'+
+    '<button class="mini danger" data-na-act="del">删除</button></div>'+
+    '<textarea class="na-content"></textarea><p class="na-help"></p>';
+  d.querySelector('.na-content').value=content||'';
+  naUpdateHelp(d);
+  return d;
+}
+function naRenumber(){
+  $$('#naBlocks .na-block').forEach(function(d,i){
+    d.querySelector('.na-idx').textContent='区块 #'+(i+1);
+  });
+}
+function naAddBlock(type,content){
+  var box=$('#naBlocks'); if(!box) return;
+  box.appendChild(naBlockNode(type,content));
+  naRenumber();
+}
+function onNaBlockClick(e){
+  var b=e.target.closest?e.target.closest('button[data-na-act]'):null;
+  if(!b) return;
+  var d=b.closest('.na-block'), box=$('#naBlocks'), act=b.getAttribute('data-na-act');
+  if(act==='del'){
+    if(box.children.length<=1){ toast('至少保留一个区块','warn'); return; }
+    d.parentNode.removeChild(d);
+  }else if(act==='up' && d.previousElementSibling){
+    box.insertBefore(d,d.previousElementSibling);
+  }else if(act==='down' && d.nextElementSibling){
+    box.insertBefore(d.nextElementSibling,d);
+  }
+  naRenumber();
+}
+function onNaBlockChange(e){
+  if(e.target && e.target.classList && e.target.classList.contains('na-type')){
+    naUpdateHelp(e.target.closest('.na-block'));
+  }
+}
+function naRenderExisting(){
+  var sel=$('#naExisting'); if(!sel) return;
+  var drafts=(D&&D.resources&&D.resources.articleDrafts)||{};
+  var keep=sel.value;
+  var keys=Object.keys(drafts).sort();
+  sel.innerHTML='<option value="">（新建一篇文章）</option>'+keys.map(function(k){
+    return '<option value="'+esc(k)+'">'+esc((drafts[k]&&drafts[k].title)||k)+' — '+esc(k)+'.html</option>';
+  }).join('');
+  if(keep && drafts[keep]) sel.value=keep;
+}
+function naSet(id,v){ var e=$('#'+id); if(e) e.value=(v==null?'':String(v)); }
+function naResetForm(){
+  ['naSlug','naTitle','naTag','naStandfirst','naCrumb','naMeta','naImage','naDesc'].forEach(function(id){ naSet(id,''); });
+  $('#naCtaOn').checked=true;
+  naSet('naCtaTitle','Need the full test data?');
+  naSet('naCtaText','Send us your project conditions and we will share the complete lab report.');
+  naSet('naCtaBtn','Talk to engineering');
+  $('#naRelOn').checked=true;
+  naSet('naRel','Related guide | Why 100–440 Vac input matters | wide-input-voltage.html\n'+
+                'Related guide | Where the heat actually is | thermal-performance.html');
+  var box=$('#naBlocks'); box.innerHTML='';
+  naAddBlock('h2','Section heading');
+  naAddBlock('p','Write the body here. Use **bold** for emphasis.');
+  var r=$('#naResult'); if(r){ r.className='na-result'; r.removeAttribute('style'); r.innerHTML=''; }
+  var s=$('#naExisting'); if(s) s.value='';
+}
+function naFillForm(m){
+  naSet('naSlug',m.slug); naSet('naTitle',m.title); naSet('naTag',m.tag);
+  naSet('naStandfirst',m.standfirst); naSet('naCrumb',m.crumb); naSet('naMeta',m.meta);
+  naSet('naImage',m.image); naSet('naDesc',m.description);
+  $('#naCtaOn').checked=!!m.cta;
+  if(m.cta){ naSet('naCtaTitle',m.cta.title); naSet('naCtaText',m.cta.text); naSet('naCtaBtn',m.cta.button); }
+  $('#naRelOn').checked=!!(m.related&&m.related.length);
+  naSet('naRel',(m.related||[]).map(function(r){ return r.label+' | '+r.title+' | '+r.href; }).join('\n'));
+  var box=$('#naBlocks'); box.innerHTML='';
+  (m.blocks||[]).forEach(function(b){ naAddBlock(b.type,b.content); });
+  if(!box.children.length) naAddBlock('p','');
+  naRenumber();
+}
+/* 读取表单 → 结构化文章数据；validate=true 时做必填校验 */
+function naCollect(validate){
+  var m={
+    slug:val('naSlug').replace(/\.html$/i,'').toLowerCase(),
+    title:val('naTitle'), tag:val('naTag'), standfirst:val('naStandfirst'),
+    crumb:val('naCrumb'), meta:val('naMeta'), image:val('naImage'),
+    description:val('naDesc'), date:new Date().toISOString().slice(0,10),
+    blocks:[], cta:null, related:[]
+  };
+  if(validate){
+    if(!/^[a-z0-9][a-z0-9-]*$/.test(m.slug)){
+      toast('文章文件名只能用小写英文字母、数字、连字符，例：high-temperature-soak','warn'); return null;
+    }
+    if(m.slug==='index'||m.slug==='_article-template'){
+      toast('这个文件名是系统保留的，请换一个','warn'); return null;
+    }
+    if(!m.title){ toast('请填文章标题','warn'); return null; }
+    if(!m.tag){ toast('请填标签（例：Test data · 8 min）','warn'); return null; }
+    if(!m.standfirst){ toast('请填导语','warn'); return null; }
+  }
+  $$('#naBlocks .na-block').forEach(function(b){
+    var t=b.querySelector('.na-type').value, c=b.querySelector('.na-content').value;
+    if(String(c).trim()) m.blocks.push({type:t,content:c});
+  });
+  if(validate && !m.blocks.length){ toast('请至少填一个正文区块的内容','warn'); return null; }
+  if($('#naCtaOn').checked){
+    m.cta={
+      title:val('naCtaTitle')||'Need the full test data?',
+      text:val('naCtaText')||'Send us your project conditions and we will share the complete lab report.',
+      button:val('naCtaBtn')||'Talk to engineering'
+    };
+  }
+  if($('#naRelOn').checked){
+    naLines(val('naRel')).forEach(function(line){
+      var p=line.split('|').map(function(x){ return x.trim(); });
+      if(p[1]) m.related.push({label:p[0]||'Related',title:p[1],href:p[2]||'index.html'});
+    });
+  }
+  return m;
+}
+
+/* 把区块转成与现有两篇技术文章相同的 class 骨架 */
+function naBlockHtml(b,title){
+  var t=b.type, c=String(b.content||'').trim();
+  if(t==='h2') return '      <h2>'+naInline(c)+'</h2>\n';
+  if(t==='h3') return '      <h3>'+naInline(c)+'</h3>\n';
+  if(t==='p'){
+    return c.split(/\n\s*\n/).map(function(x){ return '      <p>'+naInline(x)+'</p>\n'; }).join('');
+  }
+  if(t==='ul'||t==='ol'){
+    return '      <'+t+'>\n'+naLines(c).map(function(x){ return '        <li>'+naInline(x)+'</li>\n'; }).join('')+'      </'+t+'>\n';
+  }
+  if(t==='keyfind'){
+    var L=naLines(c);
+    return '      <div class="keyfind"><strong>'+naInline(L[0]||'Key finding')+'</strong>'+
+           '<p>'+naInline(L.slice(1).join(' '))+'</p></div>\n';
+  }
+  if(t==='table'){
+    var rows=naLines(c).map(function(line){
+      return line.split(/\t|\||,\s*/).map(function(x){ return naInline(x.replace(/^"|"$/g,'')); });
+    }).filter(function(r){ return r.length; });
+    if(!rows.length) return '';
+    var thead='        <thead><tr>'+rows[0].map(function(x){ return '<th>'+x+'</th>'; }).join('')+'</tr></thead>\n';
+    var tbody='        <tbody>\n'+rows.slice(1).map(function(r){
+      return '          <tr>'+r.map(function(x){ return '<td>'+x+'</td>'; }).join('')+'</tr>\n';
+    }).join('')+'        </tbody>\n';
+    return '      <div class="tbl-scroll"><table class="data-table">\n'+thead+tbody+'      </table></div>\n';
+  }
+  if(t==='figure'){
+    var F=naLines(c), src=F[0]||'', cap=F.slice(1).join(' ');
+    if(!src) return '';
+    return '      <figure class="chart-card"><img src="'+esc(src)+'" alt="'+esc(cap||title)+'" style="width:100%;display:block">\n'+
+           '        <figcaption>'+naInline(cap)+'</figcaption></figure>\n';
+  }
+  return '';
+}
+
+/* 生成完整 HTML：与 _article-template.html 同款，SEO 沿用现有两篇的 www.gmtne.com 写法 */
+function buildArticleHTML(m){
+  var _title=m.title, _desc=m.description||m.standfirst, slug=m.slug;
+  var seoUrl='https://www.gmtne.com/resources/'+slug+'.html';
+  var short=m.crumb||'Article';
+  var ld=JSON.stringify({
+    '@context':'https://schema.org','@type':'TechArticle','headline':_title,
+    'description':_desc,'url':seoUrl,'datePublished':m.date,'dateModified':m.date,
+    'inLanguage':'en','author':{'@type':'Organization','name':'Grande New Energy'}
+  }).replace(/</g,'\\u003c');
+
+  var h='<!DOCTYPE html>\n'+
+    '<html lang="en" data-whatsapp="8618154614514">\n'+
+    '<head>\n'+
+    '  <meta charset="UTF-8">\n'+
+    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'+
+    '  <title>'+esc(_title)+' | Grande New Energy</title>\n'+
+    '  <meta name="description" content="'+esc(_desc)+'">\n'+
+    '  <link rel="preconnect" href="https://fonts.googleapis.com">\n'+
+    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'+
+    '  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n'+
+    '  <link rel="stylesheet" href="../assets/css/styles.css">\n'+
+    ART_STYLE+'\n'+
+    '  <link rel="canonical" href="'+esc(seoUrl)+'">\n'+
+    '  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">\n'+
+    '  <meta property="og:type" content="article">\n'+
+    '  <meta property="og:site_name" content="Grande New Energy">\n'+
+    '  <meta property="og:locale" content="en_US">\n'+
+    '  <meta property="og:title" content="'+esc(_title)+' | Grande New Energy">\n'+
+    '  <meta property="og:description" content="'+esc(_desc)+'">\n'+
+    '  <meta property="og:url" content="'+esc(seoUrl)+'">\n'+
+    '  <meta name="twitter:card" content="summary_large_image">\n'+
+    '  <meta name="twitter:title" content="'+esc(_title)+' | Grande New Energy">\n'+
+    '  <meta name="twitter:description" content="'+esc(_desc)+'">\n'+
+    '  <script type="application/ld+json">'+ld+'<\/script>\n'+
+    '</head>\n'+
+    '<body>\n'+ART_HEADER+'\n'+
+    '<main class="art">\n  <div class="container">\n'+
+    '    <div class="crumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">Resources</a><span>/</span>'+esc(short)+'</div>\n'+
+    '    <div class="art-head">\n'+
+    '      <span class="art-tag">'+esc(m.tag)+'</span>\n'+
+    '      <h1>'+esc(_title)+'</h1>\n'+
+    '      <p class="standfirst">'+esc(m.standfirst)+'</p>\n'+
+    '      <div class="art-meta"><span>Grande New Energy engineering</span>'+
+        (m.meta||'').split('|').map(function(x){ return x.trim()? '<span>'+esc(x.trim())+'</span>' : ''; }).join('')+
+        '<span>'+esc(m.date)+'</span></div>\n'+
+    '    </div>\n'+
+    '    <div class="art-body">\n';
+
+  (m.blocks||[]).forEach(function(b){ h+=naBlockHtml(b,_title); });
+
+  if(m.cta){
+    h+='      <div class="cta-box">\n'+
+       '        <h3>'+naInline(m.cta.title)+'</h3>\n'+
+       '        <p>'+naInline(m.cta.text)+'</p>\n'+
+       '        <a class="btn" href="../contact.html">'+naInline(m.cta.button)+'</a>\n'+
+       '      </div>\n';
+  }
+  if(m.related&&m.related.length){
+    h+='      <div class="related">\n'+m.related.map(function(r){
+      return '        <a href="'+esc(r.href)+'"><span>'+esc(r.label)+'</span><strong>'+naInline(r.title)+'</strong></a>\n';
+    }).join('')+'      </div>\n';
+  }
+  h+='    </div>\n  </div>\n</main>\n\n'+
+     ART_FOOTER+'\n'+ART_FLOATS+'\n'+ART_SCRIPTS+'\n'+
+     '</body>\n</html>\n';
+  return h;
+}
+
+function naPreviewBase(){
+  var o=(cfg&&cfg.owner)||'wendy-664', r=(cfg&&cfg.repo)||'GrandeNewEnergyTest';
+  return 'https://'+o+'.github.io/'+r+'/resources/';
+}
+/* 预览：注入 <base> 让 ../assets/... 指向线上资源，看到的样式就是真实样式 */
+function naPreview(){
+  var m=naCollect(true); if(!m) return;
+  var html=buildArticleHTML(m);
+  html=html.replace('</head>','  <base href="'+esc(naPreviewBase())+'">\n</head>');
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var u=URL.createObjectURL(blob);
+  var w=window.open(u,'_blank');
+  if(!w) toast('浏览器拦截了预览窗口，请允许本页弹出窗口','warn');
+  setTimeout(function(){ URL.revokeObjectURL(u); },120000);
+}
+/* 发布：一次完成「写 HTML 页」+「加文章卡片」+「发布 content.json」，带 sha 防覆盖 */
+async function naPublish(){
+  if(!canPublish()){
+    toast('请先点右上角「连接 GitHub」载入线上内容，再发布文章','warn'); return;
+  }
+  var m=naCollect(true); if(!m) return;
+  var path='resources/'+m.slug+'.html';
+  var bp=$('#naBtnPublish'), bv=$('#naBtnPreview');
+  bp.disabled=true; bv.disabled=true;
+  try{
+    var cur=await ghGet(CONTENT_PATH);
+    if(cur.sha!==baseSha) throw new Error('线上内容在你编辑期间有更新，请先点「拉取最新」再重新发布');
+    var existSha=null;
+    try{ var old=await ghGet(path); existSha=old.sha; }catch(e){}
+    if(existSha && !window.confirm(
+        '仓库里已经有 '+path+' 了。\n继续会用新内容覆盖那个页面（文章卡片也会更新，不会重复添加）。\n确定吗？')){
+      bp.disabled=false; bv.disabled=false; return;
+    }
+    var html=buildArticleHTML(m);
+    await ghPut(path,utf8ToBase64(html),'Add/update article page: '+m.slug,existSha);
+
+    if(!D.resources.articleDrafts||typeof D.resources.articleDrafts!=='object') D.resources.articleDrafts={};
+    D.resources.articleDrafts[m.slug]=m;
+    var arr=D.resources.articles;
+    var card={title:m.title,tag:m.tag,href:m.slug+'.html',image:m.image||''}, hit=-1;
+    for(var i=0;i<arr.length;i++){ if(arr[i].href===m.slug+'.html'){ hit=i; break; } }
+    if(hit>=0) arr[hit]=card; else arr.push(card);
+    renderRepeatable('resources.articles'); naRenderExisting();
+
+    var text=JSON.stringify(D,null,2)+'\n';
+    var res=await ghPut(CONTENT_PATH,utf8ToBase64(text),'Add/update article: '+m.title,cur.sha);
+    baseSha=(res.content&&res.content.sha)||baseSha;
+    dirty=false; refreshPublishBtn(); refreshSrcBar();
+    setStatus('已发布 '+m.slug+'.html · 线上版本 '+shortSha(),false);
+
+    var url=naPreviewBase()+m.slug+'.html';
+    var r=$('#naResult');
+    if(r){
+      r.className='na-result show'; r.removeAttribute('style');
+      r.innerHTML='<b>✓ 发布成功</b><br>'+
+        '① 已生成同款文章页：<a href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(url)+'</a><br>'+
+        '② 已在 Resource 页加好入口卡片。<br>'+
+        '③ 你填的内容已存进后台，以后在「编辑已有文章」里选中它即可修改，仍然不用碰 HTML。<br>'+
+        '等 1–2 分钟 GitHub Pages 构建完成后按 Ctrl+F5 查看。';
+    }
+    toast('文章已发布！页面与入口卡片都同步完成。','ok');
+  }catch(e){
+    toast('发布失败：'+e.message,'err');
+    var r2=$('#naResult');
+    if(r2){
+      r2.className='na-result show';
+      r2.style.background='#FEF2F2'; r2.style.borderColor='#FECACA'; r2.style.color='#991B1B';
+      r2.innerHTML='<b>发布未完成</b><br>'+esc(e.message)+
+        '<br>已写入的文件不会自动回滚，确认后可以再点一次发布（同名会安全覆盖）。';
+    }
+  }finally{
+    bp.disabled=false; bv.disabled=false;
+  }
+}
+function naBind(){
+  var go=$('#naGo');
+  if(go) go.addEventListener('click',function(){
+    var t=$$('.tab').filter(function(x){ return x.getAttribute('data-tab')==='newarticle'; })[0];
+    if(t) t.click();
+  });
+  $('#naBtnAdd').addEventListener('click',function(){ naAddBlock('p',''); });
+  $('#naBlocks').addEventListener('click',onNaBlockClick);
+  $('#naBlocks').addEventListener('change',onNaBlockChange);
+  $('#naBtnPreview').addEventListener('click',naPreview);
+  $('#naBtnPublish').addEventListener('click',naPublish);
+  $('#naBtnReset').addEventListener('click',function(){
+    if(window.confirm('清空当前表单？（已发布过的文章不受影响）')) naResetForm();
+  });
+  $('#naExisting').addEventListener('change',function(){
+    var k=this.value;
+    if(!k){ naResetForm(); return; }
+    var m=(D&&D.resources&&D.resources.articleDrafts)?D.resources.articleDrafts[k]:null;
+    if(m){ naFillForm(m); toast('已载入「'+m.title+'」，改完点发布即可更新这篇文章','ok'); }
+  });
+  naRenderExisting();
+  naResetForm();
+}
+/* === NA:END === */
 
 /* ---- 自检（仅 URL 带 ?selftest=1 时运行，正常访问不受影响） ---- */
 async function runSelfTest(){
@@ -533,20 +1433,44 @@ async function runSelfTest(){
   t('导航载入 6 项', D.site.nav.length===6);
   t('邮箱字段渲染到表单', $('[data-path="site.email"]') && $('[data-path="site.email"]').value==='Sales@grandemicro.com');
   t('FAQ 问题渲染到表单', $('[data-path="resources.faq.0.q"]') && $('[data-path="resources.faq.0.q"]').value.indexOf('How often')===0);
+  t('文章卡片新增配图输入框', !!$('[data-path="resources.articles.0.image"]'));
+  t('图片替换下拉含 14 张站点图片', $('#imgTarget') && $('#imgTarget').options.length===14);
+  t('本地快照模式禁止发布', source==='local' && canPublish()===false);
+  t('中文 UTF-8 base64 往返正确', base64ToUtf8(utf8ToBase64('中文测试 © 2026 — Grande'))==='中文测试 © 2026 — Grande');
+
+  /* 新建文章生成器：验证输出与现有两篇同款、组件齐全、脚本未截断 */
+  var _m={slug:'selftest-article',title:'Self test article',tag:'Test · 1 min',
+    standfirst:'A test standfirst.',description:'A test summary.',crumb:'Self test',
+    meta:'1 min read | Lab report',image:'',date:'2026-11-07',
+    blocks:[{type:'h2',content:'Section'},{type:'p',content:'Body with **bold** text'},
+      {type:'ul',content:'One\nTwo'},{type:'keyfind',content:'Key finding\nIt really matters.'},
+      {type:'table',content:'Item\tA\tB\nX\t1\t2'},
+      {type:'figure',content:'../assets/img/x.png\nA caption'}],
+    cta:{title:'CTA title',text:'CTA text',button:'Go'},
+    related:[{label:'Related',title:'Other guide',href:'index.html'}]};
+  var _h=buildArticleHTML(_m);
+  t('文章生成器：输出完整 HTML 文档', _h.indexOf('<!DOCTYPE html>')===0 && _h.indexOf('</html>')>-1);
+  t('文章生成器：内联样式与现有页一致', _h.indexOf('.chart-card')>-1 && _h.indexOf('.keyfind')>-1 && _h.indexOf('.data-table')>-1);
+  t('文章生成器：保留导航/页脚/data-c 与 3 行脚本', _h.indexOf('data-c="copyright"')>-1 && _h.indexOf('content-loader.js')>-1 && _h.indexOf('site-config.js')>-1);
+  t('文章生成器：8 类正文组件齐全', ['<h2>Section</h2>','<strong>bold</strong>','<ul>','<div class="keyfind">','<table class="data-table">','<figure class="chart-card">','<div class="cta-box">','<div class="related">'].every(function(x){ return _h.indexOf(x)>-1; }));
+  t('文章生成器：SEO 区块完整', _h.indexOf('rel="canonical"')>-1 && _h.indexOf('og:title')>-1 && _h.indexOf('application/ld+json')>-1);
+  t('文章生成器：输出含规范 script 结束标签', _h.indexOf('<\/script>')>-1);
+  t('文章生成器：输出中无 JS 转义残留', _h.indexOf('<\\/script>')===-1);
+
   var inp=$('[data-path="site.email"]'); inp.value='selftest@example.com';
   inp.dispatchEvent(new Event('input',{bubbles:true}));
   t('表单输入写回数据对象', getPath(D,'site.email')==='selftest@example.com');
   t('标记为有未发布改动', dirty===true);
   t('序列化后仍合法', JSON.parse(JSON.stringify(D)).site.email==='selftest@example.com');
-  t('中文 UTF-8 base64 往返正确', base64ToUtf8(utf8ToBase64('中文测试 © 2026 — Grande'))==='中文测试 © 2026 — Grande');
   var before=D.resources.faq.length;
   $$('button[data-action="add"][data-list="resources.faq"]')[0].click();
   t('点击「新增一条」追加 FAQ', D.resources.faq.length===before+1);
   D.resources.faq.pop(); D.site.email='Sales@grandemicro.com';
 
-  /* 模拟一次真实发布：验证 API 路径、sha、分支与 UTF-8 编码（不需要真令牌） */
-  var realFetch=window.fetch, realCfg=cfg, captured=null;
+  /* 模拟一次真实发布：验证 API 路径、sha、分支、UTF-8 与防覆盖校验 */
+  var realFetch=window.fetch, realCfg=cfg, realSource=source, realSha=baseSha, captured=null, blocked=false;
   cfg={ owner:'acme', repo:'site', branch:'main', token:'fake' };
+  source='github'; baseSha='oldsha'; dirty=false;
   window.fetch=function(url,opts){
     if(opts && opts.method==='PUT'){
       captured={ url:url, body:JSON.parse(opts.body) };
@@ -561,8 +1485,45 @@ async function runSelfTest(){
     t('发布内容解码后是合法 UTF-8 JSON', !!captured && JSON.parse(base64ToUtf8(captured.body.content)).site.brandName==='Grande New Energy');
     t('发布请求带 commit message 与分支', !!captured && !!captured.body.message && captured.body.branch==='main');
   }catch(err){ t('发布流程未抛异常: '+err.message, false); }
-  window.fetch=realFetch; cfg=realCfg;
 
+  /* 线上版本被别处改动 -> 必须阻止发布，防止旧数据覆盖 */
+  captured=null; baseSha='stale-sha';
+  window.fetch=function(url,opts){
+    if(opts && opts.method==='PUT'){ captured={ url:url, body:JSON.parse(opts.body) };
+      return Promise.resolve({ ok:true, json:function(){ return Promise.resolve({content:{sha:'x'}}); } }); }
+    return Promise.resolve({ ok:true, json:function(){ return Promise.resolve({ sha:'changed-by-other-device', content:utf8ToBase64(JSON.stringify(D)) }); } });
+  };
+  try{ await publish(); blocked=(captured===null); }catch(e){ blocked=(captured===null); }
+  t('线上被改动过时阻止发布（防旧数据覆盖）', blocked===true);
+
+  /* 媒体库：目录列表 + 图片替换 PUT + 删除 DELETE 的请求形态 */
+  var put2=null, del2=null;
+  window.fetch=function(url,opts){
+    if(opts && opts.method==='PUT'){ put2={url:url,body:JSON.parse(opts.body)};
+      return Promise.resolve({ok:true,json:function(){return Promise.resolve({content:{sha:'m'}});}}); }
+    if(opts && opts.method==='DELETE'){ del2={url:url,body:JSON.parse(opts.body)};
+      return Promise.resolve({ok:true,json:function(){return Promise.resolve({});}}); }
+    if(url.indexOf('/contents/assets/img?')>-1){
+      return Promise.resolve({ok:true,json:function(){return Promise.resolve([
+        {type:'file',name:'logo.png',path:'assets/img/logo.png',size:12345,sha:'sha-img'}
+      ]);}}); }
+    if(url.indexOf('/contents/assets/dl?')>-1){
+      return Promise.resolve({ok:true,json:function(){return Promise.resolve([
+        {type:'file',name:'spec.pdf',path:'assets/dl/spec.pdf',size:98765,sha:'sha-dl'}
+      ]);}}); }
+    return Promise.resolve({ok:true,json:function(){return Promise.resolve({sha:'x',content:'e30='});}});
+  };
+  try{
+    var listed=await ghListDir('assets/img');
+    t('媒体库能读取仓库目录列表', listed.length===1 && listed[0].path==='assets/img/logo.png');
+    await ghPut('assets/img/logo.png','aGVsbG8=','Replace image: logo.png','sha-img');
+    t('图片替换写入正确的同名路径', !!put2 && put2.url.indexOf('/contents/assets/img/logo.png')!==-1 && put2.body.sha==='sha-img');
+    await ghDelete('assets/dl/old.pdf','sha-dl','Delete media: old.pdf');
+    t('删除请求带 sha 与分支', !!del2 && del2.body.sha==='sha-dl' && del2.body.branch==='main');
+  }catch(e){ t('媒体库模拟未抛异常: '+e.message,false); }
+
+  window.fetch=realFetch; cfg=realCfg; source=realSource; baseSha=realSha; dirty=false;
+  refreshSrcBar(); refreshPublishBtn();
   var pre=document.createElement('pre'); pre.id='selftestResult'; pre.textContent='SELFTEST\n'+out.join('\n');
   document.body.appendChild(pre);
 }
