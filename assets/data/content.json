@@ -306,7 +306,7 @@
         "id": "street",
         "num": "01",
         "name": "Street Light",
-        "desc": "Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.",
+        "desc": "Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.For Test",
         "cards": [
           {
             "slug": "product-street-light",
