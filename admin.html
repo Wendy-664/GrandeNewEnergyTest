@@ -131,6 +131,17 @@ button{font-family:inherit;cursor:pointer}
 .na-impstat{font-size:12.5px;color:var(--muted);line-height:1.75}
 .na-impstat b{color:var(--cyan)}
 
+
+/* 产品管理：大类 / 卡片 / 轮播 / FAQ 可重复列表 */
+.pr-cat{border:1px solid var(--border);border-radius:10px;padding:14px 16px 16px;margin-bottom:16px;background:#FCFDFE}
+.pr-cat-head,.pr-card-head,.pr-row-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.pr-idx{font-size:11.5px;font-weight:700;color:var(--cyan);letter-spacing:.5px;margin-right:auto}
+.pr-ops{display:flex;gap:5px;flex-wrap:wrap}
+.pr-cards{margin:12px 0 10px;padding-left:14px;border-left:3px solid var(--cyan-light)}
+.pr-card,.pr-row{border:1px solid var(--border);border-radius:8px;padding:12px 14px 14px;margin-bottom:10px;background:#fff}
+.pr-cat h4{margin:18px 0 8px;font-size:14px;color:var(--primary);border-left:3px solid var(--cyan);padding-left:9px}
+.pr-hint{font-size:12px;color:var(--muted);line-height:1.7;margin:6px 0 0}
+
 </style>
 </head>
 <body>
@@ -154,6 +165,7 @@ button{font-family:inherit;cursor:pointer}
     <button class="tab" data-tab="nav">导航菜单</button>
     <button class="tab" data-tab="resources">Resource 页</button>
     <button class="tab" data-tab="newarticle">新建文章（不写 HTML）</button>
+    <button class="tab" data-tab="products">产品管理</button>
     <button class="tab" data-tab="pagetext">页面文字</button>
     <button class="tab" data-tab="faq">常见问题 FAQ</button>
     <button class="tab" data-tab="upload">上传附件</button>
@@ -263,6 +275,40 @@ button{font-family:inherit;cursor:pointer}
         </div>
         <div id="naResult" class="na-result"></div>
         <div class="note red">发布需要已连接 GitHub 且顶部显示绿色「数据来源：GitHub 仓库」。若提示禁止发布，先点右上角「拉取最新」。<br>同一个文件名再次发布会<b>覆盖</b>那篇旧页面，文章卡片也会更新、不会重复添加。</div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="products">
+      <div class="panel-head"><h2>产品管理（不用写 HTML）</h2><p>在这里增删改「大类」和「小产品卡片」、调整顺序，并维护每个产品 View Details 打开的详情页：图片 / 视频轮播、右侧介绍、参数表、FAQ 全部用表单完成。生成出来的页面和现有 <code>product-linear-bulb.html</code> 同款。</p></div>
+
+      <div class="card" id="prInitCard">
+        <h3>第一次使用：把网站上现有的产品搬进后台</h3>
+        <p class="sub">点一下，后台会把网站上现有的 <b>4 个大类、6 张产品卡片、6 份详情页内容</b> 一次性写进线上内容库并发布。之后产品页就由后台驱动了，你不用再改 HTML。</p>
+        <div class="note green" style="margin:10px 0 14px">只新增 <code>products</code> 这一段，<b>不会动</b>你之前在后台改过的公司名、导航、文章、FAQ 等任何内容；也不会上传电脑上的 content.json。</div>
+        <button class="btn primary" id="prBtnInit">一键搬入现有 4 个大类 / 6 个产品并发布</button>
+        <div id="prInitStat" class="na-impstat" style="margin-top:10px"></div>
+      </div>
+
+      <div class="card" id="prListCard">
+        <h3>① 大类与小产品卡片</h3>
+        <p class="sub">每个大类下面可以放多张小卡片。用 ↑ ↓ 调顺序，用「删除」移除；「编辑详情页 →」会直接跳到下面第 ② 步。卡片参数每行填 <code>名称 | 值</code>，可以直接从 Excel 复制粘贴。</p>
+        <div id="prCats"></div>
+        <button class="btn add" id="prBtnAddCat">+ 新增一个大类</button>
+        <div class="note" style="margin-top:12px">改完这里，点页面<b>右上角的「发布」</b>按钮，等 1–2 分钟按 Ctrl+F5 刷新产品页即可看到新顺序 / 新卡片。<br>新加的卡片如果要能点开 View Details，还要到下面第 ② 步选它、点「生成 / 更新这个详情页」。</div>
+      </div>
+
+      <div class="card" id="prDetailCard">
+        <h3>② 编辑产品详情页（View Details 打开的那个页面）</h3>
+        <p class="sub">选中产品后按表单填。图片和视频都在「轮播」清单里加：类型选「视频」时填 YouTube / 网盘 / mp4 网址即可，<b>不用上传视频文件</b>。参数表和 FAQ 都能增删改、上下移动。</p>
+        <div class="fields"><div class="field wide"><label>选择要编辑的产品</label><select id="prPick"></select></div></div>
+        <div id="prDetailForm"></div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:16px">
+          <button class="btn" id="prBtnPreview">预览效果</button>
+          <button class="btn primary" id="prBtnBuild">生成 / 更新这个详情页</button>
+          <button class="btn" id="prBtnBuildAll">一键统一全部详情页</button>
+        </div>
+        <div id="prResult" class="na-result"></div>
+        <div class="note red">「生成 / 更新这个详情页」会做两件事：把 <code>产品名.html</code> 写进仓库（同名安全覆盖，不会重复），并把产品列表一起发布。需要已连接 GitHub 且顶部显示绿色「数据来源：GitHub 仓库」。<br>删除卡片时<b>不会</b>自动删除已经生成的详情页文件，避免误删；如需清理请到 GitHub 仓库手动删。</div>
       </div>
     </section>
 
@@ -701,7 +747,7 @@ function blankData(){
       address:{line1:'',line2:''}, footer:{copyright:'',domainNote:''}, nav:[] },
     resources:{ hero:{tag:'',title:'',standfirst:''}, articles:[], downloads:[], comingNext:[], faq:[],
       cta:{title:'',text:'',button:'',href:''}, articleDrafts:{} },
-    pages:{}, pagesMeta:{}
+    pages:{}, pagesMeta:{}, products:{}
   };
 }
 /* 以线上内容为主，只补齐缺失结构；不丢任何未知字段（向后兼容）。 */
@@ -712,7 +758,7 @@ function setData(obj){
   if(!base.resources || typeof base.resources!=='object') base.resources={};
   Object.keys(def.site).forEach(function(k){ if(base.site[k]===undefined) base.site[k]=def.site[k]; });
   Object.keys(def.resources).forEach(function(k){ if(base.resources[k]===undefined) base.resources[k]=def.resources[k]; });
-  D=base; renderAll(); ptRenderInitBox(); ptRenderOptions(); ptRenderList(); naRenderExisting();
+  D=base; renderAll(); ptRenderInitBox(); ptRenderOptions(); ptRenderList(); naRenderExisting(); prRender();
 }
 function canPublish(){ return !busy && cfgReady() && source==='github' && !!baseSha; }
 function shortSha(){ return baseSha ? baseSha.slice(0,7) : '—'; }
@@ -1026,6 +1072,7 @@ function bind(){
     $$('.panel').forEach(function(p){ p.classList.toggle('active',p.getAttribute('data-panel')===k); });
     if(k==='media' && $('#mediaList').textContent.indexOf('刷新列表')>-1) listMedia();
     if(k==='pagetext'){ ptRenderInitBox(); ptRenderOptions(); ptRenderList(); }
+    if(k==='products'){ prRender(); }
   });});
   $('#btnSettings').addEventListener('click',openSettings);
   $('#btnCloseModal').addEventListener('click',closeSettings);
@@ -1076,6 +1123,7 @@ function bind(){
   $('#ptBulk').addEventListener('click',ptBulkReplace);
   initImageSelect();
   naBind();
+  prBind();
 }
 
 
@@ -1596,6 +1644,517 @@ function naBind(){
 }
 /* === NA:END === */
 
+
+/* ==================== 产品管理（不用写 HTML） ==================== */
+/* === PR:BEGIN === */
+var PRODUCT_STYLE    = "<style>\n    .pdp { padding: 56px 0 0; }\n    .pdp-hero { display: grid; grid-template-columns: 480px 1fr; gap: 48px; align-items: start; }\n    .pdp-stage { position: relative; background: #F1F2F4; border-radius: var(--radius); overflow: hidden; display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 4 / 5; border: 1px solid var(--border); }\n    .pdp-stage img { width: 100%; height: 100%; object-fit: contain; padding: 26px; }\n    .pdp-badge { position: absolute; top: 14px; left: 14px; background: rgba(10,37,64,.9); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 5px 11px; border-radius: 999px; }\n    .pdp-info .kicker { display: inline-block; background: var(--cyan-light); color: var(--cyan); font-size: .75rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1rem; }\n    .pdp-info h1 { font-size: 2.5rem; font-weight: 800; color: var(--primary); line-height: 1.15; margin-bottom: 1rem; }\n    .pdp-info .lead { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1rem; }\n    .pdp-meta { font-size: .9rem; color: var(--text-muted); margin-bottom: 1.75rem; }\n    .pdp-info ul { margin-bottom: 1.75rem; }\n    .pdp-info ul li { font-size: .95rem; color: var(--text); padding-left: 1.15rem; position: relative; margin-bottom: .45rem; }\n    .pdp-info ul li::before { content: \"\"; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }\n    .pdp-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }\n    .pdp-certs { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .85rem; color: var(--text-muted); }\n    .pdp-certs span { background: var(--bg-alt); color: var(--primary); border: 1px solid var(--border); font-size: .75rem; font-weight: 700; padding: .3rem .7rem; border-radius: 999px; }\n    .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius); }\n    .cmp-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }\n    .cmp-table thead th { background: var(--primary); color: #fff; font-size: .8rem; font-weight: 600; text-align: left; padding: 1rem 1.1rem; letter-spacing: .3px; white-space: nowrap; }\n    .cmp-table tbody td { padding: .9rem 1.1rem; font-size: .9rem; border-top: 1px solid var(--border); vertical-align: middle; }\n    .cmp-table tbody tr:hover { background: #FAFBFC; }\n    .cmp-table tbody td:first-child { color: var(--primary); font-weight: 700; white-space: nowrap; }\n    @media (max-width: 1000px) {\n      .pdp-hero { grid-template-columns: 1fr; gap: 2rem; }\n      .pdp-info h1 { font-size: 2rem; }\n    }\n  \n    /* 图片 / 视频轮播（后台自动生成的产品详情页用） */\n    .pdp-gallery .pdp-frame { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }\n    .pdp-gallery .pdp-frame img { width: 100%; height: 100%; object-fit: contain; padding: 26px; }\n    .pdp-gallery .pdp-frame video, .pdp-gallery .pdp-frame iframe { width: 100%; height: 100%; border: 0; padding: 0; object-fit: contain; background: #000; }\n    .pdp-gallery .pdp-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border: 0; border-radius: 50%; background: rgba(10,37,64,.72); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center; }\n    .pdp-gallery .pdp-arrow:hover { background: var(--accent); }\n    .pdp-gallery .pdp-prev { left: 12px; }\n    .pdp-gallery .pdp-next { right: 12px; }\n    .pdp-gallery .pdp-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; margin-top: 12px; }\n    .pdp-gallery .pdp-thumbs button { padding: 0; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; background: #F1F2F4; height: 84px; display: flex; align-items: center; justify-content: center; }\n    .pdp-gallery .pdp-thumbs button.active { border-color: var(--accent); }\n    .pdp-gallery .pdp-thumbs button img { width: 100%; height: 100%; object-fit: cover; display: block; }\n    .pdp-gallery .pdp-thumb-video { font-size: 22px; color: var(--primary); }\n    @media (max-width: 1000px) { .pdp-gallery .pdp-arrow { width: 32px; height: 32px; font-size: 18px; } }\n\n</style>";
+var PRODUCT_HEADER   = "<header class=\"site-header scrolled\">\n  <div class=\"container header-inner\">\n    <a href=\"index.html\" class=\"logo\"><img src=\"assets/img/logo.png\" alt=\"Grande New Energy\"></a>\n    <nav class=\"nav\"><a href=\"index.html\">Home</a><a href=\"products.html\" class=\"active\">Products</a><a href=\"skd-ckd.html\">SKD / CKD</a><a href=\"resources/index.html\">Resources</a><a href=\"about.html\">About</a><a href=\"contact.html\">Contact</a></nav>\n    <div class=\"header-cta\">\n      <a href=\"contact.html\" class=\"btn btn-primary btn-sm\">Request Quote</a>\n      <button class=\"menu-toggle\" aria-label=\"Menu\"><span></span><span></span><span></span></button>\n    </div>\n  </div>\n</header>";
+var PRODUCT_FOOTER   = "<footer class=\"footer\">\n  <div class=\"container\">\n    <div class=\"footer-grid\">\n      <div>\n        <div class=\"footer-logo\">\n          <img src=\"assets/img/logo-light.png\" alt=\"Grande New Energy\">\n        </div>\n        <p style=\"font-size:0.9rem;line-height:1.6;margin-bottom:1rem;\">LED lighting exporter &mdash; luminaires supplied as SKD / CKD kits for local assembly. Powered by our self-developed driver technology, proven on 100&ndash;440 Vac grids.</p>\n        <p style=\"font-size:0.85rem;opacity:0.6;\">Wide-grid proven &middot; Serving South &amp; Southeast Asia</p>\n      </div>\n      <div>\n        <h5>Products</h5>\n        <a href=\"product-street-light.html\">Street Light 40/60W</a>\n        <a href=\"product-high-bay.html\">High Bay 100W</a>\n        <a href=\"product-flood-light.html\">Flood Light 50W</a>\n        <a href=\"product-linear-bulb.html\">Linear Bulb 9–50W</a>\n        <a href=\"product-batten.html\">Batten Drive 20/36W</a>\n        <a href=\"product-emergency-lamp.html\">Emergency Lamp</a>\n        <a href=\"product-linear-bulb.html\">Linear Bulb 9–50W</a>\n        <a href=\"product-batten.html\">Batten Drive 20/36W</a>\n        <a href=\"product-emergency-lamp.html\">Emergency Lamp</a>\n      </div>\n      <div>\n        <h5>Company</h5>\n        <a href=\"skd-ckd.html\">SKD / CKD Solutions</a>\n        <a href=\"about.html\">About Us</a>\n        <a href=\"contact.html\">Contact</a>\n      </div>\n      <div>\n        <h5>Contact</h5>\n        <a data-c=\"email\" href=\"mailto:Sales@grandemicro.com\">Sales@grandemicro.com</a>\n        <a data-c=\"phone\" href=\"tel:+8651085388846\">+86-510-85388846</a>\n        <p data-c=\"address\" style=\"font-size:0.85rem;margin-top:0.5rem;\">Wuxi Grandemicro Technology Co., Ltd.<br>530 Building A, Taihu Science Park<br>Wuxi, Jiangsu, China</p>\n      </div>\n    </div>\n    <div class=\"footer-bottom\">\n      <span data-c=\"copyright\">&copy; 2026 Wuxi Grandemicro Technology Co., Ltd. All rights reserved.</span>\n      <span data-c=\"domainNote\">Domain: gmtne.com</span>\n    </div>\n  </div>\n</footer>";
+var PRODUCT_FLOATS   = "<a href=\"https://www.linkedin.com/company/grandenewenergy\" class=\"linkedin-float\" target=\"_blank\" title=\"Grande New Energy on LinkedIn\">in</a>\n<a href=\"https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20your%20LED%20lighting%20solutions.\" class=\"whatsapp-float\" target=\"_blank\" title=\"Chat on WhatsApp\">💬</a>";
+var PRODUCT_SCRIPTS  = "<script src=\"assets/js/site-config.js\"><\/script>\n<script src=\"assets/js/main.js\"><\/script>\n<script src=\"assets/js/content-loader.js\"><\/script>";
+var PDP_GALLERY_JS   = "(function(){\n  var data=document.getElementById('pdpMedia'); if(!data) return;\n  var items=[]; try{ items=JSON.parse(data.textContent)||[]; }catch(e){ return; }\n  if(!items.length) return;\n  var frame=document.getElementById('pdpFrame'), thumbs=document.getElementById('pdpThumbs'),\n      badge=document.getElementById('pdpBadge'), prev=document.getElementById('pdpPrev'),\n      next=document.getElementById('pdpNext');\n  var idx=0;\n  function isEmbed(u){ return /(youtube\\.com|youtu\\.be|vimeo\\.com|bilibili\\.com)/i.test(u||''); }\n  function show(){\n    var it=items[idx]||{};\n    frame.innerHTML='';\n    if((it.type||'image')==='video'){\n      var v;\n      if(isEmbed(it.src)){\n        v=document.createElement('iframe');\n        v.src=it.src||''; v.setAttribute('allowfullscreen','');\n        v.setAttribute('allow','accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');\n        v.title=it.caption||'Product video';\n      }else{\n        v=document.createElement('video');\n        v.src=it.src||''; v.controls=true; v.playsInline=true; v.preload='metadata';\n      }\n      frame.appendChild(v);\n    }else{\n      var im=document.createElement('img'); im.src=it.src||''; im.alt=it.caption||''; frame.appendChild(im);\n    }\n    if(badge) badge.textContent=it.caption||'';\n    for(var j=0;j<thumbs.children.length;j++) thumbs.children[j].className=(j===idx?'active':'');\n  }\n  function build(){\n    thumbs.innerHTML='';\n    items.forEach(function(it,i){\n      var b=document.createElement('button'); b.type='button';\n      if((it.type||'image')==='video'){\n        var s=document.createElement('span'); s.className='pdp-thumb-video'; s.textContent='▶'; b.appendChild(s);\n      }else{\n        var im=document.createElement('img'); im.src=it.src||''; im.alt=''; b.appendChild(im);\n      }\n      b.addEventListener('click',function(){ idx=i; show(); });\n      thumbs.appendChild(b);\n    });\n  }\n  if(prev) prev.addEventListener('click',function(){ idx=(idx-1+items.length)%items.length; show(); });\n  if(next) next.addEventListener('click',function(){ idx=(idx+1)%items.length; show(); });\n  if(items.length<2){ if(prev) prev.style.display='none'; if(next) next.style.display='none'; if(thumbs) thumbs.style.display='none'; }\n  build(); show();\n})();";
+var PRODUCTS_SEED    = {"intro":"Need another wattage or form factor? All six series run on the same driver platform — tell us the target and we will run the design.","categories":[{"id":"street","num":"01","name":"Street Light","desc":"Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.","cards":[{"slug":"product-street-light","image":"assets/img/street-light-main.png","alt":"YE-01 street light 40/60W","tag":"Street Light · SKD/CKD","title":"Street Light 40 / 60W","desc":"Road & area lighting on the same verified driver platform.","specsText":"Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"}]},{"id":"highbay","num":"02","name":"High Bay","desc":"Warehouse, factory and gymnasium high bays. Lab-verified 100 W reference design with a full 18-page test report — measured across 100–440 Vac, not estimated.","cards":[{"slug":"product-high-bay","image":"assets/img/rl-highbay-100w.png","alt":"YE-01 100W high bay","tag":"High Bay · SKD/CKD","title":"High Bay 100W","desc":"FL-YE-01W0100V144V01 · lab test report available","specsText":"Output | 144V / 610mA\nEfficiency | ≥ 91.8 %\nPF | 0.956\nSurge | 4 kV"}]},{"id":"flood","num":"03","name":"Flood Light","desc":"Yard, compound, billboard and sports-ground flood lighting. Lab-verified 50 W reference design with the same 18-page report depth.","cards":[{"slug":"product-flood-light","image":"assets/img/rl-flood-50w.png","alt":"YE-01 50W flood light","tag":"Flood Light · SKD/CKD","title":"Flood Light 50W","desc":"FL-YE-01W050V144V01 · lab test report available","specsText":"Output | 144V / 310mA\nEfficiency | ≥ 91.4 %\nPF | 0.957\nSurge | 4 kV"}]},{"id":"indoor","num":"04","name":"Indoor Lighting","desc":"Linear bulbs, battens and emergency lamps for homes, shops and offices — the same 90–440 Vac platform and 4 kV surge rating as our outdoor series.","cards":[{"slug":"product-linear-bulb","image":"assets/img/gmtne-bulb-1.png","alt":"Linear LED bulb series 9–50W","tag":"Indoor · SKD/CKD","title":"Linear Bulb 9–50W","desc":"High-power T-bulb series, PF 0.988, >105 lm/W.","specsText":"Input | 90–440 Vac\nPF | 0.988\nTHD | < 15 %\nEfficacy | > 105 lm/W"},{"slug":"product-batten","image":"assets/img/gmtne-batten-1.png","alt":"LED batten light series","tag":"Indoor · SKD/CKD","title":"Batten Drive 20 / 36W","desc":"Surface-mount batten, high-integration driver.","specsText":"Output | 90V / 200·370mA\nEfficiency | ≥ 89–91 %\nPF | 0.98\nSurge | 4 kV"},{"slug":"product-emergency-lamp","image":"assets/img/gmtne-emergency-1.png","alt":"Emergency LED lamp","tag":"Indoor · SKD/CKD","title":"Emergency Lamp","desc":"Fast-charging emergency bulb, battery management built in.","specsText":"Input | 90–440 Vac\nPF | > 0.97\nEfficiency | > 87 %\nSurge | 4 kV"}]}],"details":{"product-street-light":{"slug":"product-street-light","pageTitle":"Street Light 40 / 60W - SKD / CKD Solution | Grande New Energy","description":"Grande New Energy LED street light SKD/CKD solution for municipal and industrial lighting. 40W/60W on the YE-01 driver platform with YT2181GTE5. Verified 4kV surge, >0.95 PF. Reference design on request.","crumbCategory":"","kicker":"Outdoor Luminaires · SKD / CKD","title":"Street Light 40 / 60W","lead":"A street-light reference design on the proven YE-01 platform — the same YT2181GTE5 driver IC and architecture already lab-verified in our 100W high bay and 50W flood light. Supplied as SKD or CKD for local assembly.","meta":"MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva","badge":"YE-01 · STREET LIGHT 40–60 W","certsLabel":"Options:","media":[{"type":"image","src":"assets/img/street-light-main.png","caption":"YE-01 · STREET LIGHT 40–60 W"}],"specTitle":"Specifications","specNote":"","specTable":"Parameter | Specification\nProduct type | LED Street Light · pole mount\nPower options | 40 W / 60 W (reference design)\nDriver platform | YE-01 · self-developed high-PF flyback driver\nInput | 100–440 Vac · 47–63 Hz\nEfficiency (platform-verified) | ≥ 91 %\nPF / THD | > 0.95 / < 29 %\nSurge immunity | 4 kV (platform-verified)\nHousing | Die-cast aluminum · dark gray powder coating\nLight distribution | Type II / Type III\nSupply form | SKD / CKD (finished fixture on request)","faqKicker":"Street Light 40 / 60 W · YE-01","faq":[{"q":"How does the driver behave on a 440 V feeder?","a":"The YE-01 driver holds constant current from roughly 165 to 280 Vac. Below that it folds back to protect itself; above 290 Vac output is deliberately derated, so a fixture running on a 440 V feeder will light up and stay stable — it simply will not deliver full rated wattage. On our 100 W high bay test unit, output settled near 38 W at 440 Vac . We publish the full 22-point grid rather than a single headline voltage because that is the honest picture: wide input means the light survives, not that it performs identically everywhere. The street-light wattage curves are measured once a project spec is fixed."},{"q":"Can one driver cover both the 40 W and the 60 W version?","a":"Yes. Both wattages sit on the same single-board driver; the difference is the output current setting and the LED board string configuration. That means one driver reel and one assembly procedure covers your whole street-light range, which is usually the difference between holding two spare-part lines and holding one."},{"q":"What pole height and spacing does the 60 W version suit?","a":"Typically 6–8 m mounting height for secondary and residential roads. Type II distribution for carriageways up to about 9 m wide, Type III where the pole sits on one side and the beam has to reach further across. We do not publish a lux grid for a reference design, because spacing depends on your road class and local lighting code. Send us the road width, pole height and target lux level, and we will run the layout with you."},{"q":"IP65 or IP66 — which one do I actually need?","a":"IP65 protects against water jets; IP66 against powerful jets, such as driving rain at an exposed coastal or elevated site. For inland towns IP65 is normally enough and costs less. For coastal roads, or anywhere the housing faces monsoon wind directly, specify IP66 — the gasket and cable-gland cost difference is small next to a field failure."},{"q":"Does the housing survive salt spray and monsoon humidity?","a":"The body is die-cast aluminium with a powder coating, which is the right starting point for coastal installations. Salt-spray endurance depends on coating thickness and pretreatment, so we confirm the exact hours against your site conditions rather than quoting a generic number. If your project is within a few kilometres of the coast, tell us at inquiry stage and we will specify the coating accordingly."},{"q":"With 4 kV surge immunity, do I still need a separate SPD?","a":"For most urban distribution circuits, no — 4 kV on the driver covers the switching transients you normally see. For poles at the end of an overhead line, in high-lightning regions, or on the same circuit as large welding or pumping loads, we recommend an external surge protector at the pole. It is a low-cost part and it protects the whole fixture."},{"q":"Who files the certification in my country — you or me?","a":"You do, because registration schemes such as BIS, SIRIM, TISI and SNI require a locally registered entity as the applicant. Our job is to make that filing fast: we hand over the test data, BOM, driver specifications and technical file your lab and agent need. Filing as the registrant also means the certificate sits in your company name, which is worth more to you than a supplier’s certificate ever would be."},{"q":"Can the LED module or driver be replaced in the field?","a":"Yes — and this is the practical advantage of SKD construction. The LED board and the driver are separate assemblies held by screws and connectors, so a failed driver is a 10-minute swap by a technician with a screwdriver, not a fixture replacement. Both parts can be ordered separately in your maintenance quantities."}],"bulletsText":"40 W and 60 W versions · pole-mount arm, Type II/III light distribution options\nBuilt on the YT2181GTE5 driver platform — 100–440 Vac input, verified in our 18-page lab reports\n4 kV surge immunity, PF > 0.95, programmable current foldback protection\nHigh-integration single-board driver — fewer parts, lower BOM, easier local assembly\nOpen-circuit, short-circuit and over-temperature protection included","actionsText":"Request Reference Design | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20YE-01%20street%20light%2040%2F60W%20SKD%20solution.","certsText":"RoHS, IP66, CE on request, BIS on request"},"product-high-bay":{"slug":"product-high-bay","pageTitle":"High Bay 100W - FL-YE-01W0100V144V01 | Grande New Energy","description":"Grande New Energy 100W high bay luminaire, FL-YE-01W0100V144V01. 144V / 610mA, 100-440Vac input, PF 0.956, 4kV surge, ≥91.8% efficiency. Lab test report downloadable. SKD/CKD for local assembly.","crumbCategory":"High Bay & Flood Light","kicker":"Outdoor Luminaires · SKD / CKD","title":"High Bay 100W","lead":"FL-YE-01W0100V144V01 — a 100 W UFO high bay on the YE-01 platform, lab-tested with our self-developed driver technology. Ship finished luminaires, or knocked-down kits for local assembly.","meta":"MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva","badge":"YE-01 · HIGH BAY 100 W","certsLabel":"Options:","media":[{"type":"image","src":"assets/img/rl-highbay-100w.png","caption":"YE-01 · HIGH BAY 100 W"}],"specTitle":"Specifications","specNote":"","specTable":"Parameter | Specification\nPart number | FL-YE-01W0100V144V01\nType | High Bay · 100 W (UFO)\nOutput | 144 V / 610 mA ±5 %\nLED load | 24C6B · 6 V LEDs (144 × SMD2835)\nDriver | Self-developed high-PF flyback (single-board)\nInput | 100–440 Vac · 47–63 Hz\nEfficiency @ 230 Vac | ≥ 91.8 %\nPF / THD | 0.956 / 28.53 %\nSurge | 4 kV\nDriver board size | 191.5 × 165 mm","faqKicker":"High Bay 100 W · YE-01","faq":[{"q":"What happens above 290 Vac on a 440 V supply?","a":"Constant current holds to roughly 290 Vac, then output folds back to protect the board. On our 100 W unit output settled near 38 W at 440 Vac : the fixture keeps running safely, it just will not deliver rated wattage. That behaviour is normal for any single-stage flyback and it is why we publish the measured 22-point grid. A supplier quoting only “100–440 Vac” without the derating curve is telling you half the story."},{"q":"Which mounting height does the 100 W unit suit?","a":"Typically 8–12 m in warehousing and logistics halls, 6–8 m in lower workshops and service bays. Narrower beam angles for high ceilings, wider for low ones. Mounting height and beam angle have to be chosen together — picking one without the other is the most common reason a high bay ends up with dark aisles. Send us the height and the target lux at floor level and we will match the optic."},{"q":"How hot does it run after 90 minutes?","a":"At 32 °C ambient and 230 Vac, both driver ICs settle at 82.5 °C while the EE16 transformer winding reaches 100.6 °C. At 265 Vac the winding climbs to 104.3 °C and becomes the real thermal limit — not the IC, as most buyers assume. Extrapolated to a 45 °C ambient that is about 117.3 °C, roughly 13 K below the Class B 130 °C ceiling. That headroom is the number to check before specifying this fixture in an unventilated roof space."},{"q":"Does 100 W replace a 250 W HPS one for one?","a":"Not by wattage alone. On delivered lumens a 100 W LED usually gets close to a 250 W high-pressure sodium lamp, but the number that decides whether your aisles stay lit is maintained lux at the working plane. That depends on mounting height, beam angle, luminaire efficiency and the maintenance factor your client accepts. Give us height and target lux; we will run the comparison rather than hand you a rule of thumb."},{"q":"What LED configuration is inside?","a":"24 series × 6 parallel on 6 V SMD2835, 144 devices in total, driven at 144 V / 610 mA ±5 %. The series ratio is chosen so output voltage stays around 144 V while current stays moderate — that balance is what allows a single-board driver measuring 191.5 × 165 mm to carry the whole 100 W."},{"q":"What should I specify if the plant is hot or dusty?","a":"Actual ceiling temperature, first of all. Our thermal data was taken at 32 °C ambient; at 45 °C the winding sits near 117.3 °C, so a plant running hotter than that needs a different design, not a different sales claim. For dust, the two failure points are the housing gasket and the driver cavity. Tell us the environment and we will confirm the sealing level and the cleaning interval the fixture expects."},{"q":"Who files the certification in my country — you or me?","a":"You do. Registration schemes such as BIS, SIRIM, TISI and SNI require a locally registered entity as the applicant. We supply the test data, BOM, driver specifications and technical file that your lab and agent need to file quickly. The certificate then sits in your company name — an asset on your balance sheet, not a document you borrow from a supplier."},{"q":"Can the driver board be replaced on its own?","a":"Yes. The driver is a single board measuring 191.5 × 165 mm, mounted on standoffs and connected by plug-in leads, so it lifts out without disturbing the LED board or the optic. Keep a small stock of boards and a failed unit is a bench repair rather than a scrapped fixture."}],"bulletsText":"144 V / 610 mA ±5 % output — 24C6B · 6 V LED string\n100–440 Vac input, verified across the full range in an 18-page lab report\nPF 0.956 and THD 28.53 % at 230 Vac full load — measured, not estimated\n4 kV surge passed: 5 counts per polarity at 0 / 90 / 180 / 270° phase\nProgrammable current foldback at low and high line; open, short and OTP protection","actionsText":"Download Test Report | #downloads\nRequest Quote | contact.html","certsText":"RoHS, IP66, CE on request, BIS on request"},"product-flood-light":{"slug":"product-flood-light","pageTitle":"Flood Light 50W - FL-YE-01W050V144V01 | Grande New Energy","description":"Grande New Energy 50W flood light, FL-YE-01W050V144V01. 144V / 310mA, 100-440Vac input, PF 0.957, 4kV surge, ≥91.4% efficiency. Lab test report downloadable. SKD/CKD for local assembly.","crumbCategory":"High Bay & Flood Light","kicker":"Outdoor Luminaires · SKD / CKD","title":"Flood Light 50W","lead":"FL-YE-01W050V144V01 — a 50 W flood light on the YE-01 platform, lab-tested with our self-developed driver technology. Ship finished luminaires, or knocked-down kits for local assembly.","meta":"MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva","badge":"YE-01 · FLOOD LIGHT 50 W","certsLabel":"Options:","media":[{"type":"image","src":"assets/img/rl-flood-50w.png","caption":"YE-01 · FLOOD LIGHT 50 W"},{"type":"image","src":"assets/img/pcb-flood-50w.png","caption":"LED + DRIVER PCB · 132 × 134.5 MM"},{"type":"image","src":"assets/img/skd-kit-flood.png","caption":"SKD KIT · ALL PARTS FOR LOCAL ASSEMBLY"}],"specTitle":"Specifications","specNote":"","specTable":"Parameter | Specification\nPart number | FL-YE-01W050V144V01\nType | Flood Light · 50 W\nOutput | 144 V / 310 mA ±5 %\nLED load | 24C3B · 6 V LEDs (72 × SMD2835)\nDriver | Self-developed high-PF flyback (single-board)\nInput | 100–440 Vac · 47–63 Hz\nEfficiency @ 230 Vac | ≥ 91.4 %\nPF / THD | 0.957 / 27.89 %\nSurge | 4 kV\nDriver board size | 132 × 134.5 mm","faqKicker":"Flood Light 50 W · YE-01","faq":[{"q":"What happens above 290 Vac on a 440 V supply?","a":"Same platform behaviour as the high bay: constant current to about 290 Vac, then foldback. The fixture runs safely on a 440 V feeder but will not deliver its rated 50 W. On the 100 W version of this platform, measured output at 440 Vac settled near 38 W. We will run the equivalent curve for 50 W once a project wattage is fixed, so the number you quote is measured rather than extrapolated."},{"q":"Symmetric or asymmetric beam — which do I need for a facade?","a":"Asymmetric, in almost every facade and wall-wash case. A symmetric beam throws as much light into the sky and the neighbouring property as onto the surface you are lighting, which is both wasteful and the first thing a lighting consultant will object to. Symmetric optics still make sense for open yards and general area lighting where there is no surface to graze."},{"q":"How far does the 50 W version throw?","a":"Useful throw depends more on beam angle than on wattage. With a narrow optic, 50 W will put usable light on a surface 20–30 m away; with a wide optic the same fixture is better used within 8–12 m. Because we do not publish lux grids for a reference design, tell us the distance, the mounting height and the target illuminance and we will specify the optic instead of guessing."},{"q":"How do I control glare on a yard or sports pole?","a":"Three things, in order of effect: mount higher, use a narrower beam aimed below the horizontal, and add a shield or visor to the housing. Wattage is the last lever, not the first. If the pole also lights a road or neighbouring property, local light-trespass rules usually cap the upward component, so the optic and the aiming angle have to be chosen together."},{"q":"How hot does the 50 W version run?","a":"Our 50 W flood light thermal soak at 33 °C ambient put the EE16 transformer winding at 93.4 °C at 265 Vac , with the driver ICs lower still. That is roughly 11 K cooler than the 100 W high bay on the same platform, which is what you would expect from half the throughput. In a hot climate, add your site ambient to that rise before deciding whether the headroom is enough."},{"q":"What sealing level do I need for permanent outdoor mounting?","a":"IP65 as a baseline for wall and pole mounting under an eave; IP66 where the fixture takes wind-driven rain directly, which is most coastal and exposed sites. The cable entry, not the lens, is where water gets in when a fitting fails. Tell us the mounting orientation — horizontal, tilted or vertical — because it changes how water sits on the gasket."},{"q":"Who files the certification in my country — you or me?","a":"You do, as the locally registered applicant for schemes such as BIS, SIRIM, TISI or SNI. We provide the test data, BOM and technical file your lab needs, and we answer their technical questions directly so the filing does not stall on us."},{"q":"Can the LED board be swapped without replacing the fixture?","a":"Yes. The LED board and the 132 × 134.5 mm driver board are separate assemblies, each held by screws and plug-in connectors. A failed driver is a board swap in minutes; the housing, gasket and optic stay in service."}],"bulletsText":"144 V / 310 mA ±5 % output — 24C3B · 6 V LED string\n100–440 Vac input, verified across the full range in an 18-page lab report\nPF 0.957 and THD 27.89 % at 230 Vac full load — measured, not estimated\n4 kV surge passed: 5 counts per polarity at 0 / 90 / 180 / 270° phase\nEOL-free single-board design — fewer parts, lower BOM","actionsText":"Download Test Report | #downloads\nRequest Quote | contact.html","certsText":"RoHS, IP66, CE on request, BIS on request"},"product-linear-bulb":{"slug":"product-linear-bulb","pageTitle":"Linear LED Bulb 9–50W (CKD) | Grande New Energy","description":"Grande New Energy linear LED bulb, 9–50 W, CKD supply. 90–440 Vac input, 4 kV surge, PF 0.988, THD <15%, >105 lm/W. Low EMI for conduction and radiation. Self-developed driver platform.","crumbCategory":"","kicker":"Indoor Lighting · SKD / CKD","title":"Linear LED Bulb","lead":"High-power linear (T-bulb) series from 9 W to 50 W on our self-developed driver platform. Wide input range, low EMI and high efficacy — supplied as CKD kits for local assembly across Asia.","meta":"MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva","badge":"LINEAR LED BULB · 9–50 W","certsLabel":"Options:","media":[{"type":"image","src":"assets/img/gmtne-bulb-1.png","caption":"LINEAR LED BULB · 9–50 W"}],"specTitle":"Series specifications","specNote":"One driver platform covers 9–50 W. Wattage-specific derating curves (Vin vs Pin, THD) are provided with each quotation — tell us your target lumen package and base type.","specTable":"Parameter | Specification\nSeries wattage | 9 – 50 W (linear / T-bulb form factor)\nInput voltage | 90 – 440 Vac\nSurge capability | 4 kV\nPower factor | 0.988 @ 230 Vac\nTHD | < 15 % @ 230 Vac\nLight efficiency | > 105 lm/W\nEMI | Low EMI — conduction & radiation compliant\nOTP | Settable with external resistor\nDriver platform | Self-developed high-PF platform\nSupply model | CKD kits / finished bulbs","faqKicker":"Linear LED Bulb 9–50 W","faq":[{"q":"Why 90–440 Vac when my grid is 220–240 V?","a":"Because the grid you are quoted is not the grid you get. Feeder voltage sags at the end of a line, rises at night when load drops, and swings hard when a large load switches nearby. A lamp rated only for 220–240 V works in the lab and fails in the field. The wide range also means one SKU covers every market in the region, which simplifies your own stock keeping."},{"q":"How does one driver BOM cover the whole 9–50 W range?","a":"Over-temperature protection is set by an external resistor rather than being fixed inside the IC. Change that resistor and the same board serves a different wattage, so you buy one driver in volume and configure it per SKU at assembly instead of carrying five part numbers."},{"q":"Why does THD below 15 % matter in practice?","a":"Because you are not the only load on the transformer. High harmonic distortion from lighting heats shared distribution transformers and neutral conductors, and utilities in several markets now check it at the connection point. Under 15 % at 230 Vac full load keeps a large lighting installation from becoming the reason a building fails a power quality inspection."},{"q":"Are the lamp bases included?","a":"Bases are an option, not standard: specify E27 or B22 and they ship with the kit. Most customers assembling locally prefer to source bases in-country, because they are bulky, cheap and easier to buy regionally than to ship from us."},{"q":"What does 105 lm/W mean for my market?","a":"It is a measured system figure for the series, not a chip datasheet number, so it is the value you can put in front of a utility or a tender specification. Whether it clears a particular energy-efficiency tier depends on the scheme — send us the tier you are targeting and we will confirm which wattages qualify."},{"q":"Who files the certification in my country — you or me?","a":"You do. BIS, SIRIM, TISI and SNI all require a locally registered applicant. We provide the test data, technical file and driver documentation your lab needs, and the resulting certificate stays in your name rather than ours."}],"bulletsText":"Wide input voltage range: 90–440 Vac — one SKU covers the whole region's grid\nHigh surge capability: 4 kV line-to-line, passes harsh grid disturbances\nHigh PF: 0.988 @ 230 Vac full load — measured, not estimated\nLow THD: < 15 % @ 230 Vac — friendly to shared distribution transformers\nLight efficiency > 105 lm/W across the series\nLow EMI: compliant for both conduction and radiation\nOTP settable with an external resistor — one driver BOM serves multiple wattages","actionsText":"Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20Linear%20LED%20Bulb%209-50W%20%28CKD%29.","certsText":"RoHS, BIS on request, E27 / B22 base, Wattage 9–50 W"},"product-batten":{"slug":"product-batten","pageTitle":"LED Batten Drive 20W / 36W (CKD) | Grande New Energy","description":"Grande New Energy LED batten drive, 20W and 36W, CKD supply. 90–440 Vac, 4 kV surge, efficiency ≥89% / ≥91%, PF 0.98. High-integration driver — no VCC cap, no COMP cap, no FB resistor.","crumbCategory":"","kicker":"Indoor Lighting · SKD / CKD","title":"LED Batten Drive","lead":"Surface-mount tube batten in 20 W and 36 W on our high-integration driver platform. Fewer parts, lower BOM, and full protection — supplied as CKD kits for local assembly.","meta":"MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva","badge":"LED BATTEN · 20 / 36 W","certsLabel":"Options:","media":[{"type":"image","src":"assets/img/gmtne-batten-1.png","caption":"LED BATTEN · 20 / 36 W"}],"specTitle":"Model specifications","specNote":"","specTable":"Parameter | Batten Drive 20W | Batten Drive 36W\nOutput | 90 V / 200 mA | 90 V / 370 mA\nInput voltage | 90 – 440 Vac | 90 – 440 Vac\nSurge capability | 4 kV | 4 kV\nEfficiency @ 230 Vac | ≥ 89 % | ≥ 91 %\nPower factor | 0.98 | 0.98\nIntegration | No VCC cap · no COMP cap · no FB resistor\nProtection | Open / short / over-temperature regulation / current dropping\nSupply model | CKD kits / finished battens","faqKicker":"LED Batten Drive 20 / 36 W","faq":[{"q":"2 ft or 4 ft — which should I stock?","a":"Stock both, but lead with 4 ft. It is the replacement size for the fluorescent battens already installed across the region, so it moves on compatibility rather than on being sold. 2 ft is the fitting for corridors, stairwells and small rooms where a 4 ft tube simply does not fit. It is a smaller volume but a very stable one."},{"q":"Why is the 20 W version less efficient than the 36 W?","a":"Driver overhead is roughly fixed while output scales with wattage, so the same board carries a larger share of its own consumption on the smaller lamp: ≥ 89 % at 20 W against ≥ 91 % at 36 W. It is worth knowing when you quote on running cost, because the 20 W unit is not simply two-thirds of the 36 W in efficiency terms."},{"q":"What does “no VCC cap, no COMP cap, no FB resistor” actually mean for me?","a":"It means three fewer components per driver, and those three are among the ones that drift with heat and age. Fewer parts means a shorter assembly step, a lower BOM, and fewer field returns that trace back to a capacitor drying out."},{"q":"Will it hold up on an unstable single-phase supply?","a":"That is what the 90–440 Vac range is for: sag at the end of a feeder, night-time overvoltage, and the dip when a large load starts nearby. Input is protected to 4 kV line-to-line, in line with the rest of the platform. If your grid regularly goes below 90 V or above 440 V, that is a different problem and worth telling us about."},{"q":"Who files the certification in my country — you or me?","a":"You do, as the locally registered applicant for BIS, SIRIM, TISI or SNI. We hand over the test data, BOM and technical file your lab needs, and answer their questions during review."},{"q":"Can the LED board be replaced without scrapping the housing?","a":"Yes. The tube and the driver are separate assemblies inside the housing, so a failure is a board or tube swap rather than a whole-fitting replacement. That matters for commercial buildings where the fittings are already installed and access is the expensive part."}],"bulletsText":"Wide input voltage range: 90–440 Vac — one SKU covers the whole region's grid\nHigh surge capability: 4 kV line-to-line\nHigh efficiency: ≥ 89 % (20 W) / ≥ 91 % (36 W) @ 230 Vac\nHigh PF: 0.98 @ 230 Vac\nHigh integration for low-cost design: no VCC cap, no COMP cap, no FB resistor\nFull protection: open-circuit, short-circuit, over-temperature regulation, current dropping","actionsText":"Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20LED%20Batten%20Drive%2020W%2F36W%20%28CKD%29.","certsText":"RoHS, BIS on request, 2 ft / 4 ft housing, 5000 K / 6500 K"},"product-emergency-lamp":{"slug":"product-emergency-lamp","pageTitle":"Emergency LED Lamp (CKD) | Grande New Energy","description":"Grande New Energy emergency LED lamp, CKD supply. Fast charging, 90–440 Vac, 4 kV surge, >87% efficiency, PF >0.97. Battery overcharge 4.2V / overdischarge protection 2.4V, max emergency drive current 1A.","crumbCategory":"","kicker":"Indoor Lighting · SKD / CKD","title":"Emergency LED Lamp","lead":"Rechargeable emergency bulb with fast charging and full battery management on our self-developed platform. Grid power lights the room and charges the pack; a cutover switches to battery instantly — supplied as CKD kits for local assembly.","meta":"MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva","badge":"EMERGENCY LAMP · FAST CHARGE","certsLabel":"Options:","media":[{"type":"image","src":"assets/img/gmtne-emergency-1.png","caption":"EMERGENCY LAMP · FAST CHARGE"}],"specTitle":"Specifications","specNote":"","specTable":"Parameter | Specification\nCharging | Fast charge, automatic cutover to battery on grid loss\nInput voltage | 90 – 440 Vac\nSurge capability | 4 kV\nEfficiency @ 230 Vac | > 87 %\nPower factor | > 0.97 @ 230 Vac, 10 W output\nOvercharge protection | 4.2 V typical\nOver-discharge protection | 2.4 V typical\nMax emergency drive current | 1 A\nDriver platform | Self-developed, battery management integrated\nSupply model | CKD kits / finished lamps","faqKicker":"Emergency LED Lamp","faq":[{"q":"How long does it stay lit after a power cut?","a":"Run time is set by the battery pack against a maximum emergency drive current of 1 A, so it depends on which pack you specify rather than on the lamp alone. Tell us the run time your code requires and we will size the pack to match it. We do not quote a headline number for this, because a run time without a stated load and battery capacity is not a specification — it is a guess dressed up as one."},{"q":"How quickly does the pack recharge?","a":"The charging circuit is designed for short daily grid windows, so a brief period of mains power is enough to keep the pack ready. That suits markets where the supply is intermittent rather than off for a full day. Recharge time depends on pack capacity and on how deeply it was discharged, so confirm it against your duty cycle before quoting a figure to a customer."},{"q":"Is the battery pack included in the kit?","a":"Yes, when specified — “battery pack included in kit” is an option on this model. Many buyers choose to ship the lamp and the pack separately, which is cheaper on air freight and avoids dangerous-goods handling on the lamp itself."},{"q":"What protects the pack from being ruined?","a":"Overcharge protection cuts in at about 4.2 V and over-discharge at about 2.4 V. Both matter more than capacity in this product category: most emergency lamps fail early because the pack was left discharged, not because it was too small. Over-discharge protection is the one to ask about when you compare suppliers — it is often left out to save a few cents."},{"q":"Can it charge properly on a weak grid?","a":"The input stage charges correctly from 90 to 440 Vac, which covers sagging feeders and night-time overvoltage without damaging the charging circuit. Surge immunity is 4 kV line-to-line, consistent with the rest of the platform. Efficiency is above 87 % at 230 Vac input, so very little of the charging energy is lost as heat in a closed fitting."},{"q":"How do I ship a lamp with a lithium pack?","a":"Battery packs are regulated for air transport, so most customers ship lamps and packs separately and consolidate at destination. Tell us the destination and the mode and we will confirm which documents we can provide for that route. Do not assume a supplier’s generic certificate covers your lane — dangerous-goods rules differ by carrier and by route."}],"bulletsText":"Fast charging — short daily grid windows are enough to keep the pack ready\nWide input voltage range: 90–440 Vac — charges correctly on unstable grids\nHigh surge capability: 4 kV line-to-line\nHigh efficiency: > 87 % @ 230 Vac input\nPF > 0.97 @ 230 Vac input and 10 W output\nBattery overcharge protection: 4.2 V typical — extends pack life\nBattery over-discharge protection: 2.4 V typical — protects deep discharge\nMaximum emergency lighting drive current: 1 A","actionsText":"Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20Emergency%20LED%20Lamp%20%28CKD%29.","certsText":"RoHS, BIS on request, E27 / B22 base, Battery pack included in kit"}}};
+
+function prData(){ return (typeof D!=='undefined' && D && D.products && D.products.categories) ? D.products : null; }
+function prEnsure(){
+  if(typeof D==='undefined'||!D) return null;
+  if(!D.products||typeof D.products!=='object') D.products={};
+  if(!Array.isArray(D.products.categories)) D.products.categories=[];
+  if(!D.products.details||typeof D.products.details!=='object') D.products.details={};
+  return D.products;
+}
+function prBase(){
+  var o=(typeof cfg!=='undefined'&&cfg&&cfg.owner)||'wendy-664',
+      r=(typeof cfg!=='undefined'&&cfg&&cfg.repo)||'GrandeNewEnergyTest';
+  return 'https://'+o+'.github.io/'+r+'/';
+}
+function prLines(s){ return String(s||'').split(/\r?\n/).map(function(x){return x.trim();}).filter(Boolean); }
+function prRows(s){
+  return String(s||'').replace(/\r/g,'').split('\n').map(function(line){
+    if(!String(line).trim()) return null;
+    var cells = line.indexOf('\t')>-1 ? line.split('\t') : line.split('|');
+    return cells.map(function(x){ return esc(String(x).trim()); });
+  }).filter(function(r){ return r && r.length; });
+}
+function prPairs(s){
+  return String(s||'').replace(/\r/g,'').split('\n').map(function(line){
+    if(!String(line).trim()) return null;
+    var p=line.indexOf('\t')>-1 ? line.split('\t') : line.split('|');
+    return { a:String(p[0]||'').trim(), b:String(p[1]||'').trim() };
+  }).filter(function(x){ return x && (x.a||x.b); });
+}
+function prField(path,label,value,type,wide){
+  var t=type||'text';
+  var ctrl = t==='textarea'
+    ? '<textarea data-pr="'+esc(path)+'" rows="3">'+esc(value||'')+'</textarea>'
+    : '<input type="text" data-pr="'+esc(path)+'" value="'+esc(value||'')+'">';
+  return '<div class="field'+(wide?' wide':'')+'"><label>'+label+'</label>'+ctrl+'</div>';
+}
+
+/* ---------- 渲染：大类 + 卡片 ---------- */
+function prBlankCat(){
+  var p=prEnsure();
+  return { id:'cat-'+Date.now().toString(36), num:('0'+(p.categories.length+1)).slice(-2),
+           name:'New category', desc:'', cards:[] };
+}
+function prBlankCard(p,slug){
+  p.details[slug]={
+    slug:slug, pageTitle:'', description:'', crumbCategory:'', kicker:'', title:'New product',
+    lead:'', meta:'', badge:'', certsLabel:'Options:',
+    media:[{type:'image',src:'',caption:''}],
+    specTitle:'Specifications', specNote:'', specTable:'Parameter | Specification\n',
+    faqKicker:'', faq:[], bulletsText:'', actionsText:'Request Quote | contact.html', certsText:''
+  };
+  return { slug:slug, image:'', alt:'', tag:'New product', title:'New product', desc:'',
+           specsText:'Power | \nInput | ' };
+}
+function prCardHtml(card,ci,ki){
+  var b='products.categories.'+ci+'.cards.'+ki+'.';
+  return '<div class="pr-card">'+
+    '<div class="pr-card-head"><span class="pr-idx">卡片 #'+(ki+1)+' · '+esc(card.title||'')+'</span><div class="pr-ops">'+
+      '<button class="mini" data-pr-act="cardUp" data-ci="'+ci+'" data-ki="'+ki+'" title="上移">↑</button>'+
+      '<button class="mini" data-pr-act="cardDown" data-ci="'+ci+'" data-ki="'+ki+'" title="下移">↓</button>'+
+      '<button class="mini" data-pr-act="cardEdit" data-slug="'+esc(card.slug||'')+'">编辑详情页 →</button>'+
+      '<button class="mini danger" data-pr-act="cardDel" data-ci="'+ci+'" data-ki="'+ki+'">删除</button>'+
+    '</div></div>'+
+    '<div class="fields">'+
+      prField(b+'title','卡片标题',card.title)+
+      prField(b+'tag','标签（卡片上的小字）',card.tag)+
+      prField(b+'image','图片路径（例 assets/img/xx.png）',card.image)+
+      prField(b+'alt','图片 alt（可不填）',card.alt)+
+      prField(b+'slug','详情页文件名（不用写 .html）',card.slug)+
+      prField(b+'desc','一句话描述',card.desc,'textarea',true)+
+      prField(b+'specsText','卡片参数（每行：名称 | 值，可从 Excel 粘贴）',card.specsText,'textarea',true)+
+    '</div></div>';
+}
+function prRenderCats(){
+  var p=prEnsure(); if(!p) return;
+  var box=$('#prCats'); if(!box) return;
+  var html='';
+  p.categories.forEach(function(cat,ci){
+    html+='<div class="pr-cat">'+
+      '<div class="pr-cat-head"><span class="pr-idx">大类 #'+(ci+1)+' · '+esc(cat.name||'')+'</span><div class="pr-ops">'+
+        '<button class="mini" data-pr-act="catUp" data-ci="'+ci+'" title="上移">↑</button>'+
+        '<button class="mini" data-pr-act="catDown" data-ci="'+ci+'" title="下移">↓</button>'+
+        '<button class="mini danger" data-pr-act="catDel" data-ci="'+ci+'">删除大类</button>'+
+      '</div></div>'+
+      '<div class="fields">'+
+        prField('products.categories.'+ci+'.name','大类名称',cat.name)+
+        prField('products.categories.'+ci+'.num','编号（例 01）',cat.num)+
+        prField('products.categories.'+ci+'.id','锚点 id（英文小写，例 street）',cat.id)+
+        prField('products.categories.'+ci+'.desc','大类描述',cat.desc,'textarea',true)+
+      '</div>'+
+      '<div class="pr-cards">'+((cat.cards||[]).map(function(card,ki){ return prCardHtml(card,ci,ki); }).join('') ||
+        '<p class="pr-hint">这个大类下还没有卡片。</p>')+'</div>'+
+      '<button class="btn add" data-pr-act="cardAdd" data-ci="'+ci+'">+ 在这个大类下新增一张小产品卡片</button>'+
+    '</div>';
+  });
+  box.innerHTML=html||'<p class="sub">还没有大类，点下面「新增一个大类」。</p>';
+}
+function prRenderPick(){
+  var sel=$('#prPick'); if(!sel) return;
+  var p=prEnsure(); if(!p) return;
+  var keep=sel.value, all=[];
+  p.categories.forEach(function(cat){ (cat.cards||[]).forEach(function(c){ all.push(c.slug); }); });
+  sel.innerHTML='<option value="">（请选择一个产品）</option>'+all.map(function(s){
+    var d=p.details[s]||{};
+    return '<option value="'+esc(s)+'">'+esc(d.title||s)+' — '+esc(s)+'.html</option>';
+  }).join('');
+  if(keep&&p.details[keep]) sel.value=keep;
+}
+function prRender(){
+  var p=prData(), init=$('#prInitCard'), list=$('#prListCard'), det=$('#prDetailCard');
+  if(!p){
+    if(init) init.style.display='';
+    if(list) list.style.display='none';
+    if(det) det.style.display='none';
+    return;
+  }
+  if(init) init.style.display='none';
+  if(list) list.style.display='';
+  if(det) det.style.display='';
+  prRenderCats(); prRenderPick(); prRenderDetail();
+}
+
+/* ---------- 渲染：详情编辑表单 ---------- */
+function prMediaHtml(media,slug){
+  if(!media.length) return '<p class="pr-hint">还没有图片，点下面「加一张图片或视频」。</p>';
+  return media.map(function(it,i){
+    var b='products.details.'+slug+'.media.'+i+'.';
+    return '<div class="pr-row">'+
+      '<div class="pr-row-head"><span class="pr-idx">轮播 #'+(i+1)+'</span><div class="pr-ops">'+
+        '<button class="mini" data-pr-act="mediaUp" data-mi="'+i+'" data-slug="'+esc(slug)+'" title="上移">↑</button>'+
+        '<button class="mini" data-pr-act="mediaDown" data-mi="'+i+'" data-slug="'+esc(slug)+'" title="下移">↓</button>'+
+        '<button class="mini danger" data-pr-act="mediaDel" data-mi="'+i+'" data-slug="'+esc(slug)+'">删除</button>'+
+      '</div></div>'+
+      '<div class="fields">'+
+        '<div class="field"><label>类型</label><select data-pr="'+esc(b)+'type">'+
+          '<option value="image"'+(it.type==='image'?' selected':'')+'>图片</option>'+
+          '<option value="video"'+(it.type==='video'?' selected':'')+'>视频（填网址，不用上传文件）</option>'+
+        '</select></div>'+
+        prField(b+'src','图片路径 或 视频网址',it.src)+
+        prField(b+'caption','角标 / 说明文字',it.caption)+
+      '</div></div>';
+  }).join('');
+}
+function prFaqHtml(faq,slug){
+  if(!faq.length) return '<p class="pr-hint">还没有 FAQ，点下面「加一条 FAQ」。</p>';
+  return faq.map(function(f,i){
+    var b='products.details.'+slug+'.faq.'+i+'.';
+    return '<div class="pr-row">'+
+      '<div class="pr-row-head"><span class="pr-idx">FAQ #'+(i+1)+'</span><div class="pr-ops">'+
+        '<button class="mini" data-pr-act="faqUp" data-fi="'+i+'" data-slug="'+esc(slug)+'" title="上移">↑</button>'+
+        '<button class="mini" data-pr-act="faqDown" data-fi="'+i+'" data-slug="'+esc(slug)+'" title="下移">↓</button>'+
+        '<button class="mini danger" data-pr-act="faqDel" data-fi="'+i+'" data-slug="'+esc(slug)+'">删除</button>'+
+      '</div></div>'+
+      '<div class="fields">'+
+        prField(b+'q','问题',f.q)+
+        prField(b+'a','答案',f.a,'textarea',true)+
+      '</div></div>';
+  }).join('');
+}
+function prRenderDetail(){
+  var box=$('#prDetailForm'); if(!box) return;
+  var slug=$('#prPick')?$('#prPick').value:'', p=prEnsure();
+  if(!slug||!p||!p.details[slug]){ box.innerHTML='<p class="sub">先在上面选一个产品。</p>'; return; }
+  var d=p.details[slug], b='products.details.'+slug+'.';
+  box.innerHTML=
+    '<div class="note green" style="margin-bottom:16px">这里改的是「点 View Details 打开的那个详情页」。改完点最下面「生成 / 更新这个详情页」，后台会自动写页面并发布。<b>图片和视频都在下面的轮播清单里加</b>。</div>'+
+    '<h4>① 页面标题与右侧介绍</h4><div class="fields">'+
+      prField(b+'title','页面大标题（h1）',d.title)+
+      prField(b+'pageTitle','<title> 标签（给搜索引擎看，留空自动生成）',d.pageTitle)+
+      prField(b+'description','SEO 摘要',d.description,'textarea',true)+
+      prField(b+'kicker','小标签（例 Indoor Lighting · SKD / CKD）',d.kicker)+
+      prField(b+'badge','图片角标文字',d.badge)+
+      prField(b+'lead','导语（标题下方灰色大字）',d.lead,'textarea',true)+
+      prField(b+'meta','元信息一行（MOQ / 交期 / FOB）',d.meta)+
+      prField(b+'bulletsText','要点列表（每行一条）',d.bulletsText,'textarea',true)+
+      prField(b+'actionsText','按钮（每行：按钮文字 | 链接）',d.actionsText,'textarea',true)+
+      prField(b+'certsLabel','认证行前缀（例 Options:）',d.certsLabel)+
+      prField(b+'certsText','认证标签（用逗号分隔）',d.certsText)+
+    '</div>'+
+    '<h4>② 图片 / 视频轮播（可增删改、上下移动）</h4>'+
+    '<p class="pr-hint">第一项就是打开页面时显示的那张。类型选「视频」时地址填 YouTube / 网盘 / mp4 直链；图片填 assets/img/... 路径（可到「图片与媒体库」复制）。</p>'+
+    '<div id="prMedia">'+prMediaHtml(d.media||[],slug)+'</div>'+
+    '<button class="btn add" data-pr-act="mediaAdd" data-slug="'+esc(slug)+'">+ 加一张图片或视频</button>'+
+    '<h4>③ 参数表（表格形式）</h4><div class="fields">'+
+      prField(b+'specTitle','参数区标题',d.specTitle)+
+      prField(b+'specNote','参数区说明（可不填）',d.specNote,'textarea',true)+
+      prField(b+'specTable','参数表（第一行是表头；每行用 | 分列，可从 Excel 粘贴）',d.specTable,'textarea',true)+
+    '</div>'+
+    '<h4>④ 常见问题 FAQ（可增删改、上下移动）</h4><div class="fields">'+
+      prField(b+'faqKicker','FAQ 小标签',d.faqKicker)+
+    '</div>'+
+    '<div id="prFaq">'+prFaqHtml(d.faq||[],slug)+'</div>'+
+    '<button class="btn add" data-pr-act="faqAdd" data-slug="'+esc(slug)+'">+ 加一条 FAQ</button>';
+}
+function prSelectDetail(slug){
+  var sel=$('#prPick'); if(sel) sel.value=slug;
+  var tab=$$('.tab').filter(function(x){ return x.getAttribute('data-tab')==='products'; })[0];
+  if(tab&&!tab.classList.contains('active')) tab.click();
+  prRenderDetail();
+  var f=$('#prDetailForm'); if(f&&f.scrollIntoView) f.scrollIntoView({behavior:'smooth',block:'start'});
+  toast('已载入「'+slug+'」的详情内容','ok');
+}
+
+/* ---------- 事件：实时写回内存 + 增删改排序 ---------- */
+function prOnField(e){
+  var el=e.target, p=el.getAttribute?el.getAttribute('data-pr'):null;
+  if(!p||typeof D==='undefined'||!D||!D.products) return;
+  setPath(D,p,el.value); markDirty();
+}
+function prMediaAction(act,i,slug){
+  var p=prEnsure(), d=p&&p.details[slug]; if(!d) return;
+  if(!Array.isArray(d.media)) d.media=[];
+  if(act==='mediaAdd') d.media.push({type:'image',src:'',caption:''});
+  else if(act==='mediaDel'){ if(!window.confirm('删除轮播第 '+(i+1)+' 项？')) return; d.media.splice(i,1); }
+  else if(act==='mediaUp'&&i>0){ var t=d.media[i];d.media[i]=d.media[i-1];d.media[i-1]=t; }
+  else if(act==='mediaDown'&&i<d.media.length-1){ var t2=d.media[i];d.media[i]=d.media[i+1];d.media[i+1]=t2; }
+  else return;
+  var box=$('#prMedia'); if(box) box.innerHTML=prMediaHtml(d.media,slug);
+  markDirty();
+}
+function prFaqAction(act,i,slug){
+  var p=prEnsure(), d=p&&p.details[slug]; if(!d) return;
+  if(!Array.isArray(d.faq)) d.faq=[];
+  if(act==='faqAdd') d.faq.push({q:'',a:''});
+  else if(act==='faqDel'){ if(!window.confirm('删除 FAQ 第 '+(i+1)+' 条？')) return; d.faq.splice(i,1); }
+  else if(act==='faqUp'&&i>0){ var t=d.faq[i];d.faq[i]=d.faq[i-1];d.faq[i-1]=t; }
+  else if(act==='faqDown'&&i<d.faq.length-1){ var t2=d.faq[i];d.faq[i]=d.faq[i+1];d.faq[i+1]=t2; }
+  else return;
+  var box=$('#prFaq'); if(box) box.innerHTML=prFaqHtml(d.faq,slug);
+  markDirty();
+}
+function prOnAction(e){
+  var b=e.target.closest?e.target.closest('button[data-pr-act]'):null; if(!b) return;
+  var act=b.getAttribute('data-pr-act'),
+      ci=parseInt(b.getAttribute('data-ci'),10), ki=parseInt(b.getAttribute('data-ki'),10),
+      mi=parseInt(b.getAttribute('data-mi'),10), fi=parseInt(b.getAttribute('data-fi'),10),
+      slug=b.getAttribute('data-slug');
+  var p=prEnsure(); if(!p) return;
+  var cats=p.categories;
+  if(act==='catUp'&&ci>0){ var t=cats[ci];cats[ci]=cats[ci-1];cats[ci-1]=t; }
+  else if(act==='catDown'&&ci<cats.length-1){ var t2=cats[ci];cats[ci]=cats[ci+1];cats[ci+1]=t2; }
+  else if(act==='catDel'){ if(!window.confirm('删除这个大类？它下面的卡片也会一起移除（已生成的详情页文件不会被删除）。')) return; cats.splice(ci,1); }
+  else if(act==='catAdd'){ cats.push(prBlankCat()); }
+  else if(act==='cardAdd'){
+    if(!cats[ci].cards) cats[ci].cards=[];
+    var ns='product-new-'+Date.now().toString(36);
+    cats[ci].cards.push(prBlankCard(p,ns));
+  }
+  else if(act==='cardUp'&&ki>0){ var a=cats[ci].cards,x=a[ki];a[ki]=a[ki-1];a[ki-1]=x; }
+  else if(act==='cardDown'&&ki<cats[ci].cards.length-1){ var a2=cats[ci].cards,y=a2[ki];a2[ki]=a2[ki+1];a2[ki+1]=y; }
+  else if(act==='cardDel'){ if(!window.confirm('删除这张卡片？（已生成的详情页文件不会被删除）')) return; cats[ci].cards.splice(ki,1); }
+  else if(act==='cardEdit'){ prSelectDetail(slug); return; }
+  else if(act.indexOf('media')===0){ prMediaAction(act,mi,slug); return; }
+  else if(act.indexOf('faq')===0){ prFaqAction(act,fi,slug); return; }
+  else return;
+  prRenderCats(); prRenderPick(); markDirty();
+}
+
+/* ---------- 初始化：把现有产品搬进线上内容库 ---------- */
+async function prInit(){
+  if(!canPublish()){ toast('请先点右上角「连接 GitHub」载入线上内容','warn'); return; }
+  if(prData() && !window.confirm('后台里已经有产品数据了。继续会用网站上现有的 6 个产品覆盖它，确定吗？')) return;
+  var btn=$('#prBtnInit'); btn.disabled=true;
+  try{
+    var cur=await ghGet(CONTENT_PATH);
+    if(cur.sha!==baseSha) throw new Error('线上内容在你打开后台后有更新，请先点「拉取最新」再试');
+    D.products=JSON.parse(JSON.stringify(PRODUCTS_SEED));
+    var text=JSON.stringify(D,null,2)+'\n';
+    var res=await ghPut(CONTENT_PATH,utf8ToBase64(text),'Init products via admin panel',cur.sha);
+    baseSha=(res.content&&res.content.sha)||baseSha;
+    dirty=false; refreshPublishBtn(); refreshSrcBar();
+    prRender();
+    setStatus('产品数据已搬入后台 · 线上版本 '+shortSha(),false);
+    var st=$('#prInitStat');
+    if(st) st.innerHTML='<b>✓ 已完成</b>：4 个大类、6 张卡片、6 份详情页内容已写入线上内容库。等 1–2 分钟按 Ctrl+F5 刷新产品页即可看到效果。下一步可到「② 编辑产品详情页」生成统一的新页面。';
+    toast('现有产品已全部搬进后台','ok');
+  }catch(e){ toast('初始化失败：'+e.message,'err'); }
+  finally{ btn.disabled=false; }
+}
+
+/* ---------- 详情页 HTML 生成器（与 product-linear-bulb.html 同款） ---------- */
+function prContext(slug){
+  var p=prEnsure(), catName='Products', all=[];
+  p.categories.forEach(function(c){
+    (c.cards||[]).forEach(function(card){
+      all.push(card);
+      if(card.slug===slug) catName=c.name;
+    });
+  });
+  return { categoryName:catName||'Products',
+           relatedCards:all.filter(function(c){ return c.slug!==slug; }).slice(0,3) };
+}
+function buildProductHTML(m,ctx){
+  m=m||{}; ctx=ctx||{categoryName:'Products',relatedCards:[]};
+  var slug=String(m.slug||'product').replace(/[^a-z0-9-]/gi,'-');
+  var _title=m.pageTitle||((m.title||'Product')+' | Grande New Energy');
+  var _desc=m.description||m.lead||'';
+  var seoUrl='https://www.gmtne.com/'+slug+'.html';
+  var cat=ctx.categoryName||'Products';
+  var media=m.media||[];
+  var mediaJson=JSON.stringify(media).replace(/</g,'\\u003c');
+  var ld=JSON.stringify({
+    '@context':'https://schema.org','@type':'Product','name':m.title||'Product',
+    'description':_desc,'url':seoUrl,
+    'image':(media.filter(function(x){return (x.type||'image')==='image';}).map(function(x){return x.src;})[0]||''),
+    'brand':{'@type':'Brand','name':'Grande New Energy'},
+    'category':cat
+  }).replace(/</g,'\\u003c');
+  var faqLd=JSON.stringify({
+    '@context':'https://schema.org','@type':'FAQPage',
+    'mainEntity':(m.faq||[]).map(function(f){
+      return {'@type':'Question','name':f.q,'acceptedAnswer':{'@type':'Answer','text':f.a}};
+    })
+  }).replace(/</g,'\\u003c');
+
+  var rows=prRows(m.specTable), thead='', tbody='';
+  if(rows.length){
+    thead='        <thead><tr>'+rows[0].map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead>\n';
+    tbody='        <tbody>\n'+rows.slice(1).map(function(r){
+      return '          <tr>'+r.map(function(x){return '<td>'+x+'</td>';}).join('')+'</tr>\n';
+    }).join('')+'        </tbody>\n';
+  }
+  var bullets=prLines(m.bulletsText), acts=prPairs(m.actionsText),
+      certs=String(m.certsText||'').split(/[,，]/).map(function(x){return x.trim();}).filter(Boolean);
+
+  var h='<!DOCTYPE html>\n'+
+    '<html lang="en" data-whatsapp="8618154614514">\n'+
+    '<head>\n'+
+    '  <meta charset="UTF-8">\n'+
+    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'+
+    '  <title>'+esc(_title)+'</title>\n'+
+    '  <meta name="description" content="'+esc(_desc)+'">\n'+
+    '  <link rel="preconnect" href="https://fonts.googleapis.com">\n'+
+    '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'+
+    '  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n'+
+    '  <link rel="stylesheet" href="assets/css/styles.css">\n'+
+    PRODUCT_STYLE+'\n'+
+    '  <link rel="canonical" href="'+esc(seoUrl)+'">\n'+
+    '  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">\n'+
+    '  <meta property="og:type" content="website">\n'+
+    '  <meta property="og:site_name" content="Grande New Energy">\n'+
+    '  <meta property="og:locale" content="en_US">\n'+
+    '  <meta property="og:title" content="'+esc(_title)+'">\n'+
+    '  <meta property="og:description" content="'+esc(_desc)+'">\n'+
+    '  <meta property="og:url" content="'+esc(seoUrl)+'">\n'+
+    '  <meta name="twitter:card" content="summary_large_image">\n'+
+    '  <meta name="twitter:title" content="'+esc(_title)+'">\n'+
+    '  <meta name="twitter:description" content="'+esc(_desc)+'">\n'+
+    '  <script type="application/ld+json">'+ld+'<\/script>\n'+
+    '  <script type="application/ld+json">'+faqLd+'<\/script>\n'+
+    '</head>\n'+
+    '<body>\n'+PRODUCT_HEADER+'\n'+
+    '<section class="breadcrumb">\n  <div class="container">\n'+
+    '    <a href="index.html">Home</a> <span class="sep">/</span>\n'+
+    '    <a href="products.html">Products</a> <span class="sep">/</span>\n'+
+    '    <a href="products.html">'+esc(cat)+'</a> <span class="sep">/</span>\n'+
+    '    <span>'+esc(m.title||'')+'</span>\n  </div>\n</section>\n\n'+
+    '<section class="pdp">\n  <div class="container">\n    <div class="pdp-hero">\n'+
+    '      <div>\n        <div class="pdp-gallery">\n'+
+    '          <div class="pdp-stage">\n'+
+    '            <div class="pdp-frame" id="pdpFrame"></div>\n'+
+    '            <span class="pdp-badge" id="pdpBadge">'+esc(m.badge||'')+'</span>\n'+
+    '            <button type="button" class="pdp-arrow pdp-prev" id="pdpPrev" aria-label="Previous">&#8249;</button>\n'+
+    '            <button type="button" class="pdp-arrow pdp-next" id="pdpNext" aria-label="Next">&#8250;</button>\n'+
+    '          </div>\n'+
+    '          <div class="pdp-thumbs" id="pdpThumbs"></div>\n'+
+    '        </div>\n'+
+    '        <script type="application/json" id="pdpMedia">'+mediaJson+'<\/script>\n'+
+    '      </div>\n'+
+    '      <div class="pdp-info">\n'+
+    '        <span class="kicker">'+esc(m.kicker||'')+'</span>\n'+
+    '        <h1>'+esc(m.title||'')+'</h1>\n'+
+    '        <p class="lead">'+esc(m.lead||'')+'</p>\n'+
+    '        <p class="pdp-meta">'+esc(m.meta||'')+'</p>\n'+
+    '        <ul>\n'+bullets.map(function(x){return '          <li>'+esc(x)+'</li>\n';}).join('')+'        </ul>\n'+
+    '        <div class="pdp-actions">\n'+acts.map(function(a,i){
+      return '          <a href="'+esc(a.b||'contact.html')+'" class="btn '+(i===0?'btn-primary':'btn-outline')+'">'+esc(a.a)+'</a>\n';
+    }).join('')+'        </div>\n'+
+    '        <div class="pdp-certs">'+esc(m.certsLabel||'Options:')+'\n'+
+    certs.map(function(c){return '          <span>'+esc(c)+'</span>';}).join('\n')+'\n        </div>\n'+
+    '      </div>\n    </div>\n  </div>\n</section>\n\n'+
+    '<section class="section">\n  <div class="container">\n'+
+    '    <h2 class="section-title">'+esc(m.specTitle||'Specifications')+'</h2>\n'+
+    (m.specNote?'    <p style="color:var(--text-muted);max-width:760px;margin-bottom:1.75rem;">'+esc(m.specNote)+'</p>\n':'')+
+    '    <div class="cmp-scroll">\n      <table class="cmp-table">\n'+thead+tbody+
+    '      </table>\n    </div>\n  </div>\n</section>\n\n'+
+    '<section class="section faq-section" id="faq">\n  <div class="container">\n'+
+    '    <div class="faq-head">\n'+
+    '      <span class="kicker">'+esc(m.faqKicker||m.title||'')+'</span>\n'+
+    '      <h2 class="section-title">Frequently asked questions</h2>\n'+
+    '    </div>\n    <div class="faq-list">\n'+
+    (m.faq||[]).map(function(f,i){
+      return '      <details class="faq-item"'+(i===0?' open':'')+'>\n'+
+        '        <summary>'+esc(f.q||'')+'</summary>\n'+
+        '        <div class="faq-answer"><p>'+esc(f.a||'')+'</p></div>\n'+
+        '      </details>\n';
+    }).join('')+
+    '    </div>\n  </div>\n</section>\n\n'+
+    '<section class="section" style="background:var(--bg-alt);">\n  <div class="container">\n'+
+    '    <h2 class="section-title">Related products</h2>\n'+
+    '    <div class="card-grid">\n'+
+    (ctx.relatedCards||[]).map(function(c){
+      return '      <div class="card">\n'+
+        '        <div class="card-img"><img src="'+esc(c.image||'')+'" alt="'+esc(c.title||'')+'" style="object-fit:contain;background:#F1F2F4;"></div>\n'+
+        '        <div class="card-body">\n'+
+        '          <span class="card-tag">'+esc(c.tag||'')+'</span>\n'+
+        '          <h3>'+esc(c.title||'')+'</h3>\n'+
+        '          <p>'+esc(c.desc||'')+'</p>\n'+
+        '          <a href="'+esc(c.slug||'')+'.html" class="btn btn-primary btn-sm">View Details</a>\n'+
+        '        </div>\n      </div>\n';
+    }).join('')+
+    '    </div>\n  </div>\n</section>\n\n'+
+    PRODUCT_FOOTER+'\n'+PRODUCT_FLOATS+'\n'+PRODUCT_SCRIPTS+'\n'+
+    '  <script>'+PDP_GALLERY_JS+'<\/script>\n'+
+    '</body>\n</html>\n';
+  return h;
+}
+
+/* ---------- 预览 / 生成 / 批量统一 ---------- */
+function prPreview(){
+  var slug=$('#prPick')?$('#prPick').value:'', p=prEnsure();
+  if(!slug||!p||!p.details[slug]){ toast('请先选一个产品','warn'); return; }
+  var html=buildProductHTML(p.details[slug],prContext(slug));
+  html=html.replace('</head>','  <base href="'+esc(prBase())+'">\n</head>');
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'}), u=URL.createObjectURL(blob);
+  var w=window.open(u,'_blank');
+  if(!w) toast('浏览器拦截了预览窗口，请允许本页弹出窗口','warn');
+  setTimeout(function(){ URL.revokeObjectURL(u); },120000);
+}
+async function prBuildOne(slug){
+  var p=prEnsure(), d=p.details[slug];
+  var path=slug+'.html', existSha=null;
+  try{ var old=await ghGet(path); existSha=old.sha; }catch(e){}
+  var html=buildProductHTML(d,prContext(slug));
+  await ghPut(path,utf8ToBase64(html),'Add/update product page: '+slug,existSha);
+  return path;
+}
+function prShowResult(ok,html){
+  var r=$('#prResult'); if(!r) return;
+  r.className='na-result show';
+  if(!ok){ r.style.background='#FEF2F2'; r.style.borderColor='#FECACA'; r.style.color='#991B1B'; }
+  else r.removeAttribute('style');
+  r.innerHTML=html;
+}
+async function prBuild(){
+  if(!canPublish()){ toast('请先点右上角「连接 GitHub」载入线上内容','warn'); return; }
+  var slug=$('#prPick')?$('#prPick').value:'', p=prEnsure();
+  if(!slug||!p||!p.details[slug]){ toast('请先选一个产品','warn'); return; }
+  var b=$('#prBtnBuild'), ba=$('#prBtnBuildAll'); b.disabled=true; if(ba) ba.disabled=true;
+  try{
+    var cur=await ghGet(CONTENT_PATH);
+    if(cur.sha!==baseSha) throw new Error('线上内容在你编辑期间有更新，请先点「拉取最新」再重新发布');
+    var path=await prBuildOne(slug);
+    var res=await ghPut(CONTENT_PATH,utf8ToBase64(JSON.stringify(D,null,2)+'\n'),
+                        'Update products via admin panel',cur.sha);
+    baseSha=(res.content&&res.content.sha)||baseSha;
+    dirty=false; refreshPublishBtn(); refreshSrcBar();
+    setStatus('已发布 '+path+' · 线上版本 '+shortSha(),false);
+    prShowResult(true,'<b>✓ 完成</b><br>① 已生成 / 更新详情页：<a href="'+esc(prBase()+path)+
+      '" target="_blank" rel="noopener">'+esc(path)+'</a><br>② 产品列表与详情内容已一起发布。<br>等 1–2 分钟按 Ctrl+F5 查看。');
+    toast('详情页已生成并发布','ok');
+  }catch(e){ toast('生成失败：'+e.message,'err'); prShowResult(false,'<b>未完成</b><br>'+esc(e.message)); }
+  finally{ b.disabled=false; if(ba) ba.disabled=false; }
+}
+async function prBuildAll(){
+  if(!canPublish()){ toast('请先点右上角「连接 GitHub」载入线上内容','warn'); return; }
+  var p=prEnsure(), slugs=Object.keys(p.details||{});
+  if(!slugs.length){ toast('还没有产品详情数据','warn'); return; }
+  if(!window.confirm('会把现有 '+slugs.length+' 个详情页全部用统一新样式重新生成（含图片 / 视频轮播）。\n\n旧页面会被覆盖，但文字内容来自后台里已保存的数据，不会丢失。确定吗？')) return;
+  var b=$('#prBtnBuildAll'), bb=$('#prBtnBuild'); b.disabled=true; if(bb) bb.disabled=true;
+  try{
+    var cur=await ghGet(CONTENT_PATH);
+    if(cur.sha!==baseSha) throw new Error('线上内容在你编辑期间有更新，请先点「拉取最新」再试');
+    var done=[];
+    for(var i=0;i<slugs.length;i++){ done.push(await prBuildOne(slugs[i])); }
+    var res=await ghPut(CONTENT_PATH,utf8ToBase64(JSON.stringify(D,null,2)+'\n'),
+                        'Rebuild all product pages via admin panel',cur.sha);
+    baseSha=(res.content&&res.content.sha)||baseSha;
+    dirty=false; refreshPublishBtn(); refreshSrcBar();
+    setStatus('已统一 '+done.length+' 个详情页 · 线上版本 '+shortSha(),false);
+    prShowResult(true,'<b>✓ 全部完成</b><br>已重新生成 '+done.length+' 个详情页：'+done.map(function(x){return esc(x);}).join('、')+
+      '<br>所有页面现在都有「大图 + 缩略图 + 左右箭头 + 视频」轮播。等 1–2 分钟按 Ctrl+F5 查看。');
+    toast('全部详情页已统一','ok');
+  }catch(e){ toast('批量生成失败：'+e.message,'err'); prShowResult(false,'<b>未完成</b><br>'+esc(e.message)); }
+  finally{ b.disabled=false; if(bb) bb.disabled=false; }
+}
+function prBind(){
+  var bi=$('#prBtnInit'); if(bi) bi.addEventListener('click',prInit);
+  var bc=$('#prBtnAddCat'); if(bc) bc.addEventListener('click',function(){
+    var p=prEnsure(); p.categories.push(prBlankCat()); prRenderCats(); prRenderPick(); markDirty();
+  });
+  var pk=$('#prPick'); if(pk) pk.addEventListener('change',prRenderDetail);
+  var bp=$('#prBtnPreview'); if(bp) bp.addEventListener('click',prPreview);
+  var bb=$('#prBtnBuild'); if(bb) bb.addEventListener('click',prBuild);
+  var ba=$('#prBtnBuildAll'); if(ba) ba.addEventListener('click',prBuildAll);
+  ['input','change'].forEach(function(ev){ $('#main').addEventListener(ev,prOnField); });
+  $('#main').addEventListener('click',prOnAction);
+  prRender();
+}
+/* === PR:END === */
+
 /* ---- 自检（仅 URL 带 ?selftest=1 时运行，正常访问不受影响） ---- */
 async function runSelfTest(){
   var out=[], t=function(n,c){ out.push((c?'PASS':'FAIL')+' | '+n); };
@@ -1609,6 +2168,19 @@ async function runSelfTest(){
   t('图片替换下拉含 14 张站点图片', $('#imgTarget') && $('#imgTarget').options.length===14);
   t('本地快照模式禁止发布', source==='local' && canPublish()===false);
   t('中文 UTF-8 base64 往返正确', base64ToUtf8(utf8ToBase64('中文测试 © 2026 — Grande'))==='中文测试 © 2026 — Grande');
+
+  /* 产品模块：种子 + 详情页生成器 */
+  t('产品模块：内置种子含 4 大类 / 6 详情', !!(PRODUCTS_SEED && PRODUCTS_SEED.categories.length===4 && Object.keys(PRODUCTS_SEED.details).length===6));
+  var _pd=JSON.parse(JSON.stringify(PRODUCTS_SEED.details['product-linear-bulb']));
+  var _ph=buildProductHTML(_pd,{categoryName:'Indoor Lighting',relatedCards:PRODUCTS_SEED.categories[3].cards.slice(0,2)});
+  t('产品页生成器：输出完整 HTML 文档', _ph.indexOf('<!DOCTYPE html>')===0 && _ph.indexOf('</html>')>-1);
+  t('产品页生成器：轮播含大图/箭头/缩略图', ['id="pdpFrame"','id="pdpPrev"','id="pdpNext"','id="pdpThumbs"','id="pdpMedia"'].every(function(x){return _ph.indexOf(x)>-1;}));
+  t('产品页生成器：视频轮播逻辑已内置', PDP_GALLERY_JS.indexOf('createElement(\'video\')')>-1 && PDP_GALLERY_JS.indexOf('iframe')>-1);
+  t('产品页生成器：参数表 / FAQ / 相关产品齐全', _ph.indexOf('class="cmp-table"')>-1 && _ph.indexOf('class="faq-item"')>-1 && _ph.indexOf('Related products')>-1);
+  t('产品页生成器：导航页脚与 3 行脚本联动', _ph.indexOf('data-c="copyright"')>-1 && _ph.indexOf('content-loader.js')>-1 && _ph.indexOf('site-config.js')>-1);
+  t('产品页生成器：SEO 完整', _ph.indexOf('rel="canonical"')>-1 && _ph.indexOf('application/ld+json')>-1 && _ph.indexOf('og:title')>-1);
+  t('产品页生成器：输出中无 JS 转义残留', _ph.indexOf('<\\/script>')===-1);
+  t('产品页生成器：LOGO 用 .png', _ph.indexOf('logo.png')>-1 && _ph.indexOf('logo.webp')===-1);
 
   t('导入现成 HTML：解析函数已就绪', typeof naImportHTML==='function' && typeof nodeToMd==='function');
   /* 新建文章生成器：验证输出与现有两篇同款、组件齐全、脚本未截断 */
