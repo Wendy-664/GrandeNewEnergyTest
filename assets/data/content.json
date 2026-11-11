@@ -298,5 +298,444 @@
         ]
       }
     }
+  },
+  "products": {
+    "intro": "Need another wattage or form factor? All six series run on the same driver platform — tell us the target and we will run the design.",
+    "categories": [
+      {
+        "id": "street",
+        "num": "01",
+        "name": "Street Light",
+        "desc": "Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.",
+        "cards": [
+          {
+            "slug": "product-street-light",
+            "image": "assets/img/street-light-main.png",
+            "alt": "YE-01 street light 40/60W",
+            "tag": "Street Light · SKD/CKD",
+            "title": "Street Light 40 / 60W",
+            "desc": "Road & area lighting on the same verified driver platform.",
+            "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
+          }
+        ]
+      },
+      {
+        "id": "highbay",
+        "num": "02",
+        "name": "High Bay",
+        "desc": "Warehouse, factory and gymnasium high bays. Lab-verified 100 W reference design with a full 18-page test report — measured across 100–440 Vac, not estimated.",
+        "cards": [
+          {
+            "slug": "product-high-bay",
+            "image": "assets/img/rl-highbay-100w.png",
+            "alt": "YE-01 100W high bay",
+            "tag": "High Bay · SKD/CKD",
+            "title": "High Bay 100W",
+            "desc": "FL-YE-01W0100V144V01 · lab test report available",
+            "specsText": "Output | 144V / 610mA\nEfficiency | ≥ 91.8 %\nPF | 0.956\nSurge | 4 kV"
+          }
+        ]
+      },
+      {
+        "id": "flood",
+        "num": "03",
+        "name": "Flood Light",
+        "desc": "Yard, compound, billboard and sports-ground flood lighting. Lab-verified 50 W reference design with the same 18-page report depth.",
+        "cards": [
+          {
+            "slug": "product-flood-light",
+            "image": "assets/img/rl-flood-50w.png",
+            "alt": "YE-01 50W flood light",
+            "tag": "Flood Light · SKD/CKD",
+            "title": "Flood Light 50W",
+            "desc": "FL-YE-01W050V144V01 · lab test report available",
+            "specsText": "Output | 144V / 310mA\nEfficiency | ≥ 91.4 %\nPF | 0.957\nSurge | 4 kV"
+          }
+        ]
+      },
+      {
+        "id": "indoor",
+        "num": "04",
+        "name": "Indoor Lighting",
+        "desc": "Linear bulbs, battens and emergency lamps for homes, shops and offices — the same 90–440 Vac platform and 4 kV surge rating as our outdoor series.",
+        "cards": [
+          {
+            "slug": "product-linear-bulb",
+            "image": "assets/img/gmtne-bulb-1.png",
+            "alt": "Linear LED bulb series 9–50W",
+            "tag": "Indoor · SKD/CKD",
+            "title": "Linear Bulb 9–50W",
+            "desc": "High-power T-bulb series, PF 0.988, >105 lm/W.",
+            "specsText": "Input | 90–440 Vac\nPF | 0.988\nTHD | < 15 %\nEfficacy | > 105 lm/W"
+          },
+          {
+            "slug": "product-batten",
+            "image": "assets/img/gmtne-batten-1.png",
+            "alt": "LED batten light series",
+            "tag": "Indoor · SKD/CKD",
+            "title": "Batten Drive 20 / 36W",
+            "desc": "Surface-mount batten, high-integration driver.",
+            "specsText": "Output | 90V / 200·370mA\nEfficiency | ≥ 89–91 %\nPF | 0.98\nSurge | 4 kV"
+          },
+          {
+            "slug": "product-emergency-lamp",
+            "image": "assets/img/gmtne-emergency-1.png",
+            "alt": "Emergency LED lamp",
+            "tag": "Indoor · SKD/CKD",
+            "title": "Emergency Lamp",
+            "desc": "Fast-charging emergency bulb, battery management built in.",
+            "specsText": "Input | 90–440 Vac\nPF | > 0.97\nEfficiency | > 87 %\nSurge | 4 kV"
+          }
+        ]
+      }
+    ],
+    "details": {
+      "product-street-light": {
+        "slug": "product-street-light",
+        "pageTitle": "Street Light 40 / 60W - SKD / CKD Solution | Grande New Energy",
+        "description": "Grande New Energy LED street light SKD/CKD solution for municipal and industrial lighting. 40W/60W on the YE-01 driver platform with YT2181GTE5. Verified 4kV surge, >0.95 PF. Reference design on request.",
+        "crumbCategory": "",
+        "kicker": "Outdoor Luminaires · SKD / CKD",
+        "title": "Street Light 40 / 60W",
+        "lead": "A street-light reference design on the proven YE-01 platform — the same YT2181GTE5 driver IC and architecture already lab-verified in our 100W high bay and 50W flood light. Supplied as SKD or CKD for local assembly.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
+        "badge": "YE-01 · STREET LIGHT 40–60 W",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img/street-light-main.png",
+            "caption": "YE-01 · STREET LIGHT 40–60 W"
+          }
+        ],
+        "specTitle": "Specifications",
+        "specNote": "",
+        "specTable": "Parameter | Specification\nProduct type | LED Street Light · pole mount\nPower options | 40 W / 60 W (reference design)\nDriver platform | YE-01 · self-developed high-PF flyback driver\nInput | 100–440 Vac · 47–63 Hz\nEfficiency (platform-verified) | ≥ 91 %\nPF / THD | > 0.95 / < 29 %\nSurge immunity | 4 kV (platform-verified)\nHousing | Die-cast aluminum · dark gray powder coating\nLight distribution | Type II / Type III\nSupply form | SKD / CKD (finished fixture on request)",
+        "faqKicker": "Street Light 40 / 60 W · YE-01",
+        "faq": [
+          {
+            "q": "How does the driver behave on a 440 V feeder?",
+            "a": "The YE-01 driver holds constant current from roughly 165 to 280 Vac. Below that it folds back to protect itself; above 290 Vac output is deliberately derated, so a fixture running on a 440 V feeder will light up and stay stable — it simply will not deliver full rated wattage. On our 100 W high bay test unit, output settled near 38 W at 440 Vac . We publish the full 22-point grid rather than a single headline voltage because that is the honest picture: wide input means the light survives, not that it performs identically everywhere. The street-light wattage curves are measured once a project spec is fixed."
+          },
+          {
+            "q": "Can one driver cover both the 40 W and the 60 W version?",
+            "a": "Yes. Both wattages sit on the same single-board driver; the difference is the output current setting and the LED board string configuration. That means one driver reel and one assembly procedure covers your whole street-light range, which is usually the difference between holding two spare-part lines and holding one."
+          },
+          {
+            "q": "What pole height and spacing does the 60 W version suit?",
+            "a": "Typically 6–8 m mounting height for secondary and residential roads. Type II distribution for carriageways up to about 9 m wide, Type III where the pole sits on one side and the beam has to reach further across. We do not publish a lux grid for a reference design, because spacing depends on your road class and local lighting code. Send us the road width, pole height and target lux level, and we will run the layout with you."
+          },
+          {
+            "q": "IP65 or IP66 — which one do I actually need?",
+            "a": "IP65 protects against water jets; IP66 against powerful jets, such as driving rain at an exposed coastal or elevated site. For inland towns IP65 is normally enough and costs less. For coastal roads, or anywhere the housing faces monsoon wind directly, specify IP66 — the gasket and cable-gland cost difference is small next to a field failure."
+          },
+          {
+            "q": "Does the housing survive salt spray and monsoon humidity?",
+            "a": "The body is die-cast aluminium with a powder coating, which is the right starting point for coastal installations. Salt-spray endurance depends on coating thickness and pretreatment, so we confirm the exact hours against your site conditions rather than quoting a generic number. If your project is within a few kilometres of the coast, tell us at inquiry stage and we will specify the coating accordingly."
+          },
+          {
+            "q": "With 4 kV surge immunity, do I still need a separate SPD?",
+            "a": "For most urban distribution circuits, no — 4 kV on the driver covers the switching transients you normally see. For poles at the end of an overhead line, in high-lightning regions, or on the same circuit as large welding or pumping loads, we recommend an external surge protector at the pole. It is a low-cost part and it protects the whole fixture."
+          },
+          {
+            "q": "Who files the certification in my country — you or me?",
+            "a": "You do, because registration schemes such as BIS, SIRIM, TISI and SNI require a locally registered entity as the applicant. Our job is to make that filing fast: we hand over the test data, BOM, driver specifications and technical file your lab and agent need. Filing as the registrant also means the certificate sits in your company name, which is worth more to you than a supplier’s certificate ever would be."
+          },
+          {
+            "q": "Can the LED module or driver be replaced in the field?",
+            "a": "Yes — and this is the practical advantage of SKD construction. The LED board and the driver are separate assemblies held by screws and connectors, so a failed driver is a 10-minute swap by a technician with a screwdriver, not a fixture replacement. Both parts can be ordered separately in your maintenance quantities."
+          }
+        ],
+        "bulletsText": "40 W and 60 W versions · pole-mount arm, Type II/III light distribution options\nBuilt on the YT2181GTE5 driver platform — 100–440 Vac input, verified in our 18-page lab reports\n4 kV surge immunity, PF > 0.95, programmable current foldback protection\nHigh-integration single-board driver — fewer parts, lower BOM, easier local assembly\nOpen-circuit, short-circuit and over-temperature protection included",
+        "actionsText": "Request Reference Design | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20YE-01%20street%20light%2040%2F60W%20SKD%20solution.",
+        "certsText": "RoHS, IP66, CE on request, BIS on request"
+      },
+      "product-high-bay": {
+        "slug": "product-high-bay",
+        "pageTitle": "High Bay 100W - FL-YE-01W0100V144V01 | Grande New Energy",
+        "description": "Grande New Energy 100W high bay luminaire, FL-YE-01W0100V144V01. 144V / 610mA, 100-440Vac input, PF 0.956, 4kV surge, ≥91.8% efficiency. Lab test report downloadable. SKD/CKD for local assembly.",
+        "crumbCategory": "High Bay & Flood Light",
+        "kicker": "Outdoor Luminaires · SKD / CKD",
+        "title": "High Bay 100W",
+        "lead": "FL-YE-01W0100V144V01 — a 100 W UFO high bay on the YE-01 platform, lab-tested with our self-developed driver technology. Ship finished luminaires, or knocked-down kits for local assembly.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
+        "badge": "YE-01 · HIGH BAY 100 W",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img/rl-highbay-100w.png",
+            "caption": "YE-01 · HIGH BAY 100 W"
+          }
+        ],
+        "specTitle": "Specifications",
+        "specNote": "",
+        "specTable": "Parameter | Specification\nPart number | FL-YE-01W0100V144V01\nType | High Bay · 100 W (UFO)\nOutput | 144 V / 610 mA ±5 %\nLED load | 24C6B · 6 V LEDs (144 × SMD2835)\nDriver | Self-developed high-PF flyback (single-board)\nInput | 100–440 Vac · 47–63 Hz\nEfficiency @ 230 Vac | ≥ 91.8 %\nPF / THD | 0.956 / 28.53 %\nSurge | 4 kV\nDriver board size | 191.5 × 165 mm",
+        "faqKicker": "High Bay 100 W · YE-01",
+        "faq": [
+          {
+            "q": "What happens above 290 Vac on a 440 V supply?",
+            "a": "Constant current holds to roughly 290 Vac, then output folds back to protect the board. On our 100 W unit output settled near 38 W at 440 Vac : the fixture keeps running safely, it just will not deliver rated wattage. That behaviour is normal for any single-stage flyback and it is why we publish the measured 22-point grid. A supplier quoting only “100–440 Vac” without the derating curve is telling you half the story."
+          },
+          {
+            "q": "Which mounting height does the 100 W unit suit?",
+            "a": "Typically 8–12 m in warehousing and logistics halls, 6–8 m in lower workshops and service bays. Narrower beam angles for high ceilings, wider for low ones. Mounting height and beam angle have to be chosen together — picking one without the other is the most common reason a high bay ends up with dark aisles. Send us the height and the target lux at floor level and we will match the optic."
+          },
+          {
+            "q": "How hot does it run after 90 minutes?",
+            "a": "At 32 °C ambient and 230 Vac, both driver ICs settle at 82.5 °C while the EE16 transformer winding reaches 100.6 °C. At 265 Vac the winding climbs to 104.3 °C and becomes the real thermal limit — not the IC, as most buyers assume. Extrapolated to a 45 °C ambient that is about 117.3 °C, roughly 13 K below the Class B 130 °C ceiling. That headroom is the number to check before specifying this fixture in an unventilated roof space."
+          },
+          {
+            "q": "Does 100 W replace a 250 W HPS one for one?",
+            "a": "Not by wattage alone. On delivered lumens a 100 W LED usually gets close to a 250 W high-pressure sodium lamp, but the number that decides whether your aisles stay lit is maintained lux at the working plane. That depends on mounting height, beam angle, luminaire efficiency and the maintenance factor your client accepts. Give us height and target lux; we will run the comparison rather than hand you a rule of thumb."
+          },
+          {
+            "q": "What LED configuration is inside?",
+            "a": "24 series × 6 parallel on 6 V SMD2835, 144 devices in total, driven at 144 V / 610 mA ±5 %. The series ratio is chosen so output voltage stays around 144 V while current stays moderate — that balance is what allows a single-board driver measuring 191.5 × 165 mm to carry the whole 100 W."
+          },
+          {
+            "q": "What should I specify if the plant is hot or dusty?",
+            "a": "Actual ceiling temperature, first of all. Our thermal data was taken at 32 °C ambient; at 45 °C the winding sits near 117.3 °C, so a plant running hotter than that needs a different design, not a different sales claim. For dust, the two failure points are the housing gasket and the driver cavity. Tell us the environment and we will confirm the sealing level and the cleaning interval the fixture expects."
+          },
+          {
+            "q": "Who files the certification in my country — you or me?",
+            "a": "You do. Registration schemes such as BIS, SIRIM, TISI and SNI require a locally registered entity as the applicant. We supply the test data, BOM, driver specifications and technical file that your lab and agent need to file quickly. The certificate then sits in your company name — an asset on your balance sheet, not a document you borrow from a supplier."
+          },
+          {
+            "q": "Can the driver board be replaced on its own?",
+            "a": "Yes. The driver is a single board measuring 191.5 × 165 mm, mounted on standoffs and connected by plug-in leads, so it lifts out without disturbing the LED board or the optic. Keep a small stock of boards and a failed unit is a bench repair rather than a scrapped fixture."
+          }
+        ],
+        "bulletsText": "144 V / 610 mA ±5 % output — 24C6B · 6 V LED string\n100–440 Vac input, verified across the full range in an 18-page lab report\nPF 0.956 and THD 28.53 % at 230 Vac full load — measured, not estimated\n4 kV surge passed: 5 counts per polarity at 0 / 90 / 180 / 270° phase\nProgrammable current foldback at low and high line; open, short and OTP protection",
+        "actionsText": "Download Test Report | #downloads\nRequest Quote | contact.html",
+        "certsText": "RoHS, IP66, CE on request, BIS on request"
+      },
+      "product-flood-light": {
+        "slug": "product-flood-light",
+        "pageTitle": "Flood Light 50W - FL-YE-01W050V144V01 | Grande New Energy",
+        "description": "Grande New Energy 50W flood light, FL-YE-01W050V144V01. 144V / 310mA, 100-440Vac input, PF 0.957, 4kV surge, ≥91.4% efficiency. Lab test report downloadable. SKD/CKD for local assembly.",
+        "crumbCategory": "High Bay & Flood Light",
+        "kicker": "Outdoor Luminaires · SKD / CKD",
+        "title": "Flood Light 50W",
+        "lead": "FL-YE-01W050V144V01 — a 50 W flood light on the YE-01 platform, lab-tested with our self-developed driver technology. Ship finished luminaires, or knocked-down kits for local assembly.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
+        "badge": "YE-01 · FLOOD LIGHT 50 W",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img/rl-flood-50w.png",
+            "caption": "YE-01 · FLOOD LIGHT 50 W"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/pcb-flood-50w.png",
+            "caption": "LED + DRIVER PCB · 132 × 134.5 MM"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/skd-kit-flood.png",
+            "caption": "SKD KIT · ALL PARTS FOR LOCAL ASSEMBLY"
+          }
+        ],
+        "specTitle": "Specifications",
+        "specNote": "",
+        "specTable": "Parameter | Specification\nPart number | FL-YE-01W050V144V01\nType | Flood Light · 50 W\nOutput | 144 V / 310 mA ±5 %\nLED load | 24C3B · 6 V LEDs (72 × SMD2835)\nDriver | Self-developed high-PF flyback (single-board)\nInput | 100–440 Vac · 47–63 Hz\nEfficiency @ 230 Vac | ≥ 91.4 %\nPF / THD | 0.957 / 27.89 %\nSurge | 4 kV\nDriver board size | 132 × 134.5 mm",
+        "faqKicker": "Flood Light 50 W · YE-01",
+        "faq": [
+          {
+            "q": "What happens above 290 Vac on a 440 V supply?",
+            "a": "Same platform behaviour as the high bay: constant current to about 290 Vac, then foldback. The fixture runs safely on a 440 V feeder but will not deliver its rated 50 W. On the 100 W version of this platform, measured output at 440 Vac settled near 38 W. We will run the equivalent curve for 50 W once a project wattage is fixed, so the number you quote is measured rather than extrapolated."
+          },
+          {
+            "q": "Symmetric or asymmetric beam — which do I need for a facade?",
+            "a": "Asymmetric, in almost every facade and wall-wash case. A symmetric beam throws as much light into the sky and the neighbouring property as onto the surface you are lighting, which is both wasteful and the first thing a lighting consultant will object to. Symmetric optics still make sense for open yards and general area lighting where there is no surface to graze."
+          },
+          {
+            "q": "How far does the 50 W version throw?",
+            "a": "Useful throw depends more on beam angle than on wattage. With a narrow optic, 50 W will put usable light on a surface 20–30 m away; with a wide optic the same fixture is better used within 8–12 m. Because we do not publish lux grids for a reference design, tell us the distance, the mounting height and the target illuminance and we will specify the optic instead of guessing."
+          },
+          {
+            "q": "How do I control glare on a yard or sports pole?",
+            "a": "Three things, in order of effect: mount higher, use a narrower beam aimed below the horizontal, and add a shield or visor to the housing. Wattage is the last lever, not the first. If the pole also lights a road or neighbouring property, local light-trespass rules usually cap the upward component, so the optic and the aiming angle have to be chosen together."
+          },
+          {
+            "q": "How hot does the 50 W version run?",
+            "a": "Our 50 W flood light thermal soak at 33 °C ambient put the EE16 transformer winding at 93.4 °C at 265 Vac , with the driver ICs lower still. That is roughly 11 K cooler than the 100 W high bay on the same platform, which is what you would expect from half the throughput. In a hot climate, add your site ambient to that rise before deciding whether the headroom is enough."
+          },
+          {
+            "q": "What sealing level do I need for permanent outdoor mounting?",
+            "a": "IP65 as a baseline for wall and pole mounting under an eave; IP66 where the fixture takes wind-driven rain directly, which is most coastal and exposed sites. The cable entry, not the lens, is where water gets in when a fitting fails. Tell us the mounting orientation — horizontal, tilted or vertical — because it changes how water sits on the gasket."
+          },
+          {
+            "q": "Who files the certification in my country — you or me?",
+            "a": "You do, as the locally registered applicant for schemes such as BIS, SIRIM, TISI or SNI. We provide the test data, BOM and technical file your lab needs, and we answer their technical questions directly so the filing does not stall on us."
+          },
+          {
+            "q": "Can the LED board be swapped without replacing the fixture?",
+            "a": "Yes. The LED board and the 132 × 134.5 mm driver board are separate assemblies, each held by screws and plug-in connectors. A failed driver is a board swap in minutes; the housing, gasket and optic stay in service."
+          }
+        ],
+        "bulletsText": "144 V / 310 mA ±5 % output — 24C3B · 6 V LED string\n100–440 Vac input, verified across the full range in an 18-page lab report\nPF 0.957 and THD 27.89 % at 230 Vac full load — measured, not estimated\n4 kV surge passed: 5 counts per polarity at 0 / 90 / 180 / 270° phase\nEOL-free single-board design — fewer parts, lower BOM",
+        "actionsText": "Download Test Report | #downloads\nRequest Quote | contact.html",
+        "certsText": "RoHS, IP66, CE on request, BIS on request"
+      },
+      "product-linear-bulb": {
+        "slug": "product-linear-bulb",
+        "pageTitle": "Linear LED Bulb 9–50W (CKD) | Grande New Energy",
+        "description": "Grande New Energy linear LED bulb, 9–50 W, CKD supply. 90–440 Vac input, 4 kV surge, PF 0.988, THD <15%, >105 lm/W. Low EMI for conduction and radiation. Self-developed driver platform.",
+        "crumbCategory": "",
+        "kicker": "Indoor Lighting · SKD / CKD",
+        "title": "Linear LED Bulb",
+        "lead": "High-power linear (T-bulb) series from 9 W to 50 W on our self-developed driver platform. Wide input range, low EMI and high efficacy — supplied as CKD kits for local assembly across Asia.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
+        "badge": "LINEAR LED BULB · 9–50 W",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img/gmtne-bulb-1.png",
+            "caption": "LINEAR LED BULB · 9–50 W"
+          }
+        ],
+        "specTitle": "Series specifications",
+        "specNote": "One driver platform covers 9–50 W. Wattage-specific derating curves (Vin vs Pin, THD) are provided with each quotation — tell us your target lumen package and base type.",
+        "specTable": "Parameter | Specification\nSeries wattage | 9 – 50 W (linear / T-bulb form factor)\nInput voltage | 90 – 440 Vac\nSurge capability | 4 kV\nPower factor | 0.988 @ 230 Vac\nTHD | < 15 % @ 230 Vac\nLight efficiency | > 105 lm/W\nEMI | Low EMI — conduction & radiation compliant\nOTP | Settable with external resistor\nDriver platform | Self-developed high-PF platform\nSupply model | CKD kits / finished bulbs",
+        "faqKicker": "Linear LED Bulb 9–50 W",
+        "faq": [
+          {
+            "q": "Why 90–440 Vac when my grid is 220–240 V?",
+            "a": "Because the grid you are quoted is not the grid you get. Feeder voltage sags at the end of a line, rises at night when load drops, and swings hard when a large load switches nearby. A lamp rated only for 220–240 V works in the lab and fails in the field. The wide range also means one SKU covers every market in the region, which simplifies your own stock keeping."
+          },
+          {
+            "q": "How does one driver BOM cover the whole 9–50 W range?",
+            "a": "Over-temperature protection is set by an external resistor rather than being fixed inside the IC. Change that resistor and the same board serves a different wattage, so you buy one driver in volume and configure it per SKU at assembly instead of carrying five part numbers."
+          },
+          {
+            "q": "Why does THD below 15 % matter in practice?",
+            "a": "Because you are not the only load on the transformer. High harmonic distortion from lighting heats shared distribution transformers and neutral conductors, and utilities in several markets now check it at the connection point. Under 15 % at 230 Vac full load keeps a large lighting installation from becoming the reason a building fails a power quality inspection."
+          },
+          {
+            "q": "Are the lamp bases included?",
+            "a": "Bases are an option, not standard: specify E27 or B22 and they ship with the kit. Most customers assembling locally prefer to source bases in-country, because they are bulky, cheap and easier to buy regionally than to ship from us."
+          },
+          {
+            "q": "What does 105 lm/W mean for my market?",
+            "a": "It is a measured system figure for the series, not a chip datasheet number, so it is the value you can put in front of a utility or a tender specification. Whether it clears a particular energy-efficiency tier depends on the scheme — send us the tier you are targeting and we will confirm which wattages qualify."
+          },
+          {
+            "q": "Who files the certification in my country — you or me?",
+            "a": "You do. BIS, SIRIM, TISI and SNI all require a locally registered applicant. We provide the test data, technical file and driver documentation your lab needs, and the resulting certificate stays in your name rather than ours."
+          }
+        ],
+        "bulletsText": "Wide input voltage range: 90–440 Vac — one SKU covers the whole region's grid\nHigh surge capability: 4 kV line-to-line, passes harsh grid disturbances\nHigh PF: 0.988 @ 230 Vac full load — measured, not estimated\nLow THD: < 15 % @ 230 Vac — friendly to shared distribution transformers\nLight efficiency > 105 lm/W across the series\nLow EMI: compliant for both conduction and radiation\nOTP settable with an external resistor — one driver BOM serves multiple wattages",
+        "actionsText": "Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20Linear%20LED%20Bulb%209-50W%20%28CKD%29.",
+        "certsText": "RoHS, BIS on request, E27 / B22 base, Wattage 9–50 W"
+      },
+      "product-batten": {
+        "slug": "product-batten",
+        "pageTitle": "LED Batten Drive 20W / 36W (CKD) | Grande New Energy",
+        "description": "Grande New Energy LED batten drive, 20W and 36W, CKD supply. 90–440 Vac, 4 kV surge, efficiency ≥89% / ≥91%, PF 0.98. High-integration driver — no VCC cap, no COMP cap, no FB resistor.",
+        "crumbCategory": "",
+        "kicker": "Indoor Lighting · SKD / CKD",
+        "title": "LED Batten Drive",
+        "lead": "Surface-mount tube batten in 20 W and 36 W on our high-integration driver platform. Fewer parts, lower BOM, and full protection — supplied as CKD kits for local assembly.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
+        "badge": "LED BATTEN · 20 / 36 W",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img/gmtne-batten-1.png",
+            "caption": "LED BATTEN · 20 / 36 W"
+          }
+        ],
+        "specTitle": "Model specifications",
+        "specNote": "",
+        "specTable": "Parameter | Batten Drive 20W | Batten Drive 36W\nOutput | 90 V / 200 mA | 90 V / 370 mA\nInput voltage | 90 – 440 Vac | 90 – 440 Vac\nSurge capability | 4 kV | 4 kV\nEfficiency @ 230 Vac | ≥ 89 % | ≥ 91 %\nPower factor | 0.98 | 0.98\nIntegration | No VCC cap · no COMP cap · no FB resistor\nProtection | Open / short / over-temperature regulation / current dropping\nSupply model | CKD kits / finished battens",
+        "faqKicker": "LED Batten Drive 20 / 36 W",
+        "faq": [
+          {
+            "q": "2 ft or 4 ft — which should I stock?",
+            "a": "Stock both, but lead with 4 ft. It is the replacement size for the fluorescent battens already installed across the region, so it moves on compatibility rather than on being sold. 2 ft is the fitting for corridors, stairwells and small rooms where a 4 ft tube simply does not fit. It is a smaller volume but a very stable one."
+          },
+          {
+            "q": "Why is the 20 W version less efficient than the 36 W?",
+            "a": "Driver overhead is roughly fixed while output scales with wattage, so the same board carries a larger share of its own consumption on the smaller lamp: ≥ 89 % at 20 W against ≥ 91 % at 36 W. It is worth knowing when you quote on running cost, because the 20 W unit is not simply two-thirds of the 36 W in efficiency terms."
+          },
+          {
+            "q": "What does “no VCC cap, no COMP cap, no FB resistor” actually mean for me?",
+            "a": "It means three fewer components per driver, and those three are among the ones that drift with heat and age. Fewer parts means a shorter assembly step, a lower BOM, and fewer field returns that trace back to a capacitor drying out."
+          },
+          {
+            "q": "Will it hold up on an unstable single-phase supply?",
+            "a": "That is what the 90–440 Vac range is for: sag at the end of a feeder, night-time overvoltage, and the dip when a large load starts nearby. Input is protected to 4 kV line-to-line, in line with the rest of the platform. If your grid regularly goes below 90 V or above 440 V, that is a different problem and worth telling us about."
+          },
+          {
+            "q": "Who files the certification in my country — you or me?",
+            "a": "You do, as the locally registered applicant for BIS, SIRIM, TISI or SNI. We hand over the test data, BOM and technical file your lab needs, and answer their questions during review."
+          },
+          {
+            "q": "Can the LED board be replaced without scrapping the housing?",
+            "a": "Yes. The tube and the driver are separate assemblies inside the housing, so a failure is a board or tube swap rather than a whole-fitting replacement. That matters for commercial buildings where the fittings are already installed and access is the expensive part."
+          }
+        ],
+        "bulletsText": "Wide input voltage range: 90–440 Vac — one SKU covers the whole region's grid\nHigh surge capability: 4 kV line-to-line\nHigh efficiency: ≥ 89 % (20 W) / ≥ 91 % (36 W) @ 230 Vac\nHigh PF: 0.98 @ 230 Vac\nHigh integration for low-cost design: no VCC cap, no COMP cap, no FB resistor\nFull protection: open-circuit, short-circuit, over-temperature regulation, current dropping",
+        "actionsText": "Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20LED%20Batten%20Drive%2020W%2F36W%20%28CKD%29.",
+        "certsText": "RoHS, BIS on request, 2 ft / 4 ft housing, 5000 K / 6500 K"
+      },
+      "product-emergency-lamp": {
+        "slug": "product-emergency-lamp",
+        "pageTitle": "Emergency LED Lamp (CKD) | Grande New Energy",
+        "description": "Grande New Energy emergency LED lamp, CKD supply. Fast charging, 90–440 Vac, 4 kV surge, >87% efficiency, PF >0.97. Battery overcharge 4.2V / overdischarge protection 2.4V, max emergency drive current 1A.",
+        "crumbCategory": "",
+        "kicker": "Indoor Lighting · SKD / CKD",
+        "title": "Emergency LED Lamp",
+        "lead": "Rechargeable emergency bulb with fast charging and full battery management on our self-developed platform. Grid power lights the room and charges the pack; a cutover switches to battery instantly — supplied as CKD kits for local assembly.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
+        "badge": "EMERGENCY LAMP · FAST CHARGE",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "assets/img/gmtne-emergency-1.png",
+            "caption": "EMERGENCY LAMP · FAST CHARGE"
+          }
+        ],
+        "specTitle": "Specifications",
+        "specNote": "",
+        "specTable": "Parameter | Specification\nCharging | Fast charge, automatic cutover to battery on grid loss\nInput voltage | 90 – 440 Vac\nSurge capability | 4 kV\nEfficiency @ 230 Vac | > 87 %\nPower factor | > 0.97 @ 230 Vac, 10 W output\nOvercharge protection | 4.2 V typical\nOver-discharge protection | 2.4 V typical\nMax emergency drive current | 1 A\nDriver platform | Self-developed, battery management integrated\nSupply model | CKD kits / finished lamps",
+        "faqKicker": "Emergency LED Lamp",
+        "faq": [
+          {
+            "q": "How long does it stay lit after a power cut?",
+            "a": "Run time is set by the battery pack against a maximum emergency drive current of 1 A, so it depends on which pack you specify rather than on the lamp alone. Tell us the run time your code requires and we will size the pack to match it. We do not quote a headline number for this, because a run time without a stated load and battery capacity is not a specification — it is a guess dressed up as one."
+          },
+          {
+            "q": "How quickly does the pack recharge?",
+            "a": "The charging circuit is designed for short daily grid windows, so a brief period of mains power is enough to keep the pack ready. That suits markets where the supply is intermittent rather than off for a full day. Recharge time depends on pack capacity and on how deeply it was discharged, so confirm it against your duty cycle before quoting a figure to a customer."
+          },
+          {
+            "q": "Is the battery pack included in the kit?",
+            "a": "Yes, when specified — “battery pack included in kit” is an option on this model. Many buyers choose to ship the lamp and the pack separately, which is cheaper on air freight and avoids dangerous-goods handling on the lamp itself."
+          },
+          {
+            "q": "What protects the pack from being ruined?",
+            "a": "Overcharge protection cuts in at about 4.2 V and over-discharge at about 2.4 V. Both matter more than capacity in this product category: most emergency lamps fail early because the pack was left discharged, not because it was too small. Over-discharge protection is the one to ask about when you compare suppliers — it is often left out to save a few cents."
+          },
+          {
+            "q": "Can it charge properly on a weak grid?",
+            "a": "The input stage charges correctly from 90 to 440 Vac, which covers sagging feeders and night-time overvoltage without damaging the charging circuit. Surge immunity is 4 kV line-to-line, consistent with the rest of the platform. Efficiency is above 87 % at 230 Vac input, so very little of the charging energy is lost as heat in a closed fitting."
+          },
+          {
+            "q": "How do I ship a lamp with a lithium pack?",
+            "a": "Battery packs are regulated for air transport, so most customers ship lamps and packs separately and consolidate at destination. Tell us the destination and the mode and we will confirm which documents we can provide for that route. Do not assume a supplier’s generic certificate covers your lane — dangerous-goods rules differ by carrier and by route."
+          }
+        ],
+        "bulletsText": "Fast charging — short daily grid windows are enough to keep the pack ready\nWide input voltage range: 90–440 Vac — charges correctly on unstable grids\nHigh surge capability: 4 kV line-to-line\nHigh efficiency: > 87 % @ 230 Vac input\nPF > 0.97 @ 230 Vac input and 10 W output\nBattery overcharge protection: 4.2 V typical — extends pack life\nBattery over-discharge protection: 2.4 V typical — protects deep discharge\nMaximum emergency lighting drive current: 1 A",
+        "actionsText": "Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20Emergency%20LED%20Lamp%20%28CKD%29.",
+        "certsText": "RoHS, BIS on request, E27 / B22 base, Battery pack included in kit"
+      }
+    }
   }
 }
