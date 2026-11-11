@@ -316,6 +316,15 @@
             "title": "Street Light 40 / 60W",
             "desc": "Road & area lighting on the same verified driver platform.",
             "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
+          },
+          {
+            "slug": "product-new-mwc7veb2",
+            "image": "assets/img/Flood_Light_100W_-2_1_.png",
+            "alt": "",
+            "tag": "Street Light 60W",
+            "title": "Street Light  60W",
+            "desc": "brighten your life",
+            "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
           }
         ]
       },
@@ -735,6 +744,33 @@
         "bulletsText": "Fast charging — short daily grid windows are enough to keep the pack ready\nWide input voltage range: 90–440 Vac — charges correctly on unstable grids\nHigh surge capability: 4 kV line-to-line\nHigh efficiency: > 87 % @ 230 Vac input\nPF > 0.97 @ 230 Vac input and 10 W output\nBattery overcharge protection: 4.2 V typical — extends pack life\nBattery over-discharge protection: 2.4 V typical — protects deep discharge\nMaximum emergency lighting drive current: 1 A",
         "actionsText": "Request Quote | contact.html\nChat on WhatsApp | https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20the%20Emergency%20LED%20Lamp%20%28CKD%29.",
         "certsText": "RoHS, BIS on request, E27 / B22 base, Battery pack included in kit"
+      },
+      "product-new-mwc7veb2": {
+        "slug": "product-new-mwc7veb2",
+        "pageTitle": "",
+        "description": "",
+        "crumbCategory": "",
+        "kicker": "",
+        "title": "New product",
+        "lead": "",
+        "meta": "",
+        "badge": "",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "",
+            "caption": ""
+          }
+        ],
+        "specTitle": "Specifications",
+        "specNote": "",
+        "specTable": "Parameter | Specification\n",
+        "faqKicker": "",
+        "faq": [],
+        "bulletsText": "",
+        "actionsText": "Request Quote | contact.html",
+        "certsText": ""
       }
     }
   }
