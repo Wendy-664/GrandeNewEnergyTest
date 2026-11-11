@@ -211,6 +211,10 @@
             "content": "**Pros:** Lowest duty (components are classified as parts, often at lower tariff rates), most compact shipping (flat-packed = 3–4× more units per container), and full quality control in your hands.\n**Cons:** You need a trained assembly line, tooling, and a QC process."
           },
           {
+            "type": "figure",
+            "content": "../assets/img/skd-kit-flood.png\nflood 型号"
+          },
+          {
             "type": "keyfind",
             "content": "Real-world math\nA 200W floodlight in FG might fill a 20-ft container with ~2,500 units. The same fixture in CKD flat-packing can push 7,000–9,000 units per container, because you eliminate the empty cavity and stacked void. That volume difference alone can drop your per-unit freight by more than half."
           },
