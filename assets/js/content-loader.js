@@ -353,8 +353,28 @@
     }
   }
 
+  /* ---------- 文章表格宽度兜底 ----------
+     早期生成的文章页里 .data-table 的 th/td 带 white-space:nowrap，
+     长内容把表格撑出容器，出现横向滚动条。这里统一改成定宽 + 自动换行，
+     已发布的历史文章页无需重新生成即可自适应容器宽度。 */
+  function fixArticleTables() {
+    var tables = document.querySelectorAll('.art-body .data-table');
+    if (!tables.length || document.getElementById('gmtne-table-fix')) return;
+    var css =
+      '.art-body .data-table{width:100%!important;table-layout:fixed!important;}' +
+      '.art-body .data-table th,.art-body .data-table td{' +
+      'white-space:normal!important;overflow-wrap:anywhere;word-break:break-word;vertical-align:top;}' +
+      '@media(max-width:900px){.art-body .data-table{font-size:.74rem;}' +
+      '.art-body .data-table th,.art-body .data-table td{padding:.42rem .4rem;}}';
+    var st = document.createElement('style');
+    st.id = 'gmtne-table-fix';
+    st.textContent = css;
+    document.head.appendChild(st);
+  }
+
   function boot() {
     fixLegacyLogos();
+    fixArticleTables();
     load();
   }
 
