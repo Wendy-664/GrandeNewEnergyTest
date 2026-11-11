@@ -333,9 +333,34 @@
       });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', load);
-  } else {
+  /* ---------- LOGO 兼容兜底 ----------
+     后台早期生成的文章页把 logo 路径写成了 .webp，而仓库里实际只有 .png。
+     图片加载失败时自动换成 .png，已发布的历史文章页无需重新生成即可恢复。
+     只有真正 404 才替换；若以后真的上传了 .webp 文件则不会触发。 */
+  function fixLegacyLogos() {
+    var imgs = document.querySelectorAll('img[src$="logo.webp"], img[src$="logo-light.webp"]');
+    for (var i = 0; i < imgs.length; i++) {
+      (function (img) {
+        function swap() {
+          if (img.getAttribute('data-logo-fixed')) return;
+          img.setAttribute('data-logo-fixed', '1');
+          img.src = img.getAttribute('src').replace(/\.webp$/, '.png');
+        }
+        img.addEventListener('error', swap);
+        // 本脚本在 </body> 前，图片可能已经失败过了，补一次检查
+        if (img.complete && img.naturalWidth === 0) swap();
+      })(imgs[i]);
+    }
+  }
+
+  function boot() {
+    fixLegacyLogos();
     load();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
   }
 })();
