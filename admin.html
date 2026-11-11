@@ -124,6 +124,12 @@ button{font-family:inherit;cursor:pointer}
 .na-result{margin-top:16px;border-radius:9px;padding:14px 16px;background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D;font-size:13px;line-height:1.85;display:none}
 .na-result.show{display:block}
 .na-result a{color:#0369A1;font-weight:700;word-break:break-all}
+/* 导入现成 HTML 文章 */
+.na-imp-card{border:1px solid var(--cyan)!important;background:#F5FCFF}
+.na-imp-card .na-imp-file{width:100%;border:1px dashed var(--border);border-radius:7px;padding:10px 12px;background:#fff;font-size:13px;color:var(--text);font-family:inherit}
+.na-imp-card textarea{min-height:92px;font-family:ui-monospace,Consolas,monospace;font-size:12px;line-height:1.55}
+.na-impstat{font-size:12.5px;color:var(--muted);line-height:1.75}
+.na-impstat b{color:var(--cyan)}
 
 </style>
 </head>
@@ -196,6 +202,20 @@ button{font-family:inherit;cursor:pointer}
         <div class="fields">
           <div class="field wide"><label>编辑已有文章（选中后自动把上次填的内容载回表单）</label><select id="naExisting"></select></div>
         </div>
+      </div>
+
+      <div class="card na-imp-card">
+        <h3>有现成的 HTML 文章？一键导入（推荐）</h3>
+        <p class="sub">如果你手上已经有一个做好的文章 .html 文件，<b>不用手工拆成几十个区块</b>：选文件、点一下，后台会把标题、导语、正文、表格、列表、黄框、CTA、相关阅读全部填进下面的表单。填完还能改，确认无误再发布。</p>
+        <div class="fields">
+          <div class="field wide"><label>① 选择那个 .html 文件</label><input type="file" id="naImpFile" class="na-imp-file" accept=".html,.htm,text/html"></div>
+          <div class="field wide"><label>② 或者把 HTML 全文粘贴到这里（在文件里 Ctrl+A → Ctrl+C → 粘进来）</label><textarea id="naImpText" rows="4" placeholder="把整个 .html 文件的内容粘贴到这里"></textarea></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px">
+          <button class="btn primary" id="naBtnImport">解析并填入表单</button>
+          <span id="naImpStat" class="na-impstat"></span>
+        </div>
+        <div class="note" style="margin-top:12px">导入只搬「文字内容」，<b>不会</b>把那个文件上传到网站。最终页面由后台用统一骨架重新生成，所以导航、页脚、公司名、WhatsApp 都会跟后台联动，样式也和现有两篇技术文章完全一致。<br>提示：如果文章里有图片，图片本身要先在「图片与媒体库」上传，再把路径填到对应区块里。</div>
       </div>
 
       <div class="card">
@@ -1237,9 +1257,14 @@ function naBlockHtml(b,title){
            '<p>'+naInline(L.slice(1).join(' '))+'</p></div>\n';
   }
   if(t==='table'){
-    var rows=naLines(c).map(function(line){
-      return line.split(/\t|\||,\s*/).map(function(x){ return naInline(x.replace(/^"|"$/g,'')); });
-    }).filter(function(r){ return r.length; });
+    var rows=String(b.content==null?'':b.content).replace(/\r/g,'').split('\n').map(function(line){
+      if(!String(line).trim()) return null;                    /* 不用 naLines：它会裁掉行首 Tab，导致空表头少一列 */
+      var cells;
+      if(line.indexOf('\t')>-1) cells=line.split('\t');        /* 导入的表格用 Tab 分列，单元格里的 ", " 不会被误切 */
+      else if(line.indexOf('|')>-1) cells=line.split('|');
+      else cells=line.split(/,\s*/);
+      return cells.map(function(x){ return naInline(x.replace(/^"|"$/g,'').trim()); });
+    }).filter(function(r){ return r&&r.length; });
     if(!rows.length) return '';
     var thead='        <thead><tr>'+rows[0].map(function(x){ return '<th>'+x+'</th>'; }).join('')+'</tr></thead>\n';
     var tbody='        <tbody>\n'+rows.slice(1).map(function(r){
@@ -1399,7 +1424,154 @@ async function naPublish(){
     bp.disabled=false; bv.disabled=false;
   }
 }
+/* ===== 导入现成 HTML 文章：只把文字内容解析进表单，文件本身绝不上传 ===== */
+var naImpFileName='';
+function naOnImportFile(e){
+  var f=e.target&&e.target.files&&e.target.files[0]; if(!f) return;
+  var st=$('#naImpStat');
+  var rd=new FileReader();
+  rd.onload=function(){
+    var ta=$('#naImpText'); if(ta) ta.value=String(rd.result||'');
+    naImpFileName=f.name;
+    if(st) st.innerHTML='已读取 <b>'+esc(f.name)+'</b>（'+Math.round(String(rd.result||'').length/1024)+' KB），点「解析并填入表单」。';
+  };
+  rd.onerror=function(){ toast('文件读取失败','err'); };
+  rd.readAsText(f,'UTF-8');
+}
+/* 把 DOM 节点还原成表单用的纯文本：<strong> → **文字**，HTML 实体自动解码 */
+function nodeToMd(n){
+  if(n.nodeType===3) return n.nodeValue;
+  if(n.nodeType!==1) return '';
+  var tag=(n.tagName||'').toUpperCase(), s='';
+  for(var i=0;i<n.childNodes.length;i++) s+=nodeToMd(n.childNodes[i]);
+  if(tag==='STRONG'||tag==='B') return '**'+s.trim()+'**';
+  if(tag==='EM'||tag==='I') return '*'+s.trim()+'*';
+  if(tag==='BR') return ' ';
+  if(tag==='SCRIPT'||tag==='STYLE') return '';
+  return s;
+}
+function naMd(el){ return el? nodeToMd(el).replace(/[ \t\r\n]+/g,' ').trim() : ''; }
+function naSlugify(s){
+  return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60).replace(/-+$/,'')||'new-article';
+}
+function naImportHTML(){
+  var ta=$('#naImpText'), st=$('#naImpStat');
+  var raw=ta?String(ta.value||'').trim():'';
+  if(!raw){ toast('请先选 HTML 文件，或把文件全文粘贴到输入框','warn'); return; }
+  var doc;
+  try{ doc=new DOMParser().parseFromString(raw,'text/html'); }
+  catch(e){ toast('HTML 解析失败：'+e.message,'err'); return; }
+  var body=doc.querySelector('.art-body');
+  if(!body){ toast('没找到文章正文（.art-body），请确认粘贴的是完整文章 HTML，而不是片段','err'); return; }
+
+  /* --- 基本信息 --- */
+  var q=function(s){ return doc.querySelector(s); };
+  var title=naMd(q('.art-head h1')) || naMd(q('h1')) ||
+            naMd(q('title')).replace(/\s*\|\s*Grande New Energy\s*$/i,'') || 'Untitled article';
+  var tag=naMd(q('.art-tag'))||'Article';
+  var standfirst=naMd(q('.standfirst'))||title;
+  var descEl=q('meta[name="description"]');
+  var description=descEl?(descEl.getAttribute('content')||'').trim():'';
+  var metas=[], ms=q('.art-meta');
+  if(ms){
+    var spans=ms.querySelectorAll('span');
+    for(var mi=0;mi<spans.length;mi++){
+      var mv=naMd(spans[mi]);
+      if(mv && !/^grande new energy/i.test(mv)) metas.push(mv);
+    }
+  }
+  var crumbEl=doc.querySelector('.crumb');
+  var crumb=crumbEl?nodeToMd(crumbEl).trim():'';
+  crumb=crumb.split('/').pop().trim()||'Article';
+  var slug=naImpFileName
+    ? naImpFileName.replace(/\.html?$/i,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')
+    : naSlugify(title);
+  if(!slug||slug==='index'||slug==='_article-template') slug='guide-'+naSlugify(title);
+
+  /* --- 正文区块 --- */
+  var blocks=[], tables=0, kids=body.children;
+  for(var k=0;k<kids.length;k++){
+    var el=kids[k], tn=(el.tagName||'').toUpperCase();
+    if(el.classList && el.classList.contains('cta-box')) continue;     /* CTA 走单独字段 */
+    if(el.classList && el.classList.contains('related')) continue;     /* 相关阅读走单独字段 */
+    if(el.classList && el.classList.contains('keyfind')){
+      var khEl=el.querySelector('strong');
+      var kh=khEl?(khEl.textContent||'').trim():'Key finding';   /* 外层已有 <strong>，这里不能再套 ** */
+      blocks.push({type:'keyfind',content:(kh||'Key finding')+'\n'+(naMd(el.querySelector('p'))||'')});
+      continue;
+    }
+    if(tn==='TABLE' || (el.querySelector && el.querySelector('table'))){
+      var trs=el.querySelectorAll('tr'), tlines=[];
+      for(var r=0;r<trs.length;r++){
+        var cs=trs[r].querySelectorAll('th,td'), arr=[];
+        for(var ci=0;ci<cs.length;ci++) arr.push(naMd(cs[ci]).replace(/[\t\r\n]+/g,' ').trim());
+        tlines.push(arr.join('\t'));
+      }
+      if(tlines.length){ blocks.push({type:'table',content:tlines.join('\n')}); tables++; }
+      continue;
+    }
+    if(tn==='H2'){ blocks.push({type:'h2',content:naMd(el)}); continue; }
+    if(tn==='H3'){ blocks.push({type:'h3',content:naMd(el)}); continue; }
+    if(tn==='UL'||tn==='OL'){
+      var lis=el.querySelectorAll('li'), lns=[];
+      for(var lj=0;lj<lis.length;lj++) lns.push(naMd(lis[lj]));
+      blocks.push({type:tn.toLowerCase(),content:lns.join('\n')}); continue;
+    }
+    if(tn==='FIGURE' || (el.classList && el.classList.contains('chart-card'))){
+      var im=el.querySelector('img'), fg=el.querySelector('figcaption');
+      if(im){ blocks.push({type:'figure',content:((im.getAttribute('src')||'')+'\n'+(fg?naMd(fg):'')).trim()}); continue; }
+    }
+    if(tn==='P'){
+      var pv=naMd(el);
+      if(pv){
+        var prev=blocks[blocks.length-1];
+        if(prev && prev.type==='p') prev.content+='\n\n'+pv;   /* 连续段落合并成一个区块 */
+        else blocks.push({type:'p',content:pv});
+      }
+      continue;
+    }
+    var fb=naMd(el);
+    if(fb) blocks.push({type:'p',content:fb});
+  }
+
+  /* --- CTA --- */
+  var cta=body.querySelector('.cta-box');
+  if(cta){
+    $('#naCtaOn').checked=true;
+    naSet('naCtaTitle',naMd(cta.querySelector('h3'))||'Talk to our team');
+    naSet('naCtaText',naMd(cta.querySelector('p'))||'');
+    naSet('naCtaBtn',naMd(cta.querySelector('a.btn'))||'Talk to sales');
+  }else{ $('#naCtaOn').checked=false; }
+
+  /* --- 相关阅读 --- */
+  var rel=body.querySelector('.related'), rl=[];
+  if(rel){
+    var links=rel.querySelectorAll('a');
+    for(var li=0;li<links.length;li++){
+      var lb=links[li].querySelector('span'), tt=links[li].querySelector('strong');
+      rl.push((lb?(lb.textContent||'').trim():'Related')+' | '+(tt?(tt.textContent||'').trim():naMd(links[li]))+' | '+(links[li].getAttribute('href')||'index.html'));
+    }
+    $('#naRelOn').checked=true; naSet('naRel',rl.join('\n'));
+  }else{ $('#naRelOn').checked=false; }
+
+  /* --- 写回表单 --- */
+  naSet('naSlug',slug); naSet('naTitle',title); naSet('naTag',tag);
+  naSet('naStandfirst',standfirst); naSet('naCrumb',crumb);
+  naSet('naMeta',metas.join(' | ')); naSet('naImage',''); naSet('naDesc',description);
+  var box=$('#naBlocks'); if(box) box.innerHTML='';
+  blocks.forEach(function(b){ naAddBlock(b.type,b.content); });
+  if(!blocks.length) naAddBlock('p','');
+  naRenumber();
+  var exEl=$('#naExisting'); if(exEl) exEl.value='';
+  if(st) st.innerHTML='<b>✓ 已导入</b>：'+blocks.length+' 个正文区块'+(tables?'（含 '+tables+' 张表格）':'')+
+    '，CTA '+(cta?'已填入':'未找到')+'，相关阅读 '+(rel?rl.length+' 条':'未找到')+
+    '。<b>请往下检查一遍</b>，再点「预览效果」→「发布这篇文章」。';
+  toast('已导入 '+blocks.length+' 个区块，请检查后预览发布','ok');
+}
 function naBind(){
+  var impFile=$('#naImpFile'); if(impFile) impFile.addEventListener('change',naOnImportFile);
+  var impBtn=$('#naBtnImport'); if(impBtn) impBtn.addEventListener('click',naImportHTML);
+  var impTa=$('#naImpText'); if(impTa) impTa.addEventListener('input',function(){ naImpFileName=''; });
   var go=$('#naGo');
   if(go) go.addEventListener('click',function(){
     var t=$$('.tab').filter(function(x){ return x.getAttribute('data-tab')==='newarticle'; })[0];
@@ -1438,6 +1610,7 @@ async function runSelfTest(){
   t('本地快照模式禁止发布', source==='local' && canPublish()===false);
   t('中文 UTF-8 base64 往返正确', base64ToUtf8(utf8ToBase64('中文测试 © 2026 — Grande'))==='中文测试 © 2026 — Grande');
 
+  t('导入现成 HTML：解析函数已就绪', typeof naImportHTML==='function' && typeof nodeToMd==='function');
   /* 新建文章生成器：验证输出与现有两篇同款、组件齐全、脚本未截断 */
   var _m={slug:'selftest-article',title:'Self test article',tag:'Test · 1 min',
     standfirst:'A test standfirst.',description:'A test summary.',crumb:'Self test',
