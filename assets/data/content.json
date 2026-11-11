@@ -187,6 +187,10 @@
             "content": "**Pros:** Zero setup. Your team unpacks and sells.\n**Cons:** You pay for Chinese labor, you pay duty on the full finished product, and a bulky finished lamp wastes shipping space (the empty cavity inside every fixture still costs you freight)."
           },
           {
+            "type": "figure",
+            "content": "../assets/img/led_bulbs.png"
+          },
+          {
             "type": "h3",
             "content": "SKD — the \"half-way\" option"
           },
