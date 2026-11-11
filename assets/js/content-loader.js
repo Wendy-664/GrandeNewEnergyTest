@@ -315,7 +315,10 @@
         ? '<div class="card-img"><img src="' + esc(resolveMedia(c.image)) + '" alt="' +
           esc(c.alt || c.title) + '" style="object-fit:contain;background:#F1F2F4;"></div>'
         : '';
-      return '<div class="card fade-in">' + img +
+      // 动态插入的卡片要自带 visible：main.js 的 IntersectionObserver 只在
+      // DOMContentLoaded 时观察当时的 .fade-in，异步渲染出来的新卡片不会被观察到，
+      // 会永远停在 opacity:0（表现为「图片闪一下就整片空白」）。
+      return '<div class="card fade-in visible">' + img +
         '<div class="card-body">' +
           '<span class="card-tag">' + esc(c.tag) + '</span>' +
           '<h3>' + esc(c.title) + '</h3>' +
@@ -356,6 +359,20 @@
     }
   }
 
+  /* 所有由 content.json 动态渲染出来的区块都带 data-content 标记。
+     它们是 fetch 之后才插入 DOM 的，错过了 main.js 在 DOMContentLoaded 时注册的
+     IntersectionObserver，会一直停在 .fade-in 的 opacity:0（整片空白）。
+     这里统一补上 visible：不只修产品卡片，以后任何动态模块都不会再白屏。 */
+  function revealDynamicFadeIns() {
+    var nodes = document.querySelectorAll('[data-content]');
+    for (var i = 0; i < nodes.length; i++) {
+      var scope = nodes[i];
+      if (scope.classList && scope.classList.contains('fade-in')) scope.classList.add('visible');
+      var inner = scope.querySelectorAll('.fade-in');
+      for (var j = 0; j < inner.length; j++) inner[j].classList.add('visible');
+    }
+  }
+
   /* ---------- 主流程 ---------- */
 
   function apply(data) {
@@ -382,6 +399,9 @@
 
     // 最后接管全站正文文字：此时动态区块已渲染完毕，排除规则与索引构建时一致
     renderPageTexts(data);
+
+    // 兜底：动态插入的元素没被 main.js 的淡入观察器注册，统一补 visible 防白屏
+    revealDynamicFadeIns();
   }
 
   function load() {
