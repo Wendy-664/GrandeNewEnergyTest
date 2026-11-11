@@ -141,6 +141,15 @@ button{font-family:inherit;cursor:pointer}
 .pr-card,.pr-row{border:1px solid var(--border);border-radius:8px;padding:12px 14px 14px;margin-bottom:10px;background:#fff}
 .pr-cat h4{margin:18px 0 8px;font-size:14px;color:var(--primary);border-left:3px solid var(--cyan);padding-left:9px}
 .pr-hint{font-size:12px;color:var(--muted);line-height:1.7;margin:6px 0 0}
+/* 详情表单很长，顶部给一排直达按钮，避免用户在十几个输入框里找不到轮播区 */
+.pr-quicknav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:2px 0 18px;padding:11px 13px;background:#EEF7FB;border:1px solid #CBE6F2;border-radius:9px}
+.pr-quicknav-label{font-size:12px;color:var(--primary);font-weight:700;margin-right:2px}
+.pr-quicknav button{cursor:pointer;font-size:12px;padding:6px 11px;border-radius:7px;border:1px solid var(--border);background:#fff;color:var(--primary);font-weight:600}
+.pr-quicknav button:hover{border-color:var(--cyan);background:#F7FCFE}
+.pr-quicknav button.hi{background:var(--cyan);border-color:var(--cyan);color:#fff}
+.pr-quicknav button.hi:hover{background:#0d8fbf}
+#prDetailForm h4{scroll-margin-top:18px}
+#prDetailForm h4.pr-sec-media{background:#FFF6E5;border-left:3px solid var(--accent);padding:9px 11px;border-radius:0 7px 7px 0;color:#8A5A00}
 
 </style>
 </head>
@@ -299,8 +308,15 @@ button{font-family:inherit;cursor:pointer}
 
       <div class="card" id="prDetailCard">
         <h3>② 编辑产品详情页（View Details 打开的那个页面）</h3>
-        <p class="sub">选中产品后按表单填。图片和视频都在「轮播」清单里加：类型选「视频」时填 YouTube / 网盘 / mp4 网址即可，<b>不用上传视频文件</b>。参数表和 FAQ 都能增删改、上下移动。</p>
+        <p class="sub">选中产品后按表单填，表单共 4 段：① 标题与介绍 → <b>② 图片 / 视频轮播</b> → ③ 参数表 → ④ FAQ。图片和视频都在「轮播」清单里加：类型选「视频」时填 YouTube / 网盘 / mp4 网址即可，<b>不用上传视频文件</b>。参数表和 FAQ 都能增删改、上下移动。</p>
         <div class="fields"><div class="field wide"><label>选择要编辑的产品</label><select id="prPick"></select></div></div>
+        <div class="pr-quicknav" id="prQuickNav">
+          <span class="pr-quicknav-label">表单很长，点这里直达：</span>
+          <button type="button" data-pr-jump="prSecTitle">① 标题与介绍</button>
+          <button type="button" class="hi" data-pr-jump="prSecMedia">② 图片 / 视频轮播 ← 加图片视频点这里</button>
+          <button type="button" data-pr-jump="prSecSpec">③ 参数表</button>
+          <button type="button" data-pr-jump="prSecFaq">④ FAQ</button>
+        </div>
         <div id="prDetailForm"></div>
         <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:16px">
           <button class="btn" id="prBtnPreview">预览效果</button>
@@ -1688,7 +1704,9 @@ function prField(path,label,value,type,wide){
   var ctrl = t==='textarea'
     ? '<textarea data-pr="'+esc(path)+'" rows="3">'+esc(value||'')+'</textarea>'
     : '<input type="text" data-pr="'+esc(path)+'" value="'+esc(value||'')+'">';
-  return '<div class="field'+(wide?' wide':'')+'"><label>'+label+'</label>'+ctrl+'</div>';
+  // label 也必须转义：曾有字段标签写着「<title> 标签…」，未转义时浏览器把它当成
+  // 真正的 <title> 元素，后续所有字段 / ②③④ 区块全被吞成纯文本，轮播区整片消失。
+  return '<div class="field'+(wide?' wide':'')+'"><label>'+esc(label)+'</label>'+ctrl+'</div>';
 }
 
 /* ---------- 渲染：大类 + 卡片 ---------- */
@@ -1819,8 +1837,8 @@ function prRenderDetail(){
   if(!slug||!p||!p.details[slug]){ box.innerHTML='<p class="sub">先在上面选一个产品。</p>'; return; }
   var d=p.details[slug], b='products.details.'+slug+'.';
   box.innerHTML=
-    '<div class="note green" style="margin-bottom:16px">这里改的是「点 View Details 打开的那个详情页」。改完点最下面「生成 / 更新这个详情页」，后台会自动写页面并发布。<b>图片和视频都在下面的轮播清单里加</b>。</div>'+
-    '<h4>① 页面标题与右侧介绍</h4><div class="fields">'+
+    '<div class="note green" style="margin-bottom:16px">这里改的是「点 View Details 打开的那个详情页」。表单分 4 段，用上方彩色按钮可一键直达；<b>图片和视频都在「② 图片 / 视频轮播」里加</b>。改完点最下面「生成 / 更新这个详情页」，后台会自动写页面并发布。</div>'+
+    '<h4 id="prSecTitle">① 页面标题与右侧介绍</h4><div class="fields">'+
       prField(b+'title','页面大标题（h1）',d.title)+
       prField(b+'pageTitle','<title> 标签（给搜索引擎看，留空自动生成）',d.pageTitle)+
       prField(b+'description','SEO 摘要',d.description,'textarea',true)+
@@ -1833,25 +1851,26 @@ function prRenderDetail(){
       prField(b+'certsLabel','认证行前缀（例 Options:）',d.certsLabel)+
       prField(b+'certsText','认证标签（用逗号分隔）',d.certsText)+
     '</div>'+
-    '<h4>② 图片 / 视频轮播（可增删改、上下移动）</h4>'+
+    '<h4 id="prSecMedia" class="pr-sec-media">② 图片 / 视频轮播（可增删改、上下移动）</h4>'+
     '<p class="pr-hint">第一项就是打开页面时显示的那张。类型选「视频」时地址填 YouTube / 网盘 / mp4 直链；图片填 assets/img/... 路径（可到「图片与媒体库」复制）。</p>'+
     '<div id="prMedia">'+prMediaHtml(d.media||[],slug)+'</div>'+
     '<button class="btn add" data-pr-act="mediaAdd" data-slug="'+esc(slug)+'">+ 加一张图片或视频</button>'+
-    '<h4>③ 参数表（表格形式）</h4><div class="fields">'+
+    '<h4 id="prSecSpec">③ 参数表（表格形式）</h4><div class="fields">'+
       prField(b+'specTitle','参数区标题',d.specTitle)+
       prField(b+'specNote','参数区说明（可不填）',d.specNote,'textarea',true)+
       prField(b+'specTable','参数表（第一行是表头；每行用 | 分列，可从 Excel 粘贴）',d.specTable,'textarea',true)+
     '</div>'+
-    '<h4>④ 常见问题 FAQ（可增删改、上下移动）</h4><div class="fields">'+
+    '<h4 id="prSecFaq">④ 常见问题 FAQ（可增删改、上下移动）</h4><div class="fields">'+
       prField(b+'faqKicker','FAQ 小标签',d.faqKicker)+
     '</div>'+
     '<div id="prFaq">'+prFaqHtml(d.faq||[],slug)+'</div>'+
     '<button class="btn add" data-pr-act="faqAdd" data-slug="'+esc(slug)+'">+ 加一条 FAQ</button>';
 }
 function prSelectDetail(slug){
-  var sel=$('#prPick'); if(sel) sel.value=slug;
+  // 必须先切标签：切到 products 会触发 prRender() 重建下拉选项，若先设值会被重置掉
   var tab=$$('.tab').filter(function(x){ return x.getAttribute('data-tab')==='products'; })[0];
   if(tab&&!tab.classList.contains('active')) tab.click();
+  var sel=$('#prPick'); if(sel) sel.value=slug;
   prRenderDetail();
   var f=$('#prDetailForm'); if(f&&f.scrollIntoView) f.scrollIntoView({behavior:'smooth',block:'start'});
   toast('已载入「'+slug+'」的详情内容','ok');
@@ -1886,6 +1905,11 @@ function prFaqAction(act,i,slug){
   markDirty();
 }
 function prOnAction(e){
+  // 顶部「直达」按钮：滚到表单对应区块，不改动任何数据
+  var j=e.target.closest?e.target.closest('[data-pr-jump]'):null;
+  if(j){ var t=document.getElementById(j.getAttribute('data-pr-jump'));
+         if(t&&t.scrollIntoView) t.scrollIntoView({behavior:'smooth',block:'start'});
+         return; }
   var b=e.target.closest?e.target.closest('button[data-pr-act]'):null; if(!b) return;
   var act=b.getAttribute('data-pr-act'),
       ci=parseInt(b.getAttribute('data-ci'),10), ki=parseInt(b.getAttribute('data-ki'),10),
