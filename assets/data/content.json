@@ -415,6 +415,16 @@
             "type": "image",
             "src": "assets/img/street-light-main.png",
             "caption": "YE-01 · STREET LIGHT 40–60 W"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/street-light-main.png",
+            "caption": "YE-01 · STREET LIGHT 40–60 W 111"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/street-light-main.png",
+            "caption": "YE-01 · STREET LIGHT 40–60 W 11111"
           }
         ],
         "specTitle": "Specifications",
@@ -453,6 +463,10 @@
           {
             "q": "Can the LED module or driver be replaced in the field?",
             "a": "Yes — and this is the practical advantage of SKD construction. The LED board and the driver are separate assemblies held by screws and connectors, so a failed driver is a 10-minute swap by a technician with a screwdriver, not a fixture replacement. Both parts can be ordered separately in your maintenance quantities."
+          },
+          {
+            "q": "hi zhu",
+            "a": "hi i zhu"
           }
         ],
         "bulletsText": "40 W and 60 W versions · pole-mount arm, Type II/III light distribution options\nBuilt on the YT2181GTE5 driver platform — 100–440 Vac input, verified in our 18-page lab reports\n4 kV surge immunity, PF > 0.95, programmable current foldback protection\nHigh-integration single-board driver — fewer parts, lower BOM, easier local assembly\nOpen-circuit, short-circuit and over-temperature protection included",
