@@ -59,6 +59,12 @@
         "title": "Where the heat actually is: 90-minute thermal soak",
         "tag": "Test data · 7 min",
         "href": "thermal-performance.html"
+      },
+      {
+        "title": "CKD vs. SKD vs. FG: Choosing the right delivery format for LED floodlights in Southeast Asia",
+        "tag": "Buyer's guide",
+        "href": "ckd-vs-skd-vs-fg-floodlight.html",
+        "image": ""
       }
     ],
     "downloads": [
@@ -123,6 +129,166 @@
       "text": "Certification files, IES/LDT photometric data, installation drawings and BOMs are available on request. Tell us the project and we will send the right pack.",
       "button": "Request documents",
       "href": "../contact.html"
+    },
+    "articleDrafts": {
+      "ckd-vs-skd-vs-fg-floodlight": {
+        "slug": "ckd-vs-skd-vs-fg-floodlight",
+        "title": "CKD vs. SKD vs. FG: Choosing the right delivery format for LED floodlights in Southeast Asia",
+        "tag": "Buyer's guide",
+        "standfirst": "A buyer's guide to cutting landed cost, clearing customs faster, and keeping final quality in your own hands.",
+        "crumb": "Delivery formats",
+        "meta": "6 min read | Format: FG · SKD · CKD",
+        "image": "",
+        "description": "FG, SKD and CKD delivery formats for LED floodlights in Southeast Asia: how each one affects duty, shipping volume, labor and time-to-market — with a worked 200W floodlight example.",
+        "date": "2026-11-11",
+        "blocks": [
+          {
+            "type": "h2",
+            "content": "What FG, SKD and CKD actually mean"
+          },
+          {
+            "type": "p",
+            "content": "If you're importing LED floodlights into Southeast Asia, three shipping terms decide how much you pay — and how much work you take on:"
+          },
+          {
+            "type": "ul",
+            "content": "**FG (Fully Good / Finished Goods)** — the complete, ready-to-sell product.\n**SKD (Semi-Knocked-Down)** — partly assembled modules shipped together.\n**CKD (Completely-Knocked-Down)** — every part shipped disassembled for local assembly."
+          },
+          {
+            "type": "p",
+            "content": "The choice is rarely \"which one is best.\" It's about **where you want to pay your money: in the factory, or in your own warehouse.** Done right, CKD can cut your landed cost by 15–30% while giving you more control over the final product. Done wrong, it turns your warehouse into a confusing pile of screws and heat sinks.\n\nThis guide breaks the three formats down side by side, using a **200W LED floodlight** as a concrete example, and explains why more Southeast Asian importers are moving toward CKD."
+          },
+          {
+            "type": "h2",
+            "content": "The three formats at a glance"
+          },
+          {
+            "type": "table",
+            "content": "\tFG (Finished Goods)\tSKD (Semi-Knocked-Down)\tCKD (Completely-Knocked-Down)\nWhat you receive\tFully assembled, tested, boxed\tPre-assembled modules (e.g., LED board + driver mounted)\tEvery component loose: housing, LED module, driver, lens, screws\nWho assembles\tFactory (China)\tYou (light final assembly)\tYou (full assembly)\nAssembly level\t100% done\t~50–70% done\t0% done\nLabor cost\tPaid in China\tSplit\tMostly your local labor\nImport duty\tHighest (full product value)\tMedium\tOften lowest (parts classified separately)\nShipping volume\tBulkiest (empty space in boxes)\tMedium\tMost compact (flat-packed)\nQuality control\tFactory-controlled\tShared\tIn your hands\nTime to shelf\tFastest (plug & sell)\tMedium\tSlowest (setup required)\nBest for\tSmall orders, quick launches, no local setup\tTesting the market, phased approach\tEstablished buyers, high volume, cost leadership"
+          },
+          {
+            "type": "h2",
+            "content": "A concrete example — the 200W LED floodlight"
+          },
+          {
+            "type": "p",
+            "content": "Let's break a 200W LED floodlight down into what actually arrives in each format. This makes the difference tangible."
+          },
+          {
+            "type": "h3",
+            "content": "FG — the \"plug-and-sell\" option"
+          },
+          {
+            "type": "p",
+            "content": "You receive a sealed box with the complete floodlight inside — housing closed, LED board mounted, driver wired, lens sealed, tested, and ready to power on."
+          },
+          {
+            "type": "ul",
+            "content": "**Pros:** Zero setup. Your team unpacks and sells.\n**Cons:** You pay for Chinese labor, you pay duty on the full finished product, and a bulky finished lamp wastes shipping space (the empty cavity inside every fixture still costs you freight)."
+          },
+          {
+            "type": "h3",
+            "content": "SKD — the \"half-way\" option"
+          },
+          {
+            "type": "p",
+            "content": "The manufacturer ships **pre-built modules**: the LED light engine (LED board already mounted on its heat sink), the driver already wired to a connector, and the housing. Your team does the final snap-together: mount the module into the housing, close the lens, seal it, run a quick test."
+          },
+          {
+            "type": "ul",
+            "content": "**Pros:** Balance of lower duty and lower labor, with less assembly skill required.\n**Cons:** Still pays duty on semi-finished assemblies, and you inherit some final-assembly quality risk."
+          },
+          {
+            "type": "h3",
+            "content": "CKD — the \"full control\" option"
+          },
+          {
+            "type": "p",
+            "content": "You receive **flat-packed kits**: separate cartons of die-cast housings, LED modules, drivers, lenses, screws, gaskets, and brackets. Your line assembles the entire fixture from scratch."
+          },
+          {
+            "type": "ul",
+            "content": "**Pros:** Lowest duty (components are classified as parts, often at lower tariff rates), most compact shipping (flat-packed = 3–4× more units per container), and full quality control in your hands.\n**Cons:** You need a trained assembly line, tooling, and a QC process."
+          },
+          {
+            "type": "keyfind",
+            "content": "Real-world math\nA 200W floodlight in FG might fill a 20-ft container with ~2,500 units. The same fixture in CKD flat-packing can push 7,000–9,000 units per container, because you eliminate the empty cavity and stacked void. That volume difference alone can drop your per-unit freight by more than half."
+          },
+          {
+            "type": "h2",
+            "content": "Why Southeast Asia is moving toward CKD"
+          },
+          {
+            "type": "p",
+            "content": "Southeast Asia has the exact conditions that make CKD attractive:"
+          },
+          {
+            "type": "ol",
+            "content": "**Lower local labor cost.** Assembly wages in Vietnam, Indonesia, the Philippines, or Thailand are a fraction of Chinese factory labor. You capture that gap when you assemble locally.\n**Import duty relief.** Many ASEAN countries (and preferential trade arrangements) impose lower tariffs on components than on finished lamps. CKD lets you split the classification.\n**\"Made locally\" positioning.** For government tenders, projects, and B2B buyers, a locally assembled product often carries compliance or localization advantages.\n**Cash-flow flexibility.** You buy parts and assemble to order, rather than holding capital in finished goods inventory that may not match demand."
+          },
+          {
+            "type": "p",
+            "content": "The trade-off is real: CKD demands **discipline.** You need a bill of materials (BOM), an assembly SOP, and a QC checklist — or you'll turn savings into returns."
+          },
+          {
+            "type": "h2",
+            "content": "Making the choice — a simple decision path"
+          },
+          {
+            "type": "p",
+            "content": "Ask yourself four questions:"
+          },
+          {
+            "type": "ol",
+            "content": "**What's my monthly volume?** Under ~500 units — stay with FG. 500–3,000 — consider SKD. Over 3,000 — CKD usually wins.\n**Do I have (or can I build) a competent assembly team?** If no, CKD's savings will leak into rework and defects.\n**Can I absorb slower time-to-market?** CKD adds 2–4 weeks for setup and first-batch learning.\n**How does my country classify components vs. finished lamps?** Confirm the actual tariff difference before committing — this is where the real money is."
+          },
+          {
+            "type": "p",
+            "content": "If you answered \"high volume + yes to assembly + yes to patience + confirmed tariff gap,\" CKD is almost certainly your best path."
+          },
+          {
+            "type": "h2",
+            "content": "Common pitfalls to avoid with CKD"
+          },
+          {
+            "type": "ul",
+            "content": "**No BOM discipline.** Missing one screw or gasket stops the whole line. Your supplier should provide a precise, versioned BOM and a photo-based packing list.\n**Skipping incoming QC.** Inspect a sample of every component lot on arrival — a defective driver caught early costs you minutes, not a returned shipment.\n**Underestimating tooling.** You'll need torque drivers, a testing rig (or a simple power-on + lumen check), and sealant. Budget for it upfront.\n**Ignoring after-sales parts.** Keep a safety stock of drivers and lenses, because you're now your own warranty service center."
+          },
+          {
+            "type": "h2",
+            "content": "The bottom line"
+          },
+          {
+            "type": "p",
+            "content": "There's no single \"best\" delivery format — there's the format that matches **your volume, your capability, and your tariff environment.**"
+          },
+          {
+            "type": "ul",
+            "content": "**FG** is for speed and simplicity.\n**SKD** is a pragmatic middle step.\n**CKD** is how serious, high-volume buyers in Southeast Asia turn a commodity import into a margin and a local advantage."
+          },
+          {
+            "type": "p",
+            "content": "The buyers winning in this market aren't the ones who pick a format and never change. They're the ones who **graduate** — start with FG to enter fast, move to SKD to test local assembly, and scale into CKD once volume justifies the investment."
+          }
+        ],
+        "cta": {
+          "title": "Want the landed-cost comparison for your floodlight range?",
+          "text": "Share your target volume and destination country, and we'll run the FG vs. SKD vs. CKD comparison — including the exact duty implications for your market.",
+          "button": "Talk to sales"
+        },
+        "related": [
+          {
+            "label": "Learn more",
+            "title": "SKD / CKD — our knock-down programs",
+            "href": "../skd-ckd.html"
+          },
+          {
+            "label": "Product",
+            "title": "Flood Light — full specifications",
+            "href": "../product-flood-light.html"
+          }
+        ]
+      }
     }
   }
 }
