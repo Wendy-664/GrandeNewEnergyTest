@@ -291,6 +291,71 @@
       '<a class="btn" href="' + esc(res.cta.href) + '">' + esc(res.cta.button) + '</a>';
   }
 
+  /* ---------- Products 页 ----------
+     产品列表页不改动 HTML 一个字：检测到页面上有 .cat-jump / .cat-block，
+     就用 content.json 的 products.categories 整体重建大类与卡片。
+     旧 HTML 里的 6 张卡片保留作兜底（JSON 未加载或没有 products 段时不白屏）。
+     动态区块带 data-content 标记，避免被「全站正文文字」枚举规则重复接管。 */
+  function renderProductsPage(data) {
+    var p = data.products;
+    if (!p || !p.categories || !p.categories.length) return;
+    var jump = document.querySelector('.cat-jump');
+    var first = document.querySelector('.cat-block');
+    if (!jump || !first) return;              // 不是产品列表页，直接跳过
+
+    function cardHtml(c) {
+      // 卡片参数在后台是一段「每行：名称 | 值」的纯文本，便于直接粘贴 / 调整顺序
+      var specs = String(c.specsText || '').split(/\r?\n/).map(function (line) {
+        if (!line.trim()) return '';
+        var p = line.split('|');
+        return '<div class="card-spec"><strong>' + esc((p[0] || '').trim()) + '</strong>' +
+          esc((p[1] || '').trim()) + '</div>';
+      }).filter(Boolean).join('');
+      var img = c.image
+        ? '<div class="card-img"><img src="' + esc(resolveMedia(c.image)) + '" alt="' +
+          esc(c.alt || c.title) + '" style="object-fit:contain;background:#F1F2F4;"></div>'
+        : '';
+      return '<div class="card fade-in">' + img +
+        '<div class="card-body">' +
+          '<span class="card-tag">' + esc(c.tag) + '</span>' +
+          '<h3>' + esc(c.title) + '</h3>' +
+          '<p>' + esc(c.desc) + '</p>' +
+          '<div class="card-specs">' + specs + '</div>' +
+          '<a href="' + esc(c.slug) + '.html" class="btn btn-primary btn-sm">View Details</a>' +
+        '</div></div>';
+    }
+    function catHtml(cat) {
+      return '<div class="cat-block" id="' + esc(cat.id) + '" data-content="products">' +
+        '<div class="cat-head"><span class="num">' + esc(cat.num) + '</span>' +
+        '<h2>' + esc(cat.name) + '</h2></div>' +
+        '<p class="cat-desc">' + esc(cat.desc) + '</p>' +
+        '<div class="card-grid">' + (cat.cards || []).map(cardHtml).join('') + '</div>' +
+        '</div>';
+    }
+
+    jump.innerHTML = p.categories.map(function (cat) {
+      return '<a href="#' + esc(cat.id) + '"><span class="cnt">' + esc(cat.num) +
+        '</span> ' + esc(cat.name) + '</a>';
+    }).join('');
+    jump.setAttribute('data-content', 'products');
+
+    var parent = first.parentNode;
+    var olds = Array.prototype.slice.call(parent.querySelectorAll('.cat-block'));
+    var tmp = document.createElement('div');
+    tmp.innerHTML = p.categories.map(catHtml).join('');
+    var news = Array.prototype.slice.call(tmp.children);
+    for (var i = 0; i < news.length; i++) parent.insertBefore(news[i], olds[0]);
+    for (var j = 0; j < olds.length; j++) parent.removeChild(olds[j]);
+
+    if (p.intro) {
+      var box = document.querySelector('.text-center.fade-in');
+      if (box) {
+        var ip = box.querySelector('p[style*="text-muted"]');
+        if (ip) { ip.textContent = p.intro; ip.setAttribute('data-content', 'productsIntro'); }
+      }
+    }
+  }
+
   /* ---------- 主流程 ---------- */
 
   function apply(data) {
@@ -311,6 +376,9 @@
     renderFaq(res);
     renderComingNext(res);
     renderCta(res);
+
+    // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
+    renderProductsPage(data);
 
     // 最后接管全站正文文字：此时动态区块已渲染完毕，排除规则与索引构建时一致
     renderPageTexts(data);
