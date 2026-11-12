@@ -207,14 +207,14 @@
   function renderWhatsApp(site) {
     if (!site.whatsapp) return;
     var text = site.whatsappMessage || 'Hello, I am interested in your solutions.';
-    document.querySelectorAll('a[href*="wa.me"]').forEach(function (a) {
+    document.querySelectorAll('a[href*="wa.me"]:not([data-gmtne-float])').forEach(function (a) {
       a.setAttribute('href', 'https://wa.me/' + site.whatsapp + '?text=' + encodeURIComponent(text));
     });
   }
 
   function renderLinkedIn(site) {
     if (!site.linkedin) return;
-    document.querySelectorAll('a[href*="linkedin.com"]').forEach(function (a) {
+    document.querySelectorAll('a[href*="linkedin.com"]:not([data-gmtne-float])').forEach(function (a) {
       a.setAttribute('href', site.linkedin);
     });
   }
@@ -373,6 +373,97 @@
     }
   }
 
+
+  /* ---------- 悬浮联系按钮（content.json 的 floats 段） ----------
+     历史上每个页面里写死两个 <a class="whatsapp-float"> / <a class="linkedin-float">，
+     CSS 在 styles.css，改一次要动 20 多个 HTML。现在统一由 floats 数组驱动：
+     加载器在运行时整体接管（移除旧按钮 + 生成新的一组），
+     因此已发布页面只要同步一次本文件即可全部更新，不用重新发布、不用改 HTML。
+     · 旧线上 JSON 没有 floats 段 → 什么都不做，页面保持原样（渐进增强）。
+     · 数组顺序 = 显示顺序（后台 ↑↓ 调整）。
+     · href 为空或 enabled:false 的项不渲染，避免客户点到无效图标。
+     · 容器带 data-content，排除「全站正文文字」枚举，避免 pages 段索引错位。 */
+  var FLOAT_ICONS = {
+    "whatsapp": "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z",
+    "facebook": "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z",
+    "youtube": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+    "linkedin": "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+    "email": "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z",
+    "custom": "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+  };
+  var FLOAT_COLORS = {
+    "whatsapp": "#25D366",
+    "email": "#061F32",
+    "facebook": "#1877F2",
+    "youtube": "#FF0000",
+    "linkedin": "#0A66C2",
+    "custom": "#475569"
+  };
+  var FLOAT_CSS = ".gmtne-floats{position:fixed;right:24px;bottom:24px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:12px}.gmtne-fl-item{position:relative;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 18px rgba(6,31,50,.22);text-decoration:none;flex-shrink:0;transition:transform .18s ease,box-shadow .18s ease}.gmtne-fl-item:hover,.gmtne-fl-item:focus-visible{transform:scale(1.08);box-shadow:0 8px 22px rgba(6,31,50,.30)}.gmtne-fl-item svg{width:24px;height:24px;display:block}.gmtne-fl-tip{position:absolute;right:64px;bottom:0;min-width:96px;width:auto;max-width:220px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 10px 30px rgba(6,31,50,.18);padding:9px 10px;white-space:nowrap;opacity:0;visibility:hidden;transform:translateX(8px);pointer-events:none;text-align:center;transition:opacity .18s ease,transform .18s ease,visibility .18s}.gmtne-fl-tip.has-img{width:200px;white-space:normal}.gmtne-fl-item:hover .gmtne-fl-tip,.gmtne-fl-item:focus-visible .gmtne-fl-tip{opacity:1;visibility:visible;transform:translateX(0)}.gmtne-fl-tip img{display:block;width:100%;max-height:180px;object-fit:contain;border-radius:6px;margin-bottom:8px;background:#F4F7FA}.gmtne-fl-tip em{display:block;font-style:normal;font-size:12px;font-weight:700;color:#061F32;letter-spacing:.2px}@media(max-width:600px){.gmtne-floats{right:14px;bottom:14px;gap:9px}.gmtne-fl-item{width:46px;height:46px}.gmtne-fl-item svg{width:21px;height:21px}.gmtne-fl-tip{right:56px}.gmtne-fl-tip.has-img{width:160px}}";
+
+  /* 只放行安全协议与站内相对路径，挡住 javascript: 之类 */
+  function safeFloatHref(u){
+    u = String(u || '').trim();
+    if (/^(https?:\/\/|mailto:|tel:|#|\/)/i.test(u)) return u;
+    if (u.indexOf(':') === -1 && /^[A-Za-z0-9_\-./?#=&%~]+$/.test(u)) return u;
+    return '#';
+  }
+
+  function renderFloats(data){
+    var list = data.floats;
+    if (!Array.isArray(list)) return;          // 旧 JSON：保留写死的两个按钮，不接管
+
+    if (!document.getElementById('gmtne-floats-css')) {
+      var st = document.createElement('style');
+      st.id = 'gmtne-floats-css';
+      st.textContent = FLOAT_CSS;
+      document.head.appendChild(st);
+    }
+
+    // 移除页面上所有写死的旧悬浮按钮
+    var olds = document.querySelectorAll('a.whatsapp-float, a.linkedin-float');
+    for (var o = 0; o < olds.length; o++) olds[o].parentNode.removeChild(olds[o]);
+
+    var box = document.getElementById('gmtneFloats');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'gmtneFloats';
+      box.className = 'gmtne-floats';
+      box.setAttribute('data-content', 'floats');
+      document.body.appendChild(box);
+    }
+
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var it = list[i] || {};
+      if (it.enabled === false) continue;
+      var href = String(it.href || '').trim();
+      if (!href) continue;                     // 没填链接就不显示，后台会红字提示
+      var pf = FLOAT_ICONS[it.platform] ? it.platform : 'custom';
+      var label = it.label || pf;
+      var prev = String(it.preview || '').trim();
+      var tip = '<span class="gmtne-fl-tip' + (prev ? ' has-img' : '') + '">' +
+        (prev ? '<img src="' + esc(resolveMedia(prev)) + '" alt="' + esc(label) + '">' : '') +
+        '<em>' + esc(label) + '</em></span>';
+      html += '<a class="gmtne-fl-item" data-gmtne-float="1" href="' + esc(safeFloatHref(href)) + '"' +
+        ' target="_blank" rel="noopener" aria-label="' + esc(label) + '"' +
+        ' style="background:' + esc(FLOAT_COLORS[pf] || FLOAT_COLORS.custom) + '">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path d="' + FLOAT_ICONS[pf] + '" fill="currentColor"/></svg>' + tip + '</a>';
+    }
+    box.innerHTML = html;
+    box.style.display = html ? '' : 'none';
+
+    // 预览图 404 时只留名称，不显示破图
+    var imgs = box.querySelectorAll('.gmtne-fl-tip img');
+    for (var m = 0; m < imgs.length; m++) {
+      (function (im) {
+        im.addEventListener('error', function () { im.style.display = 'none'; });
+        if (im.complete && im.naturalWidth === 0) im.style.display = 'none';
+      })(imgs[m]);
+    }
+  }
+
   /* ---------- 主流程 ---------- */
 
   function apply(data) {
@@ -385,6 +476,7 @@
     renderFooterContact(site);
     renderWhatsApp(site);
     renderLinkedIn(site);
+    renderFloats(data);
 
     // 仅 Resources 首页
     renderHero(res);
