@@ -799,27 +799,42 @@
       "product-new-mwdc8jn0": {
         "slug": "product-new-mwdc8jn0",
         "pageTitle": "",
-        "description": "",
+        "description": "111",
         "crumbCategory": "",
-        "kicker": "",
+        "kicker": "flood lighting",
         "title": "New product",
-        "lead": "",
-        "meta": "",
-        "badge": "",
+        "lead": "1",
+        "meta": "500",
+        "badge": "flood 30W",
         "certsLabel": "Options:",
         "media": [
           {
             "type": "image",
-            "src": "",
-            "caption": ""
+            "src": "assets/img/YE-01-30W.jpg",
+            "caption": "flood 30W"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/YE-01-30W.jpg",
+            "caption": "flood 30W"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/YE-01-30W.jpg",
+            "caption": "flood 30W"
           }
         ],
         "specTitle": "Specifications",
         "specNote": "",
         "specTable": "Parameter | Specification\n",
         "faqKicker": "",
-        "faq": [],
-        "bulletsText": "",
+        "faq": [
+          {
+            "q": "1111",
+            "a": "1"
+          }
+        ],
+        "bulletsText": "11",
         "actionsText": "Request Quote | contact.html",
         "certsText": ""
       }
