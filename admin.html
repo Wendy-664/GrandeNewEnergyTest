@@ -151,6 +151,33 @@ button{font-family:inherit;cursor:pointer}
 #prDetailForm h4{scroll-margin-top:18px}
 #prDetailForm h4.pr-sec-media{background:#FFF6E5;border-left:3px solid var(--accent);padding:9px 11px;border-radius:0 7px 7px 0;color:#8A5A00}
 
+
+/* ===== 悬浮联系按钮面板 ===== */
+.fl-demo{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;padding:18px 20px;
+  background:#F4F7FA;border:1px solid var(--border);border-radius:10px;min-height:78px}
+.fl-demo .gmtne-fl-item{position:relative}
+.fl-empty{color:var(--muted);font-size:13px;line-height:1.7}
+.fl-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff}
+.fl-card.off{opacity:.58}
+.fl-head{display:flex;align-items:center;gap:10px;margin-bottom:11px;flex-wrap:wrap}
+.fl-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;flex-shrink:0}
+.fl-ico svg{width:18px;height:18px;display:block}
+.fl-num{font-size:12px;font-weight:700;color:var(--muted)}
+.fl-ops{margin-left:auto;display:flex;gap:6px;align-items:center}
+.fl-sw{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text);white-space:nowrap}
+.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl-grid .wide{grid-column:1/-1}
+.fl-lab{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.5}
+.fl-grid input[type=text],.fl-grid select{width:100%;box-sizing:border-box;padding:7px 9px;
+  border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;color:var(--text)}
+.fl-grid input[type=text]:focus,.fl-grid select:focus{outline:2px solid var(--cyan-light);border-color:var(--cyan)}
+.fl-warn{color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;
+  padding:7px 10px;font-size:12px;line-height:1.6;margin-top:9px}
+.fl-media-row{display:flex;gap:8px;align-items:center}
+.fl-media-row select{flex:1}
+@media(max-width:760px){.fl-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -175,6 +202,7 @@ button{font-family:inherit;cursor:pointer}
     <button class="tab" data-tab="resources">Resource 页</button>
     <button class="tab" data-tab="newarticle">新建文章（不写 HTML）</button>
     <button class="tab" data-tab="products">产品管理</button>
+    <button class="tab" data-tab="floats">悬浮联系按钮</button>
     <button class="tab" data-tab="pagetext">页面文字</button>
     <button class="tab" data-tab="faq">常见问题 FAQ</button>
     <button class="tab" data-tab="upload">上传附件</button>
@@ -325,6 +353,41 @@ button{font-family:inherit;cursor:pointer}
         </div>
         <div id="prResult" class="na-result"></div>
         <div class="note red">「生成 / 更新这个详情页」会做两件事：把 <code>产品名.html</code> 写进仓库（同名安全覆盖，不会重复），并把产品列表一起发布。需要已连接 GitHub 且顶部显示绿色「数据来源：GitHub 仓库」。<br>删除卡片时<b>不会</b>自动删除已经生成的详情页文件，避免误删；如需清理请到 GitHub 仓库手动删。</div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="floats" id="flPanel">
+      <div class="panel-head"><h2>悬浮联系按钮（页面右下角）</h2>
+        <p>网站右下角那一排圆形图标。链接、鼠标悬浮预览图、显示顺序都在这里改，改完点右上角「发布到网站」。
+        不用写 HTML、不用重新发布页面 —— 已发布的所有页面同步一次代码就都会更新。</p></div>
+
+      <div class="card">
+        <h3>实时预览（鼠标移到图标上，看悬浮预览图效果）</h3>
+        <p class="sub">这里显示的就是网站右下角的样子。没填链接的图标不会显示，也不会出现在网站上。</p>
+        <div class="fl-demo" id="flPreview"></div>
+      </div>
+
+      <div class="card">
+        <h3>图标清单（上下移动 = 调整网站上的显示顺序）</h3>
+        <p class="sub">
+          <b>链接地址</b>填完整网址；邮箱填 <code>mailto:Sales@grandemicro.com</code>；
+          WhatsApp 填 <code>https://wa.me/手机号</code>。<br>
+          <b>悬浮预览图</b>留空时鼠标移上去只显示名称；填了图片就会弹出图片卡片（适合放二维码、产品图、公众号图）。
+          图片可以从媒体库选，也可以直接上传一张新图。
+        </p>
+        <div id="flList"></div>
+        <button class="btn add" data-fl-act="add">+ 添加一个图标</button>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn primary" data-fl-act="seed">一键载入 5 个推荐图标</button>
+          <button class="btn" data-fl-act="media">刷新媒体库图片列表</button>
+        </div>
+        <div class="note" style="margin-top:14px">
+          <b>第一次使用：</b>点「一键载入 5 个推荐图标」，会自动用你站点里已有的
+          WhatsApp / 邮箱 / LinkedIn 地址填好 3 个，剩下 Facebook / YouTube 先留空。
+          把这两个网址填进对应输入框，图标就会出现在网站上。<br>
+          <b>注意：</b>「一键载入」会重置清单（如果你已经改过顺序或填过链接，会先弹窗提醒）。
+          日常改内容不要点它。
+        </div>
       </div>
     </section>
 
@@ -763,7 +826,7 @@ function blankData(){
       address:{line1:'',line2:''}, footer:{copyright:'',domainNote:''}, nav:[] },
     resources:{ hero:{tag:'',title:'',standfirst:''}, articles:[], downloads:[], comingNext:[], faq:[],
       cta:{title:'',text:'',button:'',href:''}, articleDrafts:{} },
-    pages:{}, pagesMeta:{}, products:{}
+    pages:{}, pagesMeta:{}, products:{}, floats:[]
   };
 }
 /* 以线上内容为主，只补齐缺失结构；不丢任何未知字段（向后兼容）。 */
@@ -774,7 +837,7 @@ function setData(obj){
   if(!base.resources || typeof base.resources!=='object') base.resources={};
   Object.keys(def.site).forEach(function(k){ if(base.site[k]===undefined) base.site[k]=def.site[k]; });
   Object.keys(def.resources).forEach(function(k){ if(base.resources[k]===undefined) base.resources[k]=def.resources[k]; });
-  D=base; renderAll(); ptRenderInitBox(); ptRenderOptions(); ptRenderList(); naRenderExisting(); prRender();
+  D=base; renderAll(); ptRenderInitBox(); ptRenderOptions(); ptRenderList(); naRenderExisting(); prRender(); flRender();
 }
 function canPublish(){ return !busy && cfgReady() && source==='github' && !!baseSha; }
 function shortSha(){ return baseSha ? baseSha.slice(0,7) : '—'; }
@@ -1089,6 +1152,7 @@ function bind(){
     if(k==='media' && $('#mediaList').textContent.indexOf('刷新列表')>-1) listMedia();
     if(k==='pagetext'){ ptRenderInitBox(); ptRenderOptions(); ptRenderList(); }
     if(k==='products'){ prRender(); }
+    if(k==='floats'){ flRender(); flLoadMedia(); }
   });});
   $('#btnSettings').addEventListener('click',openSettings);
   $('#btnCloseModal').addEventListener('click',closeSettings);
@@ -1140,6 +1204,7 @@ function bind(){
   initImageSelect();
   naBind();
   prBind();
+  flBind();
 }
 
 
@@ -2179,6 +2244,259 @@ function prBind(){
 }
 /* === PR:END === */
 
+
+/* === FL:BEGIN === */
+/* 悬浮联系按钮管理 ====================================================
+   data-fl-* 前缀 + 只绑在 #flPanel 上，与后台既有 data-path / data-action
+   事件委托完全隔离；字段 label 一律 esc()，避免未转义 <...> 吞掉整片表单。 */
+
+var FL_ICONS   = {
+    "whatsapp": "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z",
+    "facebook": "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z",
+    "youtube": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+    "linkedin": "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+    "email": "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z",
+    "custom": "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+  };
+var FL_COLORS  = {
+    "whatsapp": "#25D366",
+    "email": "#061F32",
+    "facebook": "#1877F2",
+    "youtube": "#FF0000",
+    "linkedin": "#0A66C2",
+    "custom": "#475569"
+  };
+var FL_FLOAT_CSS = ".gmtne-floats{position:fixed;right:24px;bottom:24px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:12px}.gmtne-fl-item{position:relative;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 18px rgba(6,31,50,.22);text-decoration:none;flex-shrink:0;transition:transform .18s ease,box-shadow .18s ease}.gmtne-fl-item:hover,.gmtne-fl-item:focus-visible{transform:scale(1.08);box-shadow:0 8px 22px rgba(6,31,50,.30)}.gmtne-fl-item svg{width:24px;height:24px;display:block}.gmtne-fl-tip{position:absolute;right:64px;bottom:0;min-width:96px;width:auto;max-width:220px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 10px 30px rgba(6,31,50,.18);padding:9px 10px;white-space:nowrap;opacity:0;visibility:hidden;transform:translateX(8px);pointer-events:none;text-align:center;transition:opacity .18s ease,transform .18s ease,visibility .18s}.gmtne-fl-tip.has-img{width:200px;white-space:normal}.gmtne-fl-item:hover .gmtne-fl-tip,.gmtne-fl-item:focus-visible .gmtne-fl-tip{opacity:1;visibility:visible;transform:translateX(0)}.gmtne-fl-tip img{display:block;width:100%;max-height:180px;object-fit:contain;border-radius:6px;margin-bottom:8px;background:#F4F7FA}.gmtne-fl-tip em{display:block;font-style:normal;font-size:12px;font-weight:700;color:#061F32;letter-spacing:.2px}@media(max-width:600px){.gmtne-floats{right:14px;bottom:14px;gap:9px}.gmtne-fl-item{width:46px;height:46px}.gmtne-fl-item svg{width:21px;height:21px}.gmtne-fl-tip{right:56px}.gmtne-fl-tip.has-img{width:160px}}";   // 与前台 content-loader.js 完全同一份 CSS
+var FL_PANEL_CSS = "\n/* ===== 悬浮联系按钮面板 ===== */\n.fl-demo{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;padding:18px 20px;\n  background:#F4F7FA;border:1px solid var(--border);border-radius:10px;min-height:78px}\n.fl-demo .gmtne-fl-item{position:relative}\n.fl-empty{color:var(--muted);font-size:13px;line-height:1.7}\n.fl-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff}\n.fl-card.off{opacity:.58}\n.fl-head{display:flex;align-items:center;gap:10px;margin-bottom:11px;flex-wrap:wrap}\n.fl-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;\n  justify-content:center;color:#fff;flex-shrink:0}\n.fl-ico svg{width:18px;height:18px;display:block}\n.fl-num{font-size:12px;font-weight:700;color:var(--muted)}\n.fl-ops{margin-left:auto;display:flex;gap:6px;align-items:center}\n.fl-sw{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text);white-space:nowrap}\n.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.fl-grid .wide{grid-column:1/-1}\n.fl-lab{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.5}\n.fl-grid input[type=text],.fl-grid select{width:100%;box-sizing:border-box;padding:7px 9px;\n  border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;color:var(--text)}\n.fl-grid input[type=text]:focus,.fl-grid select:focus{outline:2px solid var(--cyan-light);border-color:var(--cyan)}\n.fl-warn{color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;\n  padding:7px 10px;font-size:12px;line-height:1.6;margin-top:9px}\n.fl-media-row{display:flex;gap:8px;align-items:center}\n.fl-media-row select{flex:1}\n@media(max-width:760px){.fl-grid{grid-template-columns:1fr}}\n";
+var FL_MEDIA = null;
+
+var FL_PLATFORMS = [
+  {k:'whatsapp', n:'WhatsApp'},
+  {k:'email',    n:'邮箱 Email'},
+  {k:'facebook', n:'Facebook'},
+  {k:'youtube',  n:'YouTube'},
+  {k:'linkedin', n:'LinkedIn'},
+  {k:'custom',   n:'自定义 / 其他'}
+];
+
+function flEnsure(){
+  if(!D) return [];
+  if(!Array.isArray(D.floats)) D.floats=[];
+  return D.floats;
+}
+function flIconSvg(pf){
+  if(!FL_ICONS[pf]) pf='custom';
+  return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+    '<path d="'+FL_ICONS[pf]+'" fill="currentColor"/></svg>';
+}
+/* 只放行安全协议与站内相对路径，挡住 javascript: 之类 */
+function flSafeHref(u){
+  u=String(u||'').trim();
+  if(/^(https?:\/\/|mailto:|tel:|#|\/)/i.test(u)) return u;
+  if(u.indexOf(':')===-1 && /^[A-Za-z0-9_\-./?#=&%~]+$/.test(u)) return u;
+  return '#';
+}
+/* 后台预览时用；把从 resources 页复制来的 ../ 前缀去掉 */
+function flResolve(src){
+  src=String(src||'').trim();
+  while(src.indexOf('../')===0) src=src.substring(3);
+  return src;
+}
+/* 推荐 5 项：自动复用站点已有的联系方式，Facebook / YouTube 留空待填 */
+function flSeed(){
+  var s=(D&&D.site)||{};
+  var wa=s.whatsapp ? ('https://wa.me/'+s.whatsapp+'?text='+
+    encodeURIComponent(s.whatsappMessage||'Hello, I am interested in your solutions.')) : '';
+  return [
+    {id:'whatsapp',platform:'whatsapp',label:'WhatsApp',href:wa,preview:'',enabled:true},
+    {id:'email',platform:'email',label:'Email',href:s.email?('mailto:'+s.email):'',preview:'',enabled:true},
+    {id:'facebook',platform:'facebook',label:'Facebook',href:'',preview:'',enabled:true},
+    {id:'youtube',platform:'youtube',label:'YouTube',href:'',preview:'',enabled:true},
+    {id:'linkedin',platform:'linkedin',label:'LinkedIn',href:s.linkedin||'',preview:'',enabled:true}
+  ];
+}
+function flMediaOptions(cur){
+  var seen={},out=[];
+  if(typeof SITE_IMAGES!=='undefined') SITE_IMAGES.forEach(function(x){
+    if(!seen[x.p]){seen[x.p]=1;out.push({p:x.p,n:x.n});}
+  });
+  (FL_MEDIA||[]).forEach(function(p){
+    if(!seen[p]){seen[p]=1;out.push({p:p,n:p.split('/').pop()});}
+  });
+  if(cur&&!seen[cur]) out.unshift({p:cur,n:cur.split('/').pop()+'（当前填写）'});
+  return '<option value="">— 从媒体库选一张 —</option>'+out.map(function(o){
+    return '<option value="'+esc(o.p)+'"'+(o.p===cur?' selected':'')+'>'+esc(o.n)+' — '+esc(o.p)+'</option>';
+  }).join('');
+}
+function flPlatformOptions(cur){
+  return FL_PLATFORMS.map(function(o){
+    return '<option value="'+esc(o.k)+'"'+(o.k===cur?' selected':'')+'>'+esc(o.n)+'</option>';
+  }).join('');
+}
+function flCardHtml(it,i,n){
+  var pf=FL_ICONS[it.platform]?it.platform:'custom';
+  var color=FL_COLORS[pf]||FL_COLORS.custom;
+  var href=String(it.href||''), prev=String(it.preview||'');
+  return '<div class="fl-card'+(it.enabled===false?' off':'')+'">'+
+    '<div class="fl-head">'+
+      '<span class="fl-ico" style="background:'+esc(color)+'">'+flIconSvg(pf)+'</span>'+
+      '<span class="fl-num">#'+(i+1)+'</span>'+
+      '<div class="fl-ops">'+
+        '<label class="fl-sw"><input type="checkbox" data-fl-f="enabled" data-fl-i="'+i+'"'+
+          (it.enabled===false?'':' checked')+'> 启用</label>'+
+        '<button class="mini" data-fl-act="up" data-fl-i="'+i+'" title="上移">↑</button>'+
+        '<button class="mini" data-fl-act="down" data-fl-i="'+i+'" title="下移">↓</button>'+
+        '<button class="mini danger" data-fl-act="del" data-fl-i="'+i+'">删除</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="fl-grid">'+
+      '<div><label class="fl-lab">平台（决定图标与颜色）</label>'+
+        '<select data-fl-f="platform" data-fl-i="'+i+'">'+flPlatformOptions(pf)+'</select></div>'+
+      '<div><label class="fl-lab">鼠标悬浮时显示的名称</label>'+
+        '<input type="text" data-fl-f="label" data-fl-i="'+i+'" value="'+esc(it.label||'')+'"></div>'+
+      '<div class="wide"><label class="fl-lab">链接地址（必填；留空则前台不显示这个图标）</label>'+
+        '<input type="text" data-fl-f="href" data-fl-i="'+i+'" value="'+esc(href)+'" '+
+        'placeholder="https://... 或 mailto:..."></div>'+
+      '<div class="wide"><label class="fl-lab">悬浮预览图路径（可留空）</label>'+
+        '<input type="text" data-fl-f="preview" data-fl-i="'+i+'" value="'+esc(prev)+'" '+
+        'placeholder="assets/img/qr-whatsapp.png"></div>'+
+      '<div class="wide"><label class="fl-lab">从媒体库选图 / 上传新图</label>'+
+        '<div class="fl-media-row">'+
+          '<select data-fl-f="media" data-fl-i="'+i+'">'+flMediaOptions(prev)+'</select>'+
+          '<button class="btn" data-fl-act="upload" data-fl-i="'+i+'">上传图片</button>'+
+          '<input type="file" accept="image/*" id="flFile'+i+'" data-fl-f="file" '+
+            'data-fl-file="'+i+'" style="display:none">'+
+        '</div></div>'+
+    '</div>'+
+    '<div class="fl-warn"'+(href.trim()?' style="display:none"':'')+'>'+
+      '⚠ 还没填链接地址，这个图标暂时不会出现在网站上。填好地址并发布后即会显示。</div>'+
+  '</div>';
+}
+/* 只重画预览区，不重建表单 —— 否则用户每敲一个字输入框就失焦 */
+function flRenderPreview(){
+  var box=$('#flPreview'); if(!box) return;
+  var arr=flEnsure(), html='';
+  for(var i=0;i<arr.length;i++){
+    var it=arr[i]||{};
+    if(it.enabled===false || !String(it.href||'').trim()) continue;
+    var pf=FL_ICONS[it.platform]?it.platform:'custom';
+    var label=it.label||pf, prev=String(it.preview||'').trim();
+    html+='<a class="gmtne-fl-item" href="'+esc(flSafeHref(it.href))+'" target="_blank" rel="noopener" '+
+      'aria-label="'+esc(label)+'" style="background:'+esc(FL_COLORS[pf]||FL_COLORS.custom)+'">'+
+      flIconSvg(pf)+
+      '<span class="gmtne-fl-tip'+(prev?' has-img':'')+'">'+
+        (prev?'<img src="'+esc(flResolve(prev))+'" alt="'+esc(label)+'">':'')+
+        '<em>'+esc(label)+'</em></span></a>';
+  }
+  box.innerHTML=html || '<span class="fl-empty">还没有可显示的图标：请在下面填入链接地址，'+
+    '或点「一键载入 5 个推荐图标」。</span>';
+  var imgs=box.querySelectorAll('.gmtne-fl-tip img');
+  for(var m=0;m<imgs.length;m++){
+    (function(im){ im.addEventListener('error',function(){ im.style.display='none'; }); })(imgs[m]);
+  }
+}
+function flRender(){
+  var list=$('#flList'); if(!list) return;
+  if(!document.getElementById('fl-css')){
+    var st=document.createElement('style'); st.id='fl-css';
+    st.textContent=FL_FLOAT_CSS+'\n'+FL_PANEL_CSS;
+    document.head.appendChild(st);
+  }
+  var arr=flEnsure();
+  list.innerHTML=arr.map(function(it,i){ return flCardHtml(it||{},i,arr.length); }).join('');
+  flRenderPreview();
+}
+function flOnField(e){
+  var el=e.target,k=el.getAttribute('data-fl-f');
+  if(!k||!D) return;
+  if(k==='file'){
+    if(e.type!=='change') return;
+    var fi=parseInt(el.getAttribute('data-fl-file'),10);
+    if(el.files&&el.files[0]) flUpload(fi,el.files[0]);
+    return;
+  }
+  var i=parseInt(el.getAttribute('data-fl-i'),10), it=flEnsure()[i];
+  if(!it) return;
+  if(k==='enabled') it.enabled=!!el.checked;
+  else if(k==='media'){
+    if(el.value){
+      it.preview=el.value;
+      var card=el.closest('.fl-card');
+      var inp=card?card.querySelector('[data-fl-f="preview"]'):null;
+      if(inp) inp.value=el.value;
+    }
+  }
+  else it[k]=el.value;
+  markDirty();
+  var card2=el.closest('.fl-card');
+  if(card2){
+    var w=card2.querySelector('.fl-warn');
+    if(w) w.style.display=String(it.href||'').trim()?'none':'';
+    if(k==='platform'){
+      var ico=card2.querySelector('.fl-ico');
+      var pf=FL_ICONS[it.platform]?it.platform:'custom';
+      if(ico){ ico.style.background=FL_COLORS[pf]||FL_COLORS.custom; ico.innerHTML=flIconSvg(pf); }
+    }
+    if(k==='enabled') card2.classList.toggle('off',it.enabled===false);
+  }
+  flRenderPreview();
+}
+function flSeedInto(){
+  var arr=flEnsure();
+  if(arr.length && !window.confirm(
+    '当前已有 '+arr.length+' 个图标。载入推荐 5 项会覆盖你现在配置的链接、预览图和顺序。\n\n确认继续吗？')) return;
+  D.floats=flSeed(); markDirty(); flRender();
+  toast('已载入 5 个推荐图标。Facebook / YouTube 还没填网址，填好并发布后就会出现在网站上。','ok');
+}
+async function flLoadMedia(){
+  if(typeof cfgReady==='undefined'||!cfgReady()) return;
+  try{
+    var arr=await ghListDir('assets/img');
+    FL_MEDIA=arr.map(function(x){return x.path;})
+      .filter(function(p){return /\.(png|jpe?g|gif|webp|svg)$/i.test(p);});
+    flRender();
+  }catch(e){ /* 令牌权限不足时静默，仍可手动填路径 */ }
+}
+async function flUpload(i,file){
+  if(!file) return;
+  if(!cfgReady()){ toast('上传图片需要先连接 GitHub','warn'); openSettings(); return; }
+  if(file.size>1024*1024 && !window.confirm(
+    '这张图超过 1 MB，GitHub 接口可能拒绝上传。建议先压缩。仍要尝试吗？')) return;
+  var name=safeName(file.name), path='assets/img/'+name;
+  setBusy(true,'正在上传图片…');
+  try{
+    var b64=await fileToBase64(file), sha=null;
+    try{ var old=await ghGet(path); sha=old.sha; }catch(err){}
+    await ghPut(path,b64,'Add/Update float preview: '+name,sha);
+    var it=flEnsure()[i]; if(it) it.preview=path;
+    setBusy(false); markDirty(); flRender();
+    toast('已上传 '+name+'，路径已自动填好。记得点「发布到网站」让配置生效。','ok');
+  }catch(e){ setBusy(false); toast('上传失败：'+e.message,'err'); }
+}
+function flOnAction(e){
+  var b=e.target.closest?e.target.closest('button[data-fl-act]'):null; if(!b) return;
+  var act=b.getAttribute('data-fl-act'), i=parseInt(b.getAttribute('data-fl-i'),10);
+  var arr=flEnsure();
+  if(act==='up'&&i>0){ var t=arr[i];arr[i]=arr[i-1];arr[i-1]=t; }
+  else if(act==='down'&&i<arr.length-1){ var t2=arr[i];arr[i]=arr[i+1];arr[i+1]=t2; }
+  else if(act==='del'){ if(!window.confirm('确认删除第 '+(i+1)+' 个图标？')) return; arr.splice(i,1); }
+  else if(act==='add'){
+    arr.push({id:'fl'+Date.now().toString(36),platform:'custom',label:'新链接',href:'',preview:'',enabled:true});
+  }
+  else if(act==='seed'){ flSeedInto(); return; }
+  else if(act==='media'){ flLoadMedia(); return; }
+  else if(act==='upload'){ var f=$('#flFile'+i); if(f) f.click(); return; }
+  else return;
+  markDirty(); flRender();
+}
+function flBind(){
+  var p=$('#flPanel'); if(!p) return;
+  p.addEventListener('input',flOnField);
+  p.addEventListener('change',flOnField);
+  p.addEventListener('click',flOnAction);
+}
+/* === FL:END === */
+
 /* ---- 自检（仅 URL 带 ?selftest=1 时运行，正常访问不受影响） ---- */
 async function runSelfTest(){
   var out=[], t=function(n,c){ out.push((c?'PASS':'FAIL')+' | '+n); };
@@ -2192,6 +2510,19 @@ async function runSelfTest(){
   t('图片替换下拉含 14 张站点图片', $('#imgTarget') && $('#imgTarget').options.length===14);
   t('本地快照模式禁止发布', source==='local' && canPublish()===false);
   t('中文 UTF-8 base64 往返正确', base64ToUtf8(utf8ToBase64('中文测试 © 2026 — Grande'))==='中文测试 © 2026 — Grande');
+
+  t('悬浮按钮：推荐种子 5 项且平台齐全', (function(){var a=flSeed();
+    return a.length===5&&a[0].platform==='whatsapp'&&a[4].platform==='linkedin';})());
+  t('悬浮按钮：种子自动用站点已有联系方式', (function(){var a=flSeed();
+    return /wa\.me/.test(a[0].href)&&/mailto:/.test(a[1].href)&&/linkedin/.test(a[4].href);})());
+  t('悬浮按钮：6 种平台图标都能渲染 SVG', (function(){
+    return FL_PLATFORMS.every(function(o){return flIconSvg(o.k).indexOf('<svg')===0;});})());
+  t('悬浮按钮：危险链接被拦截', flSafeHref('javascript:alert(1)')==='#' && flSafeHref('https://wa.me/123').indexOf('wa.me')>-1);
+  t('悬浮按钮：面板与实时预览区存在', !!$('#flPanel')&&!!$('#flPreview'));
+  t('悬浮按钮：顺序调整不改变数组长度', (function(){
+    var bak=D&&D.floats?JSON.parse(JSON.stringify(D.floats)):null;
+    var a=flEnsure(), n=a.length; if(n>1){var t=a[0];a[0]=a[1];a[1]=t;}
+    if(bak!==null) D.floats=bak; return flEnsure().length===n;})());
 
   /* 产品模块：种子 + 详情页生成器 */
   t('产品模块：内置种子含 4 大类 / 6 详情', !!(PRODUCTS_SEED && PRODUCTS_SEED.categories.length===4 && Object.keys(PRODUCTS_SEED.details).length===6));
