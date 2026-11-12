@@ -316,6 +316,15 @@
             "title": "Street Light 40 / 60W",
             "desc": "Road & area lighting on the same verified driver platform.",
             "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
+          },
+          {
+            "slug": "product-new-mwdc8jn0",
+            "image": "assets/img/YE-01-30W.jpg",
+            "alt": "",
+            "tag": "New product",
+            "title": "New product",
+            "desc": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)",
+            "specsText": "Power | \nInput | "
           }
         ]
       },
@@ -762,6 +771,33 @@
       },
       "product-new-mwc7veb2": {
         "slug": "product-new-mwc7veb2",
+        "pageTitle": "",
+        "description": "",
+        "crumbCategory": "",
+        "kicker": "",
+        "title": "New product",
+        "lead": "",
+        "meta": "",
+        "badge": "",
+        "certsLabel": "Options:",
+        "media": [
+          {
+            "type": "image",
+            "src": "",
+            "caption": ""
+          }
+        ],
+        "specTitle": "Specifications",
+        "specNote": "",
+        "specTable": "Parameter | Specification\n",
+        "faqKicker": "",
+        "faq": [],
+        "bulletsText": "",
+        "actionsText": "Request Quote | contact.html",
+        "certsText": ""
+      },
+      "product-new-mwdc8jn0": {
+        "slug": "product-new-mwdc8jn0",
         "pageTitle": "",
         "description": "",
         "crumbCategory": "",
