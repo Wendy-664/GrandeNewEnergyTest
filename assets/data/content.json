@@ -869,7 +869,7 @@
       "id": "facebook",
       "platform": "facebook",
       "label": "Facebook",
-      "href": "",
+      "href": "https://www.baidu.com",
       "preview": "",
       "enabled": true
     },
@@ -877,7 +877,7 @@
       "id": "youtube",
       "platform": "youtube",
       "label": "YouTube",
-      "href": "",
+      "href": "https://www.baidu.com",
       "preview": "",
       "enabled": true
     },
