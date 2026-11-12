@@ -557,6 +557,11 @@
           },
           {
             "type": "image",
+            "src": "assets/img/YE-01-100W_behind.jpg",
+            "caption": "YE-01 · FLOOD LIGHT 100 W behind"
+          },
+          {
+            "type": "image",
             "src": "assets/img/pcb-flood-50w.png",
             "caption": "LED + DRIVER PCB · 132 × 134.5 MM"
           },
