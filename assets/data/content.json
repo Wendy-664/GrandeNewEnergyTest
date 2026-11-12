@@ -107,6 +107,14 @@
         "type": "page",
         "href": "../skd-ckd.html",
         "action": "View page"
+      },
+      {
+        "title": "about-qc.webp",
+        "product": "—",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/about-qc.webp",
+        "action": "WEBP"
       }
     ],
     "comingNext": [
@@ -839,5 +847,47 @@
         "certsText": ""
       }
     }
-  }
+  },
+  "floats": [
+    {
+      "id": "whatsapp",
+      "platform": "whatsapp",
+      "label": "WhatsApp",
+      "href": "https://wa.me/8618154614514?text=Hello%2C%20I%20am%20interested%20in%20your%20LED%20lighting%20solutions.",
+      "preview": "asset/img/about-qc.webp",
+      "enabled": true
+    },
+    {
+      "id": "email",
+      "platform": "email",
+      "label": "Email",
+      "href": "mailto:Sales@grandemicro.com",
+      "preview": "",
+      "enabled": true
+    },
+    {
+      "id": "facebook",
+      "platform": "facebook",
+      "label": "Facebook",
+      "href": "",
+      "preview": "",
+      "enabled": true
+    },
+    {
+      "id": "youtube",
+      "platform": "youtube",
+      "label": "YouTube",
+      "href": "",
+      "preview": "",
+      "enabled": true
+    },
+    {
+      "id": "linkedin",
+      "platform": "linkedin",
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/company/grandenewenergy",
+      "preview": "",
+      "enabled": true
+    }
+  ]
 }
