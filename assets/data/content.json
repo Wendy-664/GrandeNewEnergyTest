@@ -496,7 +496,17 @@
           {
             "type": "image",
             "src": "assets/img/rl-highbay-100w.png",
-            "caption": "YE-01 · HIGH BAY 100 W"
+            "caption": " HIGH BAY 100 W"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/_DSC2312_side.png",
+            "caption": "HIGH BAY 100 W side"
+          },
+          {
+            "type": "image",
+            "src": "assets/img/_DSC2309_behind.png",
+            "caption": "HIGH BAY 100 W behind"
           }
         ],
         "specTitle": "Specifications",
