@@ -176,6 +176,15 @@ button{font-family:inherit;cursor:pointer}
   padding:7px 10px;font-size:12px;line-height:1.6;margin-top:9px}
 .fl-media-row{display:flex;gap:8px;align-items:center}
 .fl-media-row select{flex:1}
+/* 页脚小图标：预览块复用前台同一份 CSS，这里只加后台外壳 */
+.fl-foot-demo{background:#061F32;border-radius:10px;padding:18px 20px;margin-top:12px;
+  min-height:76px;display:flex;align-items:center}
+.fl-foot-demo .gmtne-footer-socials{margin-top:0}
+.fl-foot-demo .gmtne-fs-tip{display:none}
+.fl-foot-sw{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+  color:var(--text);cursor:pointer}
+.fl-foot-sw input{width:16px;height:16px;accent-color:var(--cyan)}
+.fl-foot-off{color:var(--muted);font-size:12px;line-height:1.7;margin-top:10px}
 @media(max-width:760px){.fl-grid{grid-template-columns:1fr}}
 
 </style>
@@ -357,14 +366,25 @@ button{font-family:inherit;cursor:pointer}
     </section>
 
     <section class="panel" data-panel="floats" id="flPanel">
-      <div class="panel-head"><h2>悬浮联系按钮（页面右下角）</h2>
-        <p>网站右下角那一排圆形图标。链接、鼠标悬浮预览图、显示顺序都在这里改，改完点右上角「发布到网站」。
-        不用写 HTML、不用重新发布页面 —— 已发布的所有页面同步一次代码就都会更新。</p></div>
+      <div class="panel-head"><h2>悬浮联系按钮（右下角 + 页脚）</h2>
+        <p>同一组图标会出现在<b>两个地方</b>：页面右下角的圆形图标，以及每个页面页脚左下方的一排小方块。
+        链接、鼠标悬浮预览图、显示顺序都在这里改一次，两处同时生效；页脚那一排也可以单独关掉。
+        改完点右上角「发布到网站」。不用写 HTML、不用重新发布页面 —— 已发布的所有页面同步一次代码就都会更新。</p></div>
 
       <div class="card">
-        <h3>实时预览（鼠标移到图标上，看悬浮预览图效果）</h3>
+        <h3>实时预览 · 页面右下角（鼠标移到图标上，看悬浮预览图效果）</h3>
         <p class="sub">这里显示的就是网站右下角的样子。没填链接的图标不会显示，也不会出现在网站上。</p>
         <div class="fl-demo" id="flPreview"></div>
+      </div>
+
+      <div class="card">
+        <h3>实时预览 · 每个页面的页脚左下方</h3>
+        <p class="sub">同一组图标还会出现在<b>每个页面页脚左下方</b>（公司简介那段文字下面），样式是深色圆角小方块。
+        这里和右下角用的是<b>同一份配置</b>：链接、悬浮预览图、↑↓ 顺序改一次，两处同时变。</p>
+        <label class="fl-foot-sw"><input type="checkbox" id="flFootEnabled" data-fl-foot="1">
+          同时在所有页面页脚显示这一排小图标</label>
+        <div class="fl-foot-demo" id="flFootPreview"></div>
+        <div class="fl-foot-off">不想在页脚显示？取消勾选并点「发布到网站」即可，右下角那排不受影响。</div>
       </div>
 
       <div class="card">
@@ -826,7 +846,7 @@ function blankData(){
       address:{line1:'',line2:''}, footer:{copyright:'',domainNote:''}, nav:[] },
     resources:{ hero:{tag:'',title:'',standfirst:''}, articles:[], downloads:[], comingNext:[], faq:[],
       cta:{title:'',text:'',button:'',href:''}, articleDrafts:{} },
-    pages:{}, pagesMeta:{}, products:{}, floats:[]
+    pages:{}, pagesMeta:{}, products:{}, floats:[], footerSocials:{enabled:true}
   };
 }
 /* 以线上内容为主，只补齐缺失结构；不丢任何未知字段（向后兼容）。 */
@@ -2267,7 +2287,8 @@ var FL_COLORS  = {
     "custom": "#475569"
   };
 var FL_FLOAT_CSS = ".gmtne-floats{position:fixed;right:24px;bottom:24px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:12px}.gmtne-fl-item{position:relative;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 18px rgba(6,31,50,.22);text-decoration:none;flex-shrink:0;transition:transform .18s ease,box-shadow .18s ease}.gmtne-fl-item:hover,.gmtne-fl-item:focus-visible{transform:scale(1.08);box-shadow:0 8px 22px rgba(6,31,50,.30)}.gmtne-fl-item svg{width:24px;height:24px;display:block}.gmtne-fl-tip{position:absolute;right:64px;bottom:0;min-width:96px;width:auto;max-width:220px;background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 10px 30px rgba(6,31,50,.18);padding:9px 10px;white-space:nowrap;opacity:0;visibility:hidden;transform:translateX(8px);pointer-events:none;text-align:center;transition:opacity .18s ease,transform .18s ease,visibility .18s}.gmtne-fl-tip.has-img{width:200px;white-space:normal}.gmtne-fl-item:hover .gmtne-fl-tip,.gmtne-fl-item:focus-visible .gmtne-fl-tip{opacity:1;visibility:visible;transform:translateX(0)}.gmtne-fl-tip img{display:block;width:100%;max-height:180px;object-fit:contain;border-radius:6px;margin-bottom:8px;background:#F4F7FA}.gmtne-fl-tip em{display:block;font-style:normal;font-size:12px;font-weight:700;color:#061F32;letter-spacing:.2px}@media(max-width:600px){.gmtne-floats{right:14px;bottom:14px;gap:9px}.gmtne-fl-item{width:46px;height:46px}.gmtne-fl-item svg{width:21px;height:21px}.gmtne-fl-tip{right:56px}.gmtne-fl-tip.has-img{width:160px}}";   // 与前台 content-loader.js 完全同一份 CSS
-var FL_PANEL_CSS = "\n/* ===== 悬浮联系按钮面板 ===== */\n.fl-demo{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;padding:18px 20px;\n  background:#F4F7FA;border:1px solid var(--border);border-radius:10px;min-height:78px}\n.fl-demo .gmtne-fl-item{position:relative}\n.fl-empty{color:var(--muted);font-size:13px;line-height:1.7}\n.fl-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff}\n.fl-card.off{opacity:.58}\n.fl-head{display:flex;align-items:center;gap:10px;margin-bottom:11px;flex-wrap:wrap}\n.fl-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;\n  justify-content:center;color:#fff;flex-shrink:0}\n.fl-ico svg{width:18px;height:18px;display:block}\n.fl-num{font-size:12px;font-weight:700;color:var(--muted)}\n.fl-ops{margin-left:auto;display:flex;gap:6px;align-items:center}\n.fl-sw{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text);white-space:nowrap}\n.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.fl-grid .wide{grid-column:1/-1}\n.fl-lab{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.5}\n.fl-grid input[type=text],.fl-grid select{width:100%;box-sizing:border-box;padding:7px 9px;\n  border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;color:var(--text)}\n.fl-grid input[type=text]:focus,.fl-grid select:focus{outline:2px solid var(--cyan-light);border-color:var(--cyan)}\n.fl-warn{color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;\n  padding:7px 10px;font-size:12px;line-height:1.6;margin-top:9px}\n.fl-media-row{display:flex;gap:8px;align-items:center}\n.fl-media-row select{flex:1}\n@media(max-width:760px){.fl-grid{grid-template-columns:1fr}}\n";
+var FL_FOOTER_CSS = ".gmtne-footer-socials{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;align-items:center}.gmtne-fs-item{position:relative;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.8);text-decoration:none;flex-shrink:0;transition:background .18s ease,color .18s ease,transform .18s ease,border-color .18s ease}.gmtne-fs-item svg{width:17px;height:17px;display:block}.gmtne-fs-item:hover,.gmtne-fs-item:focus-visible{background:#08A6F6;border-color:#08A6F6;color:#fff;transform:translateY(-2px)}.gmtne-fs-tip{position:absolute;left:0;bottom:calc(100% + 10px);transform:translateY(6px);min-width:92px;max-width:220px;background:#fff;border:1px solid #E2E8F0;border-radius:9px;box-shadow:0 10px 28px rgba(6,31,50,.22);padding:8px 10px;opacity:0;visibility:hidden;pointer-events:none;text-align:center;white-space:nowrap;z-index:5;transition:opacity .18s ease,transform .18s ease,visibility .18s}.gmtne-fs-tip.has-img{width:190px;white-space:normal}.gmtne-fs-item:hover .gmtne-fs-tip,.gmtne-fs-item:focus-visible .gmtne-fs-tip{opacity:1;visibility:visible;transform:translateY(0)}.gmtne-fs-tip img{display:block;width:100%;max-height:150px;object-fit:contain;border-radius:6px;margin-bottom:7px;background:#F4F7FA}.gmtne-fs-tip em{display:block;font-style:normal;font-size:12px;font-weight:700;color:#061F32;letter-spacing:.2px}@media(max-width:600px){.gmtne-footer-socials{gap:8px;margin-top:14px}.gmtne-fs-item{width:34px;height:34px}}"; // 页脚小方块图标的 CSS，同样与前台同一份
+var FL_PANEL_CSS = "\n/* ===== 悬浮联系按钮面板 ===== */\n.fl-demo{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;padding:18px 20px;\n  background:#F4F7FA;border:1px solid var(--border);border-radius:10px;min-height:78px}\n.fl-demo .gmtne-fl-item{position:relative}\n.fl-empty{color:var(--muted);font-size:13px;line-height:1.7}\n.fl-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff}\n.fl-card.off{opacity:.58}\n.fl-head{display:flex;align-items:center;gap:10px;margin-bottom:11px;flex-wrap:wrap}\n.fl-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;\n  justify-content:center;color:#fff;flex-shrink:0}\n.fl-ico svg{width:18px;height:18px;display:block}\n.fl-num{font-size:12px;font-weight:700;color:var(--muted)}\n.fl-ops{margin-left:auto;display:flex;gap:6px;align-items:center}\n.fl-sw{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text);white-space:nowrap}\n.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.fl-grid .wide{grid-column:1/-1}\n.fl-lab{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.5}\n.fl-grid input[type=text],.fl-grid select{width:100%;box-sizing:border-box;padding:7px 9px;\n  border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;color:var(--text)}\n.fl-grid input[type=text]:focus,.fl-grid select:focus{outline:2px solid var(--cyan-light);border-color:var(--cyan)}\n.fl-warn{color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;\n  padding:7px 10px;font-size:12px;line-height:1.6;margin-top:9px}\n.fl-media-row{display:flex;gap:8px;align-items:center}\n.fl-media-row select{flex:1}\n/* 页脚小图标：预览块复用前台同一份 CSS，这里只加后台外壳 */\n.fl-foot-demo{background:#061F32;border-radius:10px;padding:18px 20px;margin-top:12px;\n  min-height:76px;display:flex;align-items:center}\n.fl-foot-demo .gmtne-footer-socials{margin-top:0}\n.fl-foot-demo .gmtne-fs-tip{display:none}\n.fl-foot-sw{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;\n  color:var(--text);cursor:pointer}\n.fl-foot-sw input{width:16px;height:16px;accent-color:var(--cyan)}\n.fl-foot-off{color:var(--muted);font-size:12px;line-height:1.7;margin-top:10px}\n@media(max-width:760px){.fl-grid{grid-template-columns:1fr}}\n";
 var FL_MEDIA = null;
 
 var FL_PLATFORMS = [
@@ -2395,19 +2416,65 @@ function flRenderPreview(){
     (function(im){ im.addEventListener('error',function(){ im.style.display='none'; }); })(imgs[m]);
   }
 }
+/* ---- 页脚小图标：与右下角共用 floats，缺省视为开启 ---- */
+function flFooterEnabled(){
+  return !(D && D.footerSocials && D.footerSocials.enabled===false);
+}
+function flSetFooterEnabled(on){
+  if(!D) return;
+  if(!D.footerSocials || typeof D.footerSocials!=='object') D.footerSocials={};
+  D.footerSocials.enabled=!!on;
+  markDirty(); flRenderFooter();
+}
+function flRenderFooter(){
+  var sw=$('#flFootEnabled'), box=$('#flFootPreview'); if(!box) return;
+  var on=flFooterEnabled();
+  if(sw) sw.checked=on;
+  if(!on){
+    box.innerHTML='<span class="fl-empty" style="color:#A9CBDF">页脚小图标已关闭；右下角悬浮按钮仍正常显示。</span>';
+    return;
+  }
+  var arr=flEnsure(), html='';
+  for(var i=0;i<arr.length;i++){
+    var it=arr[i]||{};
+    if(it.enabled===false || !String(it.href||'').trim()) continue;
+    var pf=FL_ICONS[it.platform]?it.platform:'custom';
+    var label=it.label||pf, prev=String(it.preview||'').trim();
+    html+='<a class="gmtne-fs-item" href="'+esc(flSafeHref(it.href))+'" '+
+      'target="_blank" rel="noopener" aria-label="'+esc(label)+'">'+flIconSvg(pf)+
+      '<span class="gmtne-fs-tip'+(prev?' has-img':'')+'">'+
+      (prev?'<img src="'+esc(flResolve(prev))+'" alt="'+esc(label)+'">':'')+
+      '<em>'+esc(label)+'</em></span></a>';
+  }
+  box.innerHTML='<div class="gmtne-footer-socials" data-content="footerSocials">'+
+    (html||'<span class="fl-empty" style="color:#A9CBDF">还没有可显示的图标，请在下面填入链接地址。</span>')+
+    '</div>';
+  var imgs=box.querySelectorAll('.gmtne-fs-tip img');
+  for(var m=0;m<imgs.length;m++){
+    (function(im){ im.addEventListener('error',function(){ im.style.display='none'; }); })(imgs[m]);
+  }
+}
 function flRender(){
   var list=$('#flList'); if(!list) return;
   if(!document.getElementById('fl-css')){
     var st=document.createElement('style'); st.id='fl-css';
-    st.textContent=FL_FLOAT_CSS+'\n'+FL_PANEL_CSS;
+    st.textContent=FL_FLOAT_CSS+'\n'+FL_FOOTER_CSS+'\n'+FL_PANEL_CSS;
     document.head.appendChild(st);
   }
   var arr=flEnsure();
   list.innerHTML=arr.map(function(it,i){ return flCardHtml(it||{},i,arr.length); }).join('');
   flRenderPreview();
+  flRenderFooter();
 }
 function flOnField(e){
-  var el=e.target,k=el.getAttribute('data-fl-f');
+  var el=e.target;
+  /* 页脚开关没有 data-fl-f，单独处理（放最前面，避免被下面的 return 挡掉） */
+  if(el && el.getAttribute && el.getAttribute('data-fl-foot')){
+    if(e.type!=='change') return;
+    flSetFooterEnabled(!!el.checked);
+    return;
+  }
+  var k=el.getAttribute('data-fl-f');
   if(!k||!D) return;
   if(k==='file'){
     if(e.type!=='change') return;
@@ -2440,6 +2507,7 @@ function flOnField(e){
     if(k==='enabled') card2.classList.toggle('off',it.enabled===false);
   }
   flRenderPreview();
+  flRenderFooter();
 }
 function flSeedInto(){
   var arr=flEnsure();
@@ -2523,6 +2591,23 @@ async function runSelfTest(){
     var bak=D&&D.floats?JSON.parse(JSON.stringify(D.floats)):null;
     var a=flEnsure(), n=a.length; if(n>1){var t=a[0];a[0]=a[1];a[1]=t;}
     if(bak!==null) D.floats=bak; return flEnsure().length===n;})());
+  t('页脚图标：开关与预览区存在', !!$('#flFootEnabled') && !!$('#flFootPreview'));
+  t('页脚图标：CSS 与前台加载器同源',
+    typeof FL_FOOTER_CSS==='string' && FL_FOOTER_CSS.indexOf('.gmtne-footer-socials')>-1);
+  t('页脚图标：缺省视为开启', (function(){
+    var had=D&&D.footerSocials, bak=had?JSON.parse(JSON.stringify(had)):null;
+    if(D) delete D.footerSocials;
+    var ok=flFooterEnabled()===true;
+    if(bak) D.footerSocials=bak;
+    flRenderFooter();            // 自检不能把面板留在临时状态
+    return ok;})());
+  t('页脚图标：关闭开关会写入 footerSocials.enabled=false', (function(){
+    var had=D&&D.footerSocials, bak=had?JSON.parse(JSON.stringify(had)):null;
+    flSetFooterEnabled(false);
+    var ok=!!(D&&D.footerSocials&&D.footerSocials.enabled===false);
+    if(bak) D.footerSocials=bak; else if(D) delete D.footerSocials;
+    flRenderFooter();            // 恢复数据后重画，否则诊断页开关会停在「关闭」
+    return ok;})());
 
   /* 产品模块：种子 + 详情页生成器 */
   t('产品模块：内置种子含 4 大类 / 6 详情', !!(PRODUCTS_SEED && PRODUCTS_SEED.categories.length===4 && Object.keys(PRODUCTS_SEED.details).length===6));
