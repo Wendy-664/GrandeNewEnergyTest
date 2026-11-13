@@ -63,6 +63,10 @@
      旧版 content.json 没有 image 字段，因此这里不影响任何既有页面。 */
   function resolveMedia(src) {
     if (!src) return '';
+    /* 容错：后台手填路径时容易把 assets 写成 asset（少一个 s），统一纠正。
+       只匹配路径开头（允许前面已有 ../），不误伤文件名里含 asset 的情况。
+       例：asset/img/a.webp -> assets/img/a.webp；../asset/img/a.webp -> ../assets/img/a.webp */
+    src = src.replace(/^((?:\.\.\/)*)asset\//, '$1assets/');
     if (/^(https?:|data:|\/|#)/.test(src)) return src;
     if (!ROOT_PREFIX || src.indexOf('../') === 0) return src;
     return ROOT_PREFIX + src;
@@ -464,6 +468,70 @@
     }
   }
 
+  /* 页脚左栏的一排小方块图标：与右下角悬浮按钮共用同一份 floats 数据（一次配置，两处显示）。
+     · footerSocials.enabled === false 才关闭；旧 JSON 没有该字段 → 默认开启。
+     · 容器自带 data-content，排除「全站正文文字」枚举，保证 pages 段索引不错位。
+     · 已发布的所有页面只同步一次本文件即可生效，不用改 HTML / 不用重新发布页面。 */
+  var FOOTER_SOCIALS_CSS = ".gmtne-footer-socials{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;align-items:center}.gmtne-fs-item{position:relative;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.8);text-decoration:none;flex-shrink:0;transition:background .18s ease,color .18s ease,transform .18s ease,border-color .18s ease}.gmtne-fs-item svg{width:17px;height:17px;display:block}.gmtne-fs-item:hover,.gmtne-fs-item:focus-visible{background:#08A6F6;border-color:#08A6F6;color:#fff;transform:translateY(-2px)}.gmtne-fs-tip{position:absolute;left:0;bottom:calc(100% + 10px);transform:translateY(6px);min-width:92px;max-width:220px;background:#fff;border:1px solid #E2E8F0;border-radius:9px;box-shadow:0 10px 28px rgba(6,31,50,.22);padding:8px 10px;opacity:0;visibility:hidden;pointer-events:none;text-align:center;white-space:nowrap;z-index:5;transition:opacity .18s ease,transform .18s ease,visibility .18s}.gmtne-fs-tip.has-img{width:190px;white-space:normal}.gmtne-fs-item:hover .gmtne-fs-tip,.gmtne-fs-item:focus-visible .gmtne-fs-tip{opacity:1;visibility:visible;transform:translateY(0)}.gmtne-fs-tip img{display:block;width:100%;max-height:150px;object-fit:contain;border-radius:6px;margin-bottom:7px;background:#F4F7FA}.gmtne-fs-tip em{display:block;font-style:normal;font-size:12px;font-weight:700;color:#061F32;letter-spacing:.2px}@media(max-width:600px){.gmtne-footer-socials{gap:8px;margin-top:14px}.gmtne-fs-item{width:34px;height:34px}}";
+
+  function renderFooterSocials(data){
+    // 幂等：先移除上一次插入的容器，重复调用不会出现两排
+    var olds = document.querySelectorAll('.gmtne-footer-socials');
+    for (var o = 0; o < olds.length; o++) olds[o].parentNode.removeChild(olds[o]);
+
+    var cfg = data.footerSocials;
+    if (cfg && cfg.enabled === false) return;   // 后台关掉页脚这一排
+    var list = data.floats;
+    if (!Array.isArray(list) || !list.length) return;  // 旧 JSON：页面保持原样
+
+    if (!document.getElementById('gmtne-footer-socials-css')) {
+      var st = document.createElement('style');
+      st.id = 'gmtne-footer-socials-css';
+      st.textContent = FOOTER_SOCIALS_CSS;
+      document.head.appendChild(st);
+    }
+
+    var grid = document.querySelector('footer.footer .footer-grid') || document.querySelector('.footer-grid');
+    if (!grid) return;
+    var col = grid.firstElementChild;
+    if (!col) return;
+
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var it = list[i] || {};
+      if (it.enabled === false) continue;
+      var href = String(it.href || '').trim();
+      if (!href) continue;
+      var pf = FLOAT_ICONS[it.platform] ? it.platform : 'custom';
+      var label = it.label || pf;
+      var prev = String(it.preview || '').trim();
+      var tip = '<span class="gmtne-fs-tip' + (prev ? ' has-img' : '') + '">' +
+        (prev ? '<img src="' + esc(resolveMedia(prev)) + '" alt="' + esc(label) + '">' : '') +
+        '<em>' + esc(label) + '</em></span>';
+      html += '<a class="gmtne-fs-item" data-gmtne-footer-social="1" href="' +
+        esc(safeFloatHref(href)) + '" target="_blank" rel="noopener" ' +
+        'aria-label="' + esc(label) + '">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path d="' + FLOAT_ICONS[pf] + '" fill="currentColor"/></svg>' + tip + '</a>';
+    }
+    if (!html) return;
+
+    var box = document.createElement('div');
+    box.className = 'gmtne-footer-socials';
+    box.setAttribute('data-content', 'footerSocials');
+    box.innerHTML = html;
+    col.appendChild(box);
+
+    // 预览图 404 时只留名称，不显示破图
+    var imgs = box.querySelectorAll('.gmtne-fs-tip img');
+    for (var m = 0; m < imgs.length; m++) {
+      (function (im) {
+        im.addEventListener('error', function () { im.style.display = 'none'; });
+        if (im.complete && im.naturalWidth === 0) im.style.display = 'none';
+      })(imgs[m]);
+    }
+  }
+
   /* ---------- 主流程 ---------- */
 
   function apply(data) {
@@ -477,6 +545,7 @@
     renderWhatsApp(site);
     renderLinkedIn(site);
     renderFloats(data);
+    renderFooterSocials(data);
 
     // 仅 Resources 首页
     renderHero(res);
