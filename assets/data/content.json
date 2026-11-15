@@ -41,7 +41,12 @@
         "label": "Contact",
         "href": "contact.html"
       }
-    ]
+    ],
+    "favicon": {
+      "href": "assets/img/favicon.ico",
+      "appleTouch": "assets/img/apple-touch-icon.png",
+      "version": "v1"
+    }
   },
   "resources": {
     "hero": {
