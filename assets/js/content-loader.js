@@ -532,6 +532,63 @@
     }
   }
 
+  /* ---------- 浏览器标签图标（Favicon） ----------
+     图标路径来自 content.json 的 site.favicon.href，后台「站点信息 → 浏览器标签图标」可改、
+     可换成新上传的文件。做成运行时注入而不是只改 HTML，是为了让已经发布出去的历史文章页
+     不用重新生成也能立刻显示图标。
+     - site.favicon 整个缺失 → 用下面的默认图标
+     - href 留空字符串     → 关闭图标（并移除页面上原有的 icon 声明）
+     - version 改动         → 给图标地址加 ?v=，强制浏览器丢掉旧图标缓存 */
+  var FAVICON_FALLBACK = {
+    href: 'assets/img/favicon.ico',
+    appleTouch: 'assets/img/apple-touch-icon.png'
+  };
+  var faviconKey = null;
+
+  function iconUrl(p, ver) {
+    var u = resolveMedia(p);
+    if (!ver) return u;
+    return u + (u.indexOf('?') > -1 ? '&' : '?') + 'v=' + encodeURIComponent(ver);
+  }
+
+  function applyFavicon(site) {
+    var f = (site && site.favicon) || {};
+    var href = (f.href === undefined || f.href === null) ? FAVICON_FALLBACK.href : String(f.href).trim();
+    var apple = (f.appleTouch === undefined || f.appleTouch === null)
+      ? FAVICON_FALLBACK.appleTouch : String(f.appleTouch).trim();
+    var ver = f.version ? String(f.version).trim() : '';
+
+    var key = href + '|' + apple + '|' + ver;
+    if (key === faviconKey) return;   // 配置没变就不重复插标签
+    faviconKey = key;
+
+    // 先清掉页面里已有的图标声明（含 HTML 里写死的），避免出现两个图标互相抢
+    var olds = document.querySelectorAll(
+      'link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"],link[data-gmtne-favicon]'
+    );
+    for (var i = 0; i < olds.length; i++) {
+      if (olds[i].parentNode) olds[i].parentNode.removeChild(olds[i]);
+    }
+    if (!href) return;   // 留空 = 关闭
+
+    var link = document.createElement('link');
+    link.setAttribute('data-gmtne-favicon', '1');
+    link.rel = 'icon';
+    if (/\.svg(\?|$)/i.test(href)) link.type = 'image/svg+xml';
+    else if (/\.ico(\?|$)/i.test(href)) link.type = 'image/x-icon';
+    link.href = iconUrl(href, ver);
+    document.head.appendChild(link);
+
+    if (apple) {
+      var al = document.createElement('link');
+      al.setAttribute('data-gmtne-favicon', '1');
+      al.rel = 'apple-touch-icon';
+      al.sizes = '180x180';
+      al.href = iconUrl(apple, ver);
+      document.head.appendChild(al);
+    }
+  }
+
   /* ---------- 主流程 ---------- */
 
   function apply(data) {
@@ -539,6 +596,7 @@
     var res = data.resources || {};
 
     // 全站通用
+    applyFavicon(site);
     renderNav(site);
     renderBrand(site);
     renderFooterContact(site);
@@ -622,6 +680,7 @@
   }
 
   function boot() {
+    applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
     fixArticleTables();
     load();
