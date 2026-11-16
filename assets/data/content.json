@@ -26,10 +26,6 @@
         "href": "products.html"
       },
       {
-        "label": "SKD / CKD",
-        "href": "skd-ckd.html"
-      },
-      {
         "label": "Resources",
         "href": "resources/index.html"
       },
@@ -894,5 +890,108 @@
       "preview": "",
       "enabled": true
     }
-  ]
+  ],
+  "skd": {
+    "enabled": true,
+    "why": {
+      "title": "Why assemble locally?",
+      "items": [
+        {
+          "no": "01",
+          "title": "Lower Import Duty",
+          "text": "Component kits are classified under lower HS codes than finished luminaires — meaningful duty savings on every container."
+        },
+        {
+          "no": "02",
+          "title": "Certification Made Simple",
+          "text": "Local assembly aligns with national certification schemes such as BIS and SIRIM — government tenders become reachable."
+        },
+        {
+          "no": "03",
+          "title": "\"Made Locally\" Label",
+          "text": "Assembled in-country means you can market as a domestic manufacturer — a decisive edge in municipal tenders."
+        },
+        {
+          "no": "04",
+          "title": "Lower Logistics Risk",
+          "text": "Flat-packed parts survive rough handling better than finished glass fixtures — less breakage, fewer claims."
+        }
+      ]
+    },
+    "kit": {
+      "title": "What's inside a kit?",
+      "text": "Every kit contains everything needed to assemble a complete, working luminaire — down to screws and gaskets. One platform, three product families, one BOM logic.",
+      "image": "assets/img/skd-kit-flood.webp",
+      "imageAlt": "Complete SKD kit contents laid out flat",
+      "buttonText": "Request Full BOM & Quote",
+      "buttonHref": "contact.html",
+      "items": [
+        "Die-cast aluminum housing & tempered glass",
+        "LED board with high-efficiency chips",
+        "Pre-tested driver board (our self-developed platform)",
+        "Silicone gasket, screws, cable gland, bracket",
+        "Packing carton with foam protection"
+      ]
+    },
+    "assembly": {
+      "title": "Assembly is simpler than you think",
+      "subtitle": "No SMT line required. If your team can do screw-driver assembly and basic wiring, they can build our luminaires.",
+      "note": "Typical learning curve: one day of training for a new assembly line. Remote support and video guides included.",
+      "items": [
+        {
+          "no": "01",
+          "title": "Mount LED Board",
+          "text": "Fix the LED board to the housing with screws and apply thermal paste — about 2 minutes."
+        },
+        {
+          "no": "02",
+          "title": "Connect Driver",
+          "text": "Plug the pre-tested driver board: two wires to the LED board, two to the input cable. Solder or connector, your choice."
+        },
+        {
+          "no": "03",
+          "title": "Seal & Close",
+          "text": "Lay the silicone gasket, close the glass cover, torque the perimeter screws evenly."
+        },
+        {
+          "no": "04",
+          "title": "Burn-in Test",
+          "text": "Power on for 5–10 minutes, check light output and temperature — done. We provide a test checklist with every first order."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Commercial terms",
+      "button1Text": "Start a Project",
+      "button1Href": "contact.html",
+      "button2Text": "Browse Luminaires",
+      "button2Href": "products.html",
+      "rows": [
+        {
+          "k": "MOQ",
+          "v": "300 pcs per model (mixed container welcome)"
+        },
+        {
+          "k": "Lead time",
+          "v": "25 days after order confirmation"
+        },
+        {
+          "k": "Trade terms",
+          "v": "FOB Shanghai / CIF Nhava Sheva & major SEA ports"
+        },
+        {
+          "k": "Spare parts",
+          "v": "1% free spare driver & LED boards with every order"
+        },
+        {
+          "k": "Training & support",
+          "v": "Assembly video guides, remote engineering support, first-order test checklist"
+        },
+        {
+          "k": "Payment",
+          "v": "T/T 30% deposit, 70% against B/L copy (flexible for repeat partners)"
+        }
+      ]
+    }
+  }
 }
