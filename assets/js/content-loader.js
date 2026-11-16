@@ -144,6 +144,8 @@
     navs.forEach(function (nav) {
       var html = '';
       site.nav.forEach(function (item) {
+        // 已废弃的独立页 SKD/CKD 菜单项：内容已并入首页，一律不渲染（含旧版 content.json 兜底）
+        if (/skd-ckd\.html/i.test(String(item.href || ''))) return;
         var href = resolveHref(item.href);
         var raw = (item.href || '').toLowerCase();
         var isActive = raw === currentFull;
@@ -293,6 +295,85 @@
       '<h3>' + esc(res.cta.title) + '</h3>' +
       '<p>' + esc(res.cta.text) + '</p>' +
       '<a class="btn" href="' + esc(res.cta.href) + '">' + esc(res.cta.button) + '</a>';
+  }
+
+  /* ---------- Home 页 SKD/CKD 区块（后台可编辑）----------
+     只在存在 [data-content="skd"] 容器（Home 页）时渲染；别的页面零影响。
+     没有 skd 段 / enabled=false 时保留 HTML 静态兜底，不白屏。
+     动态内容带 data-content 标记，排除「全站正文文字」索引，避免 pages 段错位。 */
+  function renderSkd(data) {
+    var s = data.skd;
+    var box = document.querySelector('[data-content="skd"]');
+    if (!box || !s) return;
+    if (s.enabled === false) { box.innerHTML = ''; return; }
+
+    function btn(txt, href, extra) {
+      if (!txt) return '';
+      return '<a href="' + esc(resolveHref(href || 'contact.html')) + '" class="btn ' + (extra || 'btn-primary') + '">' + esc(txt) + '</a>';
+    }
+    function stepsHtml(arr) {
+      if (!arr || !arr.length) return '';
+      return '<div class="step-grid">' + arr.map(function (it) {
+        return '<div class="step-card">' +
+          (it.no ? '<span class="step-no">' + esc(it.no) + '</span>' : '') +
+          '<h3>' + esc(it.title) + '</h3><p>' + esc(it.text) + '</p></div>';
+      }).join('') + '</div>';
+    }
+    var html = '';
+
+    // 1 为什么本地组装
+    if (s.why && (s.why.title || (s.why.items && s.why.items.length))) {
+      html += '<div class="skd-block fade-in" style="margin-bottom:3rem;">';
+      if (s.why.title) html += '<h2 class="section-title mb-3">' + esc(s.why.title) + '</h2>';
+      html += stepsHtml(s.why.items) + '</div>';
+    }
+
+    // 2 套件内容（两栏图文）
+    if (s.kit && (s.kit.title || s.kit.text)) {
+      html += '<div class="two-col skd-block fade-in" style="margin-bottom:3rem;"><div>';
+      if (s.kit.title) html += '<h2 class="section-title mb-3">' + esc(s.kit.title) + '</h2>';
+      if (s.kit.text) html += '<p style="color:var(--text-muted);margin-bottom:1.25rem;">' + esc(s.kit.text) + '</p>';
+      if (s.kit.items && s.kit.items.length) {
+        html += '<ul style="list-style:disc;padding-left:1.25rem;color:var(--text-muted);margin-bottom:1.5rem;">' +
+          s.kit.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+      }
+      html += btn(s.kit.buttonText, s.kit.buttonHref) + '</div>';
+      if (s.kit.image) {
+        html += '<div><img src="' + esc(resolveMedia(s.kit.image)) + '" alt="' + esc(s.kit.imageAlt || 'SKD kit') + '"></div>';
+      }
+      html += '</div>';
+    }
+
+    // 3 组装步骤
+    if (s.assembly && (s.assembly.title || (s.assembly.items && s.assembly.items.length))) {
+      html += '<div class="skd-block fade-in" style="margin-bottom:3rem;">';
+      if (s.assembly.title) html += '<h2 class="section-title mb-3">' + esc(s.assembly.title) + '</h2>';
+      if (s.assembly.subtitle) html += '<p class="section-subtitle mb-4">' + esc(s.assembly.subtitle) + '</p>';
+      html += stepsHtml(s.assembly.items);
+      if (s.assembly.note) html += '<p style="text-align:center;color:var(--text-muted);margin-top:2rem;">' + esc(s.assembly.note) + '</p>';
+      html += '</div>';
+    }
+
+    // 4 商务条款表
+    if (s.terms && (s.terms.title || (s.terms.rows && s.terms.rows.length))) {
+      html += '<div class="skd-block fade-in">';
+      if (s.terms.title) html += '<h2 class="section-title mb-3">' + esc(s.terms.title) + '</h2>';
+      if (s.terms.rows && s.terms.rows.length) {
+        html += '<div style="overflow-x:auto;"><table class="terms-table"><tbody>' +
+          s.terms.rows.map(function (r) {
+            return '<tr><th>' + esc(r.k) + '</th><td>' + esc(r.v) + '</td></tr>';
+          }).join('') + '</tbody></table></div>';
+      }
+      var b1 = btn(s.terms.button1Text, s.terms.button1Href);
+      var b2 = btn(s.terms.button2Text, s.terms.button2Href, 'btn-outline" style="margin-left:.5rem;');
+      if (b1 || b2) html += '<div class="text-center" style="margin-top:2rem;">' + b1 + b2 + '</div>';
+      html += '</div>';
+    }
+
+    if (html) {
+      box.innerHTML = html;
+      box.setAttribute('data-content', 'skd'); // 重建后保持标记（innerHTML 不影响自身属性）
+    }
   }
 
   /* ---------- Products 页 ----------
@@ -613,6 +694,9 @@
     renderComingNext(res);
     renderCta(res);
 
+    // Home 页 SKD/CKD 区块：由 skd 段重建（没有该段时保留 HTML 静态兜底）
+    renderSkd(data);
+
     // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
     renderProductsPage(data);
 
@@ -679,10 +763,105 @@
     document.head.appendChild(st);
   }
 
+  /* ---------- 首页 SKD/CKD 区块：历史页面双层修法 ----------
+     线上 index.html 从未重发（旧版只有精简的 Why SKD/CKD 两栏）。
+     这里在运行时把旧版骨架替换成完整区块并注入样式，
+     这样用户只需同步一次 content-loader.js，无需重发 HTML 就能看到新区块。
+     已带 [data-content="skd"] 容器（新版 HTML）时跳过。 */
+  function fixSkdBlock() {
+    if (document.querySelector('[data-content="skd"]')) return;  // 新版 HTML 已就位
+    // 只在首页处理：必须有 hero + 旧精简区块标题
+    var heroBtn = document.querySelector('.hero-btns a[href="skd-ckd.html"]');
+    if (!heroBtn) return;
+
+    // 1) 注入样式（只注入一次）
+    if (!document.getElementById('gmtne-skd-css')) {
+      var css =
+        '.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}' +
+        '@media(max-width:1000px){.step-grid{grid-template-columns:1fr 1fr;}}' +
+        '@media(max-width:560px){.step-grid{grid-template-columns:1fr;}}' +
+        '.step-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem 1.4rem;box-shadow:var(--shadow-sm);position:relative;}' +
+        '.step-card .step-no{position:absolute;top:-14px;left:16px;background:var(--accent);color:#fff;font-size:.75rem;font-weight:800;padding:.3rem .7rem;border-radius:999px;letter-spacing:1px;}' +
+        '.step-card h3{font-size:1.05rem;color:var(--primary);margin:.5rem 0;}' +
+        '.step-card p{font-size:.88rem;color:var(--text-muted);}' +
+        '.terms-table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);}' +
+        '.terms-table th{width:260px;background:var(--bg-alt);color:var(--primary);text-align:left;font-size:.88rem;font-weight:700;padding:.95rem 1.25rem;border-bottom:1px solid var(--border);}' +
+        '.terms-table td{padding:.95rem 1.25rem;font-size:.92rem;border-bottom:1px solid var(--border);}' +
+        '.terms-table tr:last-child th,.terms-table tr:last-child td{border-bottom:none;}' +
+        '@media(max-width:700px){.terms-table th{width:45%;}}' +
+        '.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}' +
+        '@media(max-width:900px){.two-col{grid-template-columns:1fr;}}' +
+        '.two-col img{width:100%;border-radius:var(--radius);border:1px solid var(--border);}';
+      var st = document.createElement('style');
+      st.id = 'gmtne-skd-css'; st.textContent = css;
+      document.head.appendChild(st);
+    }
+
+    // 2) hero 按钮从死链改为页内锚点
+    heroBtn.setAttribute('href', '#skd');
+
+    // 3) 找到旧精简区块 section（含 "Why SKD / CKD?" 标题的 section-alt），替换成完整骨架
+    var sections = document.querySelectorAll('section.section-alt');
+    var target = null;
+    for (var i = 0; i < sections.length; i++) {
+      var h2 = sections[i].querySelector('h2.section-title');
+      if (h2 && /Why SKD\s*\/\s*CKD/i.test(h2.textContent || '')) { target = sections[i]; break; }
+    }
+    if (!target) return;
+    target.id = 'skd';
+    target.innerHTML =
+      '<div class="container" data-content="skd">' +
+        '<div class="skd-block fade-in" style="margin-bottom:3rem;">' +
+          '<h2 class="section-title mb-3">Why assemble locally?</h2>' +
+          '<div class="step-grid">' +
+            '<div class="step-card"><span class="step-no">01</span><h3>Lower Import Duty</h3><p>Component kits are classified under lower HS codes than finished luminaires — meaningful duty savings on every container.</p></div>' +
+            '<div class="step-card"><span class="step-no">02</span><h3>Certification Made Simple</h3><p>Local assembly aligns with national certification schemes such as BIS and SIRIM — government tenders become reachable.</p></div>' +
+            '<div class="step-card"><span class="step-no">03</span><h3>"Made Locally" Label</h3><p>Assembled in-country means you can market as a domestic manufacturer — a decisive edge in municipal tenders.</p></div>' +
+            '<div class="step-card"><span class="step-no">04</span><h3>Lower Logistics Risk</h3><p>Flat-packed parts survive rough handling better than finished glass fixtures — less breakage, fewer claims.</p></div>' +
+          '</div></div>' +
+        '<div class="two-col skd-block fade-in" style="margin-bottom:3rem;"><div>' +
+          '<h2 class="section-title mb-3">What\'s inside a kit?</h2>' +
+          '<p style="color:var(--text-muted);margin-bottom:1.25rem;">Every kit contains everything needed to assemble a complete, working luminaire — down to screws and gaskets. One platform, three product families, one BOM logic.</p>' +
+          '<ul style="list-style:disc;padding-left:1.25rem;color:var(--text-muted);margin-bottom:1.5rem;"><li>Die-cast aluminum housing &amp; tempered glass</li><li>LED board with high-efficiency chips</li><li>Pre-tested driver board (our self-developed platform)</li><li>Silicone gasket, screws, cable gland, bracket</li><li>Packing carton with foam protection</li></ul>' +
+          '<a href="contact.html" class="btn btn-primary">Request Full BOM &amp; Quote</a></div>' +
+          '<div><img src="assets/img/skd-kit-flood.webp" alt="Complete SKD kit contents laid out flat"></div></div>' +
+        '<div class="skd-block fade-in" style="margin-bottom:3rem;">' +
+          '<h2 class="section-title mb-3">Assembly is simpler than you think</h2>' +
+          '<p class="section-subtitle mb-4">No SMT line required. If your team can do screw-driver assembly and basic wiring, they can build our luminaires.</p>' +
+          '<div class="step-grid">' +
+            '<div class="step-card"><span class="step-no">01</span><h3>Mount LED Board</h3><p>Fix the LED board to the housing with screws and apply thermal paste — about 2 minutes.</p></div>' +
+            '<div class="step-card"><span class="step-no">02</span><h3>Connect Driver</h3><p>Plug the pre-tested driver board: two wires to the LED board, two to the input cable. Solder or connector, your choice.</p></div>' +
+            '<div class="step-card"><span class="step-no">03</span><h3>Seal &amp; Close</h3><p>Lay the silicone gasket, close the glass cover, torque the perimeter screws evenly.</p></div>' +
+            '<div class="step-card"><span class="step-no">04</span><h3>Burn-in Test</h3><p>Power on for 5–10 minutes, check light output and temperature — done. We provide a test checklist with every first order.</p></div>' +
+          '</div><p style="text-align:center;color:var(--text-muted);margin-top:2rem;">Typical learning curve: <strong>one day of training</strong> for a new assembly line. Remote support and video guides included.</p></div>' +
+        '<div class="skd-block fade-in">' +
+          '<h2 class="section-title mb-3">Commercial terms</h2>' +
+          '<div style="overflow-x:auto;"><table class="terms-table"><tbody>' +
+            '<tr><th>MOQ</th><td>300 pcs per model (mixed container welcome)</td></tr>' +
+            '<tr><th>Lead time</th><td>25 days after order confirmation</td></tr>' +
+            '<tr><th>Trade terms</th><td>FOB Shanghai / CIF Nhava Sheva &amp; major SEA ports</td></tr>' +
+            '<tr><th>Spare parts</th><td>1% free spare driver &amp; LED boards with every order</td></tr>' +
+            '<tr><th>Training &amp; support</th><td>Assembly video guides, remote engineering support, first-order test checklist</td></tr>' +
+            '<tr><th>Payment</th><td>T/T 30% deposit, 70% against B/L copy (flexible for repeat partners)</td></tr>' +
+          '</tbody></table></div>' +
+          '<div class="text-center" style="margin-top:2rem;"><a href="contact.html" class="btn btn-primary">Start a Project</a><a href="products.html" class="btn btn-outline" style="margin-left:.5rem;">Browse Luminaires</a></div>' +
+        '</div></div>';
+    // 4) 页脚/正文里残留的独立页链接统一改为页内锚点（旧版 HTML 兜底）
+    var dead = document.querySelectorAll('a[href="skd-ckd.html"], a[href="../skd-ckd.html"]');
+    for (var k = 0; k < dead.length; k++) dead[k].setAttribute('href', '#skd');
+    // 导航里的 SKD/CKD 项直接移除（线上 content.json 尚未更新前的兜底；
+    // 数据发布后 renderNav 会用不含该项的 site.nav 重建，二者一致）
+    var navDead = document.querySelectorAll('nav.nav a[href="skd-ckd.html"], nav.nav a[href="../skd-ckd.html"]');
+    for (var m = 0; m < navDead.length; m++) navDead[m].parentNode.removeChild(navDead[m]);
+
+    if (window.console && console.info) console.info('[content-loader] 已运行时补齐首页 SKD/CKD 区块（旧版 HTML 双层修法）');
+  }
+
   function boot() {
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
     fixArticleTables();
+    fixSkdBlock();        // 旧版首页运行时补齐 SKD/CKD 完整区块（同步一次 loader 即生效）
     load();
   }
 
