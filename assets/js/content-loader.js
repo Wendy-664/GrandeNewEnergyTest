@@ -857,7 +857,25 @@
     if (window.console && console.info) console.info('[content-loader] 已运行时补齐首页 SKD/CKD 区块（旧版 HTML 双层修法）');
   }
 
+  /* ---------- 导航死链即时清理（消除切页时 "SKD / CKD" 菜单项闪动）----------
+     线上历史 HTML 的导航里写死了 <a href="skd-ckd.html">SKD / CKD</a>，
+     但独立页已删除、内容已并入首页。清理动作原本只发生在两处：
+       ① fixSkdBlock() 内（只在首页、且有 hero 按钮时才跑）；
+       ② renderNav() 拿到 content.json 后异步重建导航。
+     在 Products / Resources 等页 ① 不执行，只能等 ② —— 于是菜单项先出现、
+     content.json 回来后才消失，表现为"闪一下"。
+     这里在启动时同步、无条件清掉所有导航死链，首帧即是干净的 5 项菜单。幂等。 */
+  function removeDeadNavLinksImmediately() {
+    var dead = document.querySelectorAll(
+      'nav.nav a[href="skd-ckd.html"], nav.nav a[href="../skd-ckd.html"]'
+    );
+    for (var i = 0; i < dead.length; i++) {
+      if (dead[i].parentNode) dead[i].parentNode.removeChild(dead[i]);
+    }
+  }
+
   function boot() {
+    removeDeadNavLinksImmediately();  // 首帧即清掉导航死链，避免切页时 SKD/CKD 闪动
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
     fixArticleTables();
