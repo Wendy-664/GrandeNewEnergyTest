@@ -1,7 +1,7 @@
 {
   "site": {
     "brandName": "Grande New Energy",
-    "legalName": "Wuxi Grandemicro Technology Co., Ltd.",
+    "legalName": "Grande New Energy Technology Changshu Co., Ltd.",
     "email": "huangwenjing@grandemicro.com",
     "phone": "+86-510-85388846",
     "phoneLink": "+8651085388846",
@@ -9,8 +9,8 @@
     "whatsappMessage": "Hello, I am interested in your LED lighting solutions.",
     "linkedin": "https://www.linkedin.com/company/grandenewenergy",
     "address": {
-      "line1": "ROOM 704,Buliding 2,No.11,Sihai Road,Bixi Street",
-      "line2": "WuXi, Jiangsu, China"
+      "line1": " Room 704, Building 2, No.11, Sihai Road, Bixi Street",
+      "line2": "WuXi, Changshu, China"
     },
     "footer": {
       "copyright": "© 2026 {{legalName}} All rights reserved.",
