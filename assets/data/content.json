@@ -983,5 +983,102 @@
         }
       ]
     }
+  },
+  "oem": {
+    "enabled": true,
+    "kicker": "OEM / ODM · BUILT UNDER YOUR BRAND",
+    "title": "Your brand, our proven platform.",
+    "lead": "SKD/CKD is how we ship — OEM is how you brand it. You bring the brand and the customer; we bring the driver platform, the six series and the assembly kits.",
+    "routesTitle": "Three routes — from your spec to your brand",
+    "routes": [
+      {
+        "tag": "01 · OEM",
+        "title": "Private-label",
+        "desc": "Our proven fixtures under your brand. The fastest, lowest-tooling route to market.",
+        "bulletsText": "Your logo on product & carton\nExisting six-series platform\nNo new tooling required"
+      },
+      {
+        "tag": "02 · ODM",
+        "title": "Built to your spec",
+        "desc": "Adapt optics, driver and housing to your market — engineered on our platform.",
+        "bulletsText": "Custom optics & lumen target\nDriver parameter tuning\nHousing / tooling on request"
+      },
+      {
+        "tag": "03 · SKD / CKD",
+        "title": "Local assembly kits",
+        "desc": "Ship knocked-down for local assembly — duty optimization and in-country value.",
+        "bulletsText": "Component & sub-assembly kits\nDriver platform + BOM\nSee how it works →|skd-ckd.html"
+      }
+    ],
+    "routesNote": "These routes stack — most partners combine SKD/CKD kits with private-label branding.",
+    "customTitle": "What you can customize",
+    "custom": [
+      {
+        "icon": "🏷️",
+        "title": "Logo & Branding",
+        "desc": "Printed / laser-etched logo on fixture & carton"
+      },
+      {
+        "icon": "📦",
+        "title": "Packaging",
+        "desc": "Custom carton artwork & user manuals"
+      },
+      {
+        "icon": "🎨",
+        "title": "Color & Finish",
+        "desc": "Housing color / finish — on request"
+      },
+      {
+        "icon": "⚡",
+        "title": "Optics",
+        "desc": "Beam angle & lumen target per application"
+      },
+      {
+        "icon": "🌡️",
+        "title": "CCT & CRI",
+        "desc": "2700–6500K; CRI ≥80 / ≥90 ⚠ confirm"
+      },
+      {
+        "icon": "🔧",
+        "title": "Driver Parameters",
+        "desc": "Input range, PF, surge level to match your grid"
+      },
+      {
+        "icon": "🔌",
+        "title": "Input Voltage",
+        "desc": "100–440 Vac wide-grid — our core strength"
+      },
+      {
+        "icon": "📋",
+        "title": "Certification Support",
+        "desc": "RoHS standard; CE / BIS on request + test data"
+      }
+    ],
+    "moqTitle": "MOQ & lead times",
+    "moq": [
+      {
+        "value": "⚠ To confirm",
+        "title": "Minimum order",
+        "desc": "Set by model & customization level"
+      },
+      {
+        "value": "⚠ To confirm",
+        "title": "Sample lead time",
+        "desc": "From spec confirmation"
+      },
+      {
+        "value": "⚠ To confirm",
+        "title": "Mass production",
+        "desc": "After sample approval"
+      }
+    ],
+    "cta": {
+      "title": "Have a brand and a market?",
+      "text": "Send us your target spec — we propose the route, platform and timeline.",
+      "button1Text": "Request Quote",
+      "button1Href": "contact.html",
+      "button2Text": "WhatsApp",
+      "button2Href": "https://wa.me/8618154614514"
+    }
   }
 }
