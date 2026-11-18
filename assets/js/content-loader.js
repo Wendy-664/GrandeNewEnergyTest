@@ -22,6 +22,7 @@
      - resources/ -> 前缀 '../'   content.json = ../assets/data/content.json
      若将来新增更深层目录，可在 <body> 上加 data-root-prefix="../.." 覆盖。
   */
+  var OEM_CSS = ".oem-kicker{color:var(--cyan);font-weight:800;letter-spacing:1.2px;font-size:.8rem;text-transform:uppercase;margin-bottom:.6rem}.oem-sub{font-size:1.25rem;color:var(--primary);font-weight:800;margin:2.6rem 0 1.1rem}.oem-routes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.oem-route{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-sm)}.oem-route-tag{display:inline-block;background:var(--cyan-light);color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.8px;padding:.3rem .7rem;border-radius:999px;margin-bottom:.8rem}.oem-route h4{font-size:1.15rem;color:var(--primary);margin:0 0 .5rem}.oem-route p{font-size:.9rem;color:var(--text-muted);margin:0 0 .9rem}.oem-route ul{margin:0;padding-left:1.1rem;color:var(--text-muted);font-size:.86rem;line-height:1.9}.oem-route ul a{text-decoration:none;color:var(--cyan);font-weight:700}.oem-note{margin-top:1rem;font-size:.88rem;color:var(--text-muted);background:var(--bg-alt);border-left:3px solid var(--cyan);padding:.7rem 1rem;border-radius:0 var(--radius) var(--radius) 0}.oem-custom{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.oem-custom-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1rem;display:flex;flex-direction:column;gap:.3rem;box-shadow:var(--shadow-sm)}.oem-ic{font-size:1.4rem;line-height:1}.oem-custom-item strong{color:var(--primary);font-size:.95rem}.oem-custom-item span:last-child{color:var(--text-muted);font-size:.8rem;line-height:1.5}.oem-moq{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.oem-moq-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;text-align:center;display:flex;flex-direction:column;gap:.3rem}.oem-moq-num{font-size:1.5rem;font-weight:800;color:var(--primary)}.oem-moq-card strong{font-size:.9rem;color:var(--primary)}.oem-moq-card span:last-child{font-size:.78rem;color:var(--text-muted)}.oem-tbd{color:var(--accent-hover)!important;font-weight:700}.oem-cta{margin-top:2.6rem;background:var(--primary);color:#fff;border-radius:var(--radius);padding:2rem 2.2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}.oem-cta h3{color:#fff;font-size:1.5rem;margin:0 0 .4rem}.oem-cta p{color:rgba(255,255,255,.75);margin:0;font-size:.95rem}.oem-cta-btns{display:flex;gap:.8rem;flex-shrink:0}.oem-cta-btns .btn-outline{color:#fff;border-color:#fff}.oem-cta-btns .btn-outline:hover{background:#fff;color:var(--primary)}@media(max-width:900px){.oem-routes,.oem-moq{grid-template-columns:1fr}.oem-custom{grid-template-columns:repeat(2,1fr)}.oem-cta{flex-direction:column;align-items:flex-start}}";
   var ROOT_PREFIX = '';
   var IS_RESOURCES = false;
 
@@ -295,6 +296,103 @@
       '<h3>' + esc(res.cta.title) + '</h3>' +
       '<p>' + esc(res.cta.text) + '</p>' +
       '<a class="btn" href="' + esc(res.cta.href) + '">' + esc(res.cta.button) + '</a>';
+  }
+
+  /* ---------- OEM / ODM 首页区块（后台可编辑）----------
+     OEM_MODULE_V1
+     只在存在 [data-content="oem"] 容器（Home 页）时渲染；别的页面零影响。
+     样式由运行时注入（OEM_CSS），已发布的页面无需重生成 HTML。
+     动态内容带 data-content 标记，避开「全站正文文字」枚举规则。 */
+  function injectOemCss(){
+    if(!document.getElementById('gmtne-oem-css')){
+      var st=document.createElement('style');
+      st.id='gmtne-oem-css'; st.textContent=OEM_CSS;
+      document.head.appendChild(st);
+    }
+  }
+  function oemHref(h){
+    h = h || '#';
+    // 站内相对路径交给 resolveHref 处理（resources 子目录补前缀）；绝对链接原样
+    return resolveHref(h);
+  }
+  function renderOem(data){
+    var box = document.querySelector('[data-content="oem"]');
+    if(!box) return;
+    var o = data.oem;
+    if(!o || o.enabled === false){ return; }   // 没配 oem 段 / 关闭时保留 HTML 静态兜底
+    injectOemCss();
+
+    function bullets(arrText){
+      return String(arrText||'').split(/\r?\n/).map(function(line){
+        if(!line.trim()) return '';
+        var parts = line.split('|');
+        var txt = (parts[0]||'').trim();
+        var href = (parts[1]||'').trim();
+        return '<li>' + (href ? '<a href="'+esc(oemHref(href))+'">'+esc(txt)+'</a>' : esc(txt)) + '</li>';
+      }).filter(Boolean).join('');
+    }
+    var html = '';
+    if(o.kicker)   html += '<p class="oem-kicker fade-in">'+esc(o.kicker)+'</p>';
+    if(o.title)    html += '<h2 class="section-title mb-3 fade-in">'+esc(o.title)+'</h2>';
+    if(o.lead)     html += '<p class="section-subtitle mb-4 fade-in">'+o.lead+'</p>';
+
+    if(o.routes && o.routes.length){
+      html += '<h3 class="oem-sub fade-in">'+esc(o.routesTitle||'')+'</h3>';
+      html += '<div class="oem-routes">';
+      o.routes.forEach(function(r){
+        html += '<div class="oem-route fade-in">';
+        if(r.tag)   html += '<span class="oem-route-tag">'+esc(r.tag)+'</span>';
+        if(r.title) html += '<h4>'+esc(r.title)+'</h4>';
+        if(r.desc)  html += '<p>'+esc(r.desc)+'</p>';
+        var bl = bullets(r.bulletsText);
+        if(bl) html += '<ul>'+bl+'</ul>';
+        html += '</div>';
+      });
+      html += '</div>';
+      if(o.routesNote) html += '<p class="oem-note fade-in">'+esc(o.routesNote)+'</p>';
+    }
+
+    if(o.custom && o.custom.length){
+      html += '<h3 class="oem-sub fade-in">'+esc(o.customTitle||'')+'</h3>';
+      html += '<div class="oem-custom">';
+      o.custom.forEach(function(c){
+        html += '<div class="oem-custom-item fade-in">';
+        html += '<span class="oem-ic">'+esc(c.icon||'')+'</span>';
+        html += '<strong>'+esc(c.title||'')+'</strong>';
+        html += '<span>'+esc(c.desc||'')+'</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    if(o.moq && o.moq.length){
+      html += '<h3 class="oem-sub fade-in">'+esc(o.moqTitle||'')+'</h3>';
+      html += '<div class="oem-moq">';
+      o.moq.forEach(function(m){
+        html += '<div class="oem-moq-card fade-in">';
+        html += '<span class="oem-moq-num">'+esc(m.value||'')+'</span>';
+        html += '<strong>'+esc(m.title||'')+'</strong>';
+        html += '<span>'+esc(m.desc||'')+'</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    var cta = o.cta || {};
+    if(cta.title || cta.text){
+      html += '<div class="oem-cta fade-in"><div>';
+      if(cta.title) html += '<h3>'+esc(cta.title)+'</h3>';
+      if(cta.text)  html += '<p>'+esc(cta.text)+'</p>';
+      html += '</div><div class="oem-cta-btns">';
+      if(cta.button1Text) html += '<a href="'+esc(oemHref(cta.button1Href))+'" class="btn btn-primary">'+esc(cta.button1Text)+'</a>';
+      if(cta.button2Text) html += '<a href="'+esc(oemHref(cta.button2Href))+'" class="btn btn-outline">'+esc(cta.button2Text)+'</a>';
+      html += '</div></div>';
+    }
+
+    if(html){
+      box.innerHTML = '<div class="container">'+html+'</div>';
+      box.setAttribute('data-content','oem');
+    }
   }
 
   /* ---------- Home 页 SKD/CKD 区块（后台可编辑）----------
@@ -696,6 +794,7 @@
 
     // Home 页 SKD/CKD 区块：由 skd 段重建（没有该段时保留 HTML 静态兜底）
     renderSkd(data);
+    renderOem(data);   // OEM_MODULE_V1
 
     // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
     renderProductsPage(data);
@@ -874,12 +973,37 @@
     }
   }
 
+
+  /* ---------- 旧版首页运行时补齐 OEM/ODM 骨架（双层修法）----------
+     线上首页 HTML 从没重发过，没有 [data-content="oem"] 容器。
+     fixSkdBlock() 先把旧 SKD 区块升级成完整骨架并设 id="skd"；
+     这里紧随其后，在 #skd 与 "Markets we serve" 之间插入一个空的 OEM 容器，
+     随后 apply() 里的 renderOem() 会按 content.json 的 oem 段填充它。
+     只同步一次 loader 即生效，不用重发 HTML。幂等。 */
+  function fixOemBlock() {
+    if (document.querySelector('[data-content="oem"]')) return;  // 新版 HTML 已就位
+    var skd = document.getElementById('skd');
+    if (!skd) return;                       // 非首页 / SKD 骨架未就位，不处理
+    // 找insert锚点：优先 #skd 的下一个 section（应为 Markets we serve）
+    var anchor = skd.nextElementSibling;
+    var sec = document.createElement('section');
+    sec.className = 'section section-alt';
+    sec.id = 'oem';
+    sec.setAttribute('data-content', 'oem');
+    // 静态兜底内容：content.json 未加载/关闭时用，避免空白
+    sec.innerHTML = '<div class="container"><p class="section-subtitle">OEM / ODM customization available.</p></div>';
+    if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(sec, anchor);
+    else skd.parentNode.appendChild(sec);
+    if (window.console && console.info) console.info('[content-loader] 已运行时补齐首页 OEM/ODM 骨架（旧版 HTML 双层修法）');
+  }
+
   function boot() {
     removeDeadNavLinksImmediately();  // 首帧即清掉导航死链，避免切页时 SKD/CKD 闪动
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
     fixArticleTables();
     fixSkdBlock();        // 旧版首页运行时补齐 SKD/CKD 完整区块（同步一次 loader 即生效）
+    fixOemBlock();        // 旧版首页运行时补齐 OEM/ODM 骨架（同步一次 loader 即生效）
     load();
   }
 
