@@ -714,11 +714,23 @@
       if (items[i] && items[i].slug) bySlug[items[i].slug] = items[i];
     }
 
+    /* ① 区块标题与描述（六张卡上方那两行字，如 One platform, six lighting series）：
+       只在 homeCards.title / homeCards.intro 填了内容时覆盖，留空 = 保留 HTML 原文。
+       定位：从第一张卡往上找它所在的 <section>，只改这个区块里的标题，不误伤别处。 */
+    var sec = null;
+    if (cards[0] && cards[0].closest) sec = cards[0].closest('section');
+    if (sec) {
+      var h2El = sec.querySelector('.section-title');
+      var subEl = sec.querySelector('.section-subtitle');
+      if (hc.title && h2El) h2El.textContent = hc.title;
+      if (hc.intro && subEl) subEl.textContent = hc.intro;
+    }
+
     for (var k = 0; k < cards.length; k++) {
       var a = cards[k], slug = homeCardSlug(a);
       if (!slug) continue;
 
-      // ① 图片：跟产品卡片同源；找不到卡片就保留 HTML 里的原图
+      // ② 图片：跟产品卡片同源；找不到卡片就保留 HTML 里的原图
       var card = findProductCard(data, slug);
       var img = a.querySelector('img');
       if (card && card.image && img) {
@@ -728,7 +740,7 @@
         if (alt) img.setAttribute('alt', alt);
       }
 
-      // ② 文案：homeCards 里配了才覆盖，留空 = 保留 HTML 原文
+      // ③ 文案：homeCards 里配了才覆盖，留空 = 保留 HTML 原文
       var it = bySlug[slug];
       if (!it) continue;
       var tagEl = a.querySelector('.tri-tag');
