@@ -1128,19 +1128,19 @@
         "slug": "product-linear-bulb",
         "tag": "Linear Bulb · 9 – 50 W",
         "title": "Linear LED Bulb",
-        "desc": "PF 0.988 · THD <15% · >105 lm/W · low EMI · E27/B22"
+        "desc": ">105 lm/W @ 230 Vac · 90–440 Vac input · E27/B22 · BIS on request"
       },
       {
         "slug": "product-batten",
         "tag": "Batten · 20 / 36 W",
         "title": "LED Batten Drive",
-        "desc": "High-integration driver · no VCC/COMP cap · full protection"
+        "desc": "20/36 W · built-in driver · full protection · BIS on request"
       },
       {
         "slug": "product-emergency-lamp",
         "tag": "Emergency Lamp",
         "title": "Emergency LED Lamp",
-        "desc": "Fast charging · battery management 4.2V/2.4V · 1A emergency drive"
+        "desc": "Auto-switch on blackout · fast recharge · backup runtime on request"
       }
     ],
     "title": "One platform, six lighting series",
