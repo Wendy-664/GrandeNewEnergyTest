@@ -688,6 +688,58 @@
     }
   }
 
+  /* ---------- Home 页六张产品卡（HOME_CARDS_LINK，2026-11-19）----------
+     首页那 6 张卡原本完全写死在 index.html 里，跟内容数据没关系，所以后台怎么改都动不到它。
+     这里做两件事：
+     ① 图片永远跟「产品管理 → 产品主图」同源（products.categories[].cards[].image）——
+        首页 / 列表页 / 详情页三处因此是同一张，后台传一次三处一起变。
+     ② 文案（标签 / 标题 / 描述）由 content.json 的 homeCards.items 覆盖；
+        没有该段、或某字段留空，就保留 HTML 原文 —— 首页文案本来就比列表页详细，不强行统一。
+     `.tri-card` 只出现在 index.html，并额外做了页面判断，其它页面零影响。 */
+  function homeCardSlug(a) {
+    var h = (a.getAttribute && a.getAttribute('href')) || '';
+    var m = /([^\/?#]+)\.html?(?:[?#]|$)/i.exec(h);
+    return m ? m[1] : '';
+  }
+  function renderHomeTriCards(data) {
+    var cards = document.querySelectorAll('.tri-card');
+    if (!cards.length) return;                       // 不在首页
+    var page = currentProductSlug();
+    if (page && page !== 'index') return;            // 保险：万一别的页面也用了 tri-card
+
+    var hc = (data && data.homeCards) || {};
+    var items = (hc.enabled === false) ? [] : (hc.items || []);
+    var bySlug = {};
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] && items[i].slug) bySlug[items[i].slug] = items[i];
+    }
+
+    for (var k = 0; k < cards.length; k++) {
+      var a = cards[k], slug = homeCardSlug(a);
+      if (!slug) continue;
+
+      // ① 图片：跟产品卡片同源；找不到卡片就保留 HTML 里的原图
+      var card = findProductCard(data, slug);
+      var img = a.querySelector('img');
+      if (card && card.image && img) {
+        var src = resolveMedia(card.image);
+        if (img.getAttribute('src') !== src) img.setAttribute('src', src);
+        var alt = card.alt || card.title;
+        if (alt) img.setAttribute('alt', alt);
+      }
+
+      // ② 文案：homeCards 里配了才覆盖，留空 = 保留 HTML 原文
+      var it = bySlug[slug];
+      if (!it) continue;
+      var tagEl = a.querySelector('.tri-tag');
+      var titEl = a.querySelector('h3');
+      var pEl = a.querySelector('.tri-body p');
+      if (it.tag && tagEl) tagEl.textContent = it.tag;
+      if (it.title && titEl) titEl.textContent = it.title;
+      if (it.desc && pEl) pEl.textContent = it.desc;
+    }
+  }
+
   /* 所有由 content.json 动态渲染出来的区块都带 data-content 标记。
      它们是 fetch 之后才插入 DOM 的，错过了 main.js 在 DOMContentLoaded 时注册的
      IntersectionObserver，会一直停在 .fade-in 的 opacity:0（整片空白）。
@@ -947,6 +999,9 @@
 
     // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
     renderProductsPage(data);
+
+    // Home 页六张产品卡：图片跟随产品主图 + 文案可后台覆盖（HOME_CARDS_LINK）
+    renderHomeTriCards(data);
 
     // 产品详情页：轮播首图强制跟随列表卡片图，两处永远同一张（PRODUCT_HERO_SYNC）
     syncProductHero(data);
