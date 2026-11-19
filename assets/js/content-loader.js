@@ -542,6 +542,76 @@
     }
   }
 
+  /* ---------- 产品详情页首图 = 列表卡片图（PRODUCT_HERO_SYNC） ----------
+     列表卡片的图存在 content.json 的 products.categories[].cards[].image，
+     详情页轮播第一张存在页面里的 <script id="pdpMedia">。两者原本各填各的，
+     很容易出现「列表显示 A、点进去显示 B」的不统一。
+     这里统一以「卡片图」为唯一来源：后台改一次，列表页和详情页首图同时变，
+     已经发布出去的详情页 HTML 不用重新生成。
+     · 只在产品详情页执行（页面里没有 #pdpFrame / #pdpMedia 就直接返回）。
+     · 首图是视频时不动，避免把视频顶掉。
+     · 多图轮播：切到第 2 张时不干扰，切回第 1 张才替换。 */
+  function currentProductSlug() {
+    var m = String(location.pathname).match(/\/([^\/]+)\.html?$/i);
+    return m ? m[1] : '';
+  }
+  function findProductCard(data, slug) {
+    var cats = (data && data.products && data.products.categories) || [];
+    for (var i = 0; i < cats.length; i++) {
+      var cards = cats[i].cards || [];
+      for (var j = 0; j < cards.length; j++) {
+        if (cards[j] && cards[j].slug === slug) return cards[j];
+      }
+    }
+    return null;
+  }
+  function syncProductHero(data) {
+    var frame = document.getElementById('pdpFrame');
+    var mediaEl = document.getElementById('pdpMedia');
+    if (!frame || !mediaEl) return;                  // 不是产品详情页
+    var card = findProductCard(data, currentProductSlug());
+    if (!card || !card.image) return;
+
+    var items;
+    try { items = JSON.parse(mediaEl.textContent) || []; } catch (e) { return; }
+    if (!items.length) return;
+    if ((items[0].type || 'image') === 'video') return;
+
+    var oldFirst = items[0].src || '';
+    if (oldFirst === card.image) return;             // 已经一致，不做任何事
+
+    var caption = card.alt || card.title || items[0].caption || '';
+    var target = resolveMedia(card.image);
+    // 改写数据副本：角标文字跟着换，避免「图是一个型号、角标写另一个型号」
+    items[0] = { type: 'image', src: card.image, caption: caption };
+    try { mediaEl.textContent = JSON.stringify(items); } catch (e) {}
+
+    function hit(el) {                               // 只在「当前显示的是第一张」时才换
+      if (!el) return false;
+      var cur = el.getAttribute('src');
+      return oldFirst ? cur === oldFirst : !cur;
+    }
+    function paint() {
+      var im = frame.querySelector('img');
+      if (hit(im)) {
+        im.setAttribute('src', target);
+        im.setAttribute('alt', caption);
+        var badge = document.getElementById('pdpBadge');
+        if (badge && caption) badge.textContent = caption;
+      }
+      var thumbs = document.getElementById('pdpThumbs');
+      var t0 = thumbs && thumbs.firstElementChild && thumbs.firstElementChild.querySelector('img');
+      if (hit(t0)) t0.setAttribute('src', target);
+    }
+    paint();
+    setTimeout(paint, 400);                          // 内联轮播脚本可能稍后才首次渲染
+
+    // 多图时内联脚本闭包里仍是旧地址，切回第一张会闪回旧图；这里按住它
+    if (typeof MutationObserver === 'function') {
+      new MutationObserver(paint).observe(frame, { childList: true, subtree: true });
+    }
+  }
+
   /* 所有由 content.json 动态渲染出来的区块都带 data-content 标记。
      它们是 fetch 之后才插入 DOM 的，错过了 main.js 在 DOMContentLoaded 时注册的
      IntersectionObserver，会一直停在 .fade-in 的 opacity:0（整片空白）。
@@ -798,6 +868,9 @@
 
     // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
     renderProductsPage(data);
+
+    // 产品详情页：轮播首图强制跟随列表卡片图，两处永远同一张（PRODUCT_HERO_SYNC）
+    syncProductHero(data);
 
     // 最后接管全站正文文字：此时动态区块已渲染完毕，排除规则与索引构建时一致
     renderPageTexts(data);
