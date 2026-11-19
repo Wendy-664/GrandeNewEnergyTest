@@ -312,23 +312,6 @@
     "intro": "Need another wattage or form factor? All six series run on the same driver platform — tell us the target and we will run the design.",
     "categories": [
       {
-        "id": "street",
-        "num": "01",
-        "name": "Street Light",
-        "desc": "Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.",
-        "cards": [
-          {
-            "slug": "product-street-light",
-            "image": "assets/img/street-light-main.png",
-            "alt": "YE-01 street light 40/60W",
-            "tag": "Street Light · SKD/CKD",
-            "title": "Street Light 40 / 60W",
-            "desc": "Road & area lighting on the same verified driver platform.",
-            "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
-          }
-        ]
-      },
-      {
         "id": "highbay",
         "num": "02",
         "name": "High Bay",
@@ -359,6 +342,23 @@
             "title": "Flood Light 50W",
             "desc": "FL-YE-01W050V144V01 · lab test report available",
             "specsText": "Output | 144V / 310mA\nEfficiency | ≥ 91.4 %\nPF | 0.957\nSurge | 4 kV"
+          }
+        ]
+      },
+      {
+        "id": "street",
+        "num": "01",
+        "name": "Street Light",
+        "desc": "Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.",
+        "cards": [
+          {
+            "slug": "product-street-light",
+            "image": "assets/img/street-light-main.png",
+            "alt": "YE-01 street light 40/60W",
+            "tag": "Street Light · SKD/CKD",
+            "title": "Street Light 40 / 60W",
+            "desc": "Road & area lighting on the same verified driver platform.",
+            "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
           }
         ]
       },
