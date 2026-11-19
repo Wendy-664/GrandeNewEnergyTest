@@ -313,7 +313,7 @@
     "categories": [
       {
         "id": "highbay",
-        "num": "02",
+        "num": "01",
         "name": "High Bay",
         "desc": "Warehouse, factory and gymnasium high bays. Lab-verified 100 W reference design with a full 18-page test report — measured across 100–440 Vac, not estimated.",
         "cards": [
@@ -330,7 +330,7 @@
       },
       {
         "id": "flood",
-        "num": "03",
+        "num": "02",
         "name": "Flood Light",
         "desc": "Yard, compound, billboard and sports-ground flood lighting. Lab-verified 50 W reference design with the same 18-page report depth.",
         "cards": [
@@ -347,7 +347,7 @@
       },
       {
         "id": "street",
-        "num": "01",
+        "num": "03",
         "name": "Street Light",
         "desc": "Municipal and industrial road lighting, 40–60 W, pole-mount with Type II/III distribution. Reference design on the verified YE-01 platform — specify your pole standard and wattage, we run the design.",
         "cards": [
