@@ -1110,19 +1110,19 @@
         "slug": "product-street-light",
         "tag": "Street Light · 40 / 60 W",
         "title": "Road & Street Light",
-        "desc": "Municipal & industrial road lighting · pole-mount reference design · SKD/CKD for tenders"
+        "desc": "Type II/III optics · IP66 option · 165–280Vac · SKD/CKD for tenders"
       },
       {
         "slug": "product-high-bay",
         "tag": "High Bay · 100 W",
         "title": "Warehouse & High Bay",
-        "desc": "≥91.8% efficiency · PF 0.956 · 4kV surge · 18-page test report available"
+        "desc": "≥91.8% driver efficiency ·· 4kV surge · 165-280 Vac · IP66 option"
       },
       {
         "slug": "product-flood-light",
         "tag": "Flood Light · 50 W",
         "title": "Yard & Flood Light",
-        "desc": "≥91.4% efficiency · PF 0.957 · 4kV surge · 18-page test report available"
+        "desc": "≥91.4% driver efficiency · 4kV surge · 165-280 Vac · IP66 option"
       },
       {
         "slug": "product-linear-bulb",
@@ -1142,6 +1142,8 @@
         "title": "Emergency LED Lamp",
         "desc": "Fast charging · battery management 4.2V/2.4V · 1A emergency drive"
       }
-    ]
+    ],
+    "title": "One platform, six lighting series",
+    "intro": "Every luminaire runs on our self-developed driver platform — full output across 165–280 Vac — Asia's real grid —backed by 18-page lab reports.\n"
   }
 }
