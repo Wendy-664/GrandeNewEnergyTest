@@ -597,7 +597,10 @@
         ],
         "bulletsText": "144 V / 310 mA ±5 % output — 24C3B · 6 V LED string\n100–440 Vac input, verified across the full range in an 18-page lab report\nPF 0.957 and THD 27.89 % at 230 Vac full load — measured, not estimated\n4 kV surge passed: 5 counts per polarity at 0 / 90 / 180 / 270° phase\nEOL-free single-board design — fewer parts, lower BOM",
         "actionsText": "Download Test Report | #downloads\nRequest Quote | contact.html",
-        "certsText": "RoHS, IP66, CE on request, BIS on request"
+        "certsText": "RoHS, IP66, CE on request, BIS on request",
+        "keySpecsText": "Parameter|100W|200W|500W\nOutput|144 V / 610 mA ±5 %|On request|On request",
+        "hookText": "**特征**",
+        "certNoteText": "All three power points share the same YE-01 driver platform — identical input behaviour, 4 kV surge, protection and certification route. Model-specific figures for 150 W and 200 W are released with the test report; ask us for the full data sheet."
       },
       "product-linear-bulb": {
         "slug": "product-linear-bulb",
