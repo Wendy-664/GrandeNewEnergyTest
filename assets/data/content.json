@@ -1076,5 +1076,31 @@
       "button2Text": "WhatsApp",
       "button2Href": "https://wa.me/8618154614514"
     }
+  },
+  "homeHero": {
+    "enabled": true,
+    "kicker": "LED Luminaires · SKD / CKD Export",
+    "title": "Grid-Hardened.",
+    "titleAccent": "Built for Asia.",
+    "lead": "Street light, high bay and flood light — supplied as knocked-down kits your local team assembles. Our driver technology has survived 165-280 Vac grids and 4 kV surges in real deployments across Asia.",
+    "btn1Text": "Explore Luminaires",
+    "btn1Href": "products.html",
+    "btn2Text": "Why SKD / CKD?",
+    "btn2Href": "#skd",
+    "bgImage": "",
+    "stats": [
+      {
+        "value": "165-280Vac",
+        "label": "Verified Input Range"
+      },
+      {
+        "value": "4kV",
+        "label": "Surge Passed"
+      },
+      {
+        "value": ">0.9",
+        "label": "Power Factor "
+      }
+    ]
   }
 }
