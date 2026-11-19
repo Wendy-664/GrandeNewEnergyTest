@@ -1216,6 +1216,134 @@
     if (window.console && console.info) console.info('[content-loader] 已运行时补齐首页 OEM/ODM 骨架（旧版 HTML 双层修法）');
   }
 
+  /* ---------- SEO 运行时修正（SEO_RUNTIME_V1）----------
+     探测报告扫的是仓库原始 HTML，看不到运行时修复；这里在首帧补齐能安全补齐的项，
+     一次同步全站 19 页生效，不用逐页改 HTML。
+       ① canonical / og:url 域名归位（旧站 www.gmtne.com -> 生效站 github.io 子路径）
+       ② 缺 og:image 时补一张（页面首图或 logo，绝对地址）
+       ③ 有可见面包屑但缺 BreadcrumbList 时补 JSON-LD
+       ④ 正文缺 <main> 时把 header 与 footer 之间的区块包进 main
+       ⑤ 纯图标链接补 aria-label
+       ⑥ description 过短 / title 堆砌兜底
+     刻意不动：skd-ckd.html 死链（fixSkdBlock 已处理）、图片路径（会裂图）、
+     H 层级（样式绑定，改了会乱）。
+  */
+  var SEO_SITE = 'https://wendy-664.github.io/GrandeNewEnergyTest';
+  var SEO_OLD_HOST = 'https://www.gmtne.com';
+
+  function seoAbsUrl(src, base) {
+    if (!src) return '';
+    if (/^https?:\/\//i.test(src)) return src.replace(SEO_OLD_HOST, SEO_SITE);
+    try { return new URL(src, base || (SEO_SITE + '/')).href; }
+    catch (e) { return SEO_SITE + '/' + String(src).replace(/^\.\.?\//, ''); }
+  }
+
+  function fixSeoRuntime() {
+    /* ① 域名归位 */
+    var canon = document.querySelector('link[rel="canonical"]');
+    if (canon && canon.getAttribute('href')) {
+      var ch = canon.getAttribute('href');
+      if (ch.indexOf(SEO_OLD_HOST) === 0) canon.setAttribute('href', SEO_SITE + ch.slice(SEO_OLD_HOST.length));
+    }
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl && ogUrl.getAttribute('content')) {
+      var ou = ogUrl.getAttribute('content');
+      if (ou.indexOf(SEO_OLD_HOST) === 0) ogUrl.setAttribute('content', SEO_SITE + ou.slice(SEO_OLD_HOST.length));
+    }
+    var pageBase = (canon && canon.getAttribute('href')) || (SEO_SITE + '/');
+
+    /* ② og:image 兜底 */
+    var ogImg = document.querySelector('meta[property="og:image"]');
+    if (!ogImg || !(ogImg.getAttribute('content') || '')) {
+      var img = null, imgs = document.querySelectorAll('img[src]'), i;
+      for (i = 0; i < imgs.length; i++) {
+        var s = imgs[i].getAttribute('src') || '';
+        if (/(logo|icon|favicon|pixel)/i.test(s)) continue;
+        img = imgs[i]; break;
+      }
+      var imgSrc = img ? img.getAttribute('src') : 'assets/img/logo.png';
+      if (!ogImg) { ogImg = document.createElement('meta'); ogImg.setAttribute('property', 'og:image'); document.head.appendChild(ogImg); }
+      ogImg.setAttribute('content', seoAbsUrl(imgSrc, pageBase));
+    }
+
+    /* ③ BreadcrumbList（有可见面包屑才补，避免重复） */
+    if (!document.querySelector('script[data-seo-crumb]')) {
+      var crumb = document.querySelector('.breadcrumb, .crumb, [class*="breadcrumb"]');
+      if (crumb) {
+        var links = crumb.querySelectorAll('a[href]');
+        if (links.length) {
+          var list = [], j;
+          for (j = 0; j < links.length; j++) {
+            var nm = (links[j].textContent || '').trim();
+            if (!nm) continue;
+            list.push({ '@type': 'ListItem', position: list.length + 1, name: nm, item: seoAbsUrl(links[j].getAttribute('href'), pageBase) });
+          }
+          // 当前页 = 最后一个「非分隔符」的 span（纯文本段），不能用 lastIndexOf 找链接文字，
+          // 否则「High Bay / High Bay 100W」会被截成「100W」
+          var spans = crumb.querySelectorAll('span'), tail = '';
+          for (var q = spans.length - 1; q >= 0; q--) {
+            var tt = (spans[q].textContent || '').trim();
+            if (tt && !/^[\/»›|>·]$/.test(tt)) { tail = tt; break; }
+          }
+          if (tail && list.length && tail !== list[list.length - 1].name) {
+            list.push({ '@type': 'ListItem', position: list.length + 1, name: tail });
+          }
+          if (list.length >= 2) {
+            var sc = document.createElement('script');
+            sc.type = 'application/ld+json';
+            sc.setAttribute('data-seo-crumb', '1');
+            sc.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: list });
+            document.head.appendChild(sc);
+          }
+        }
+      }
+    }
+
+    /* ④ <main> 兜底：仅当没有 main，且能明确找到 header 与 footer */
+    if (!document.querySelector('main')) {
+      var body = document.body, kids = [], k;
+      for (k = 0; k < body.children.length; k++) kids.push(body.children[k]);
+      var hEnd = -1, fStart = -1;
+      for (k = 0; k < kids.length; k++) {
+        var el = kids[k], tag = el.tagName.toLowerCase(), cls = el.className || '';
+        if (tag === 'header' || /(^|\s)(site-header|header)($|\s)/.test(cls)) hEnd = k;
+        if (tag === 'footer' || /(^|\s)footer($|\s)/.test(cls)) { fStart = k; break; }
+      }
+      if (hEnd >= 0 && fStart > hEnd + 1) {
+        var main = document.createElement('main');
+        body.insertBefore(main, kids[hEnd + 1]);
+        for (k = hEnd + 1; k < fStart; k++) {
+          var t = kids[k].tagName.toLowerCase();
+          if (t === 'script' || t === 'style') continue;
+          main.appendChild(kids[k]);
+        }
+      }
+    }
+
+    /* ⑤ 纯图标链接补 aria-label */
+    var as = document.querySelectorAll('a'), m;
+    for (m = 0; m < as.length; m++) {
+      var a = as[m];
+      if (a.getAttribute('aria-label')) continue;
+      if ((a.textContent || '').trim()) continue;
+      var im2 = a.querySelector('img[alt]');
+      if (!im2) continue;
+      a.setAttribute('aria-label', (im2.getAttribute('alt') || 'Grande New Energy').trim() || 'Grande New Energy');
+    }
+
+    /* ⑥ description 过短 / title 堆砌兜底 */
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc) {
+      var dv = (desc.getAttribute('content') || '').trim();
+      if (dv.length < 40) desc.setAttribute('content', 'Grande New Energy delivers tested LED lighting drivers, high bay and flood light solutions with SKD/CKD support for local assembly. Explore specs and lab reports.');
+    }
+    if (/^New product\s*\|\s*Grande New Energy$/i.test((document.title || '').trim())) {
+      document.title = 'New Product Introduction | Grande New Energy';
+      var ogT = document.querySelector('meta[property="og:title"]');
+      if (ogT) ogT.setAttribute('content', document.title);
+    }
+  }
+
   function boot() {
     removeDeadNavLinksImmediately();  // 首帧即清掉导航死链，避免切页时 SKD/CKD 闪动
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
@@ -1223,6 +1351,7 @@
     fixArticleTables();
     fixSkdBlock();        // 旧版首页运行时补齐 SKD/CKD 完整区块（同步一次 loader 即生效）
     fixOemBlock();        // 旧版首页运行时补齐 OEM/ODM 骨架（同步一次 loader 即生效）
+    fixSeoRuntime();      // SEO 兜底：域名归位 / OG / 面包屑结构化 / main / aria-label（首帧，不等 JSON）
     load();
   }
 
