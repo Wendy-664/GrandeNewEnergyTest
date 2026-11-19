@@ -395,6 +395,82 @@
     }
   }
 
+  /* ---------- Home 页首屏 Hero（后台可编辑）----------
+     HOME_HERO_V1
+     线上 index.html 的首屏是写死的文字，而 HTML 不在「同步前台文件」白名单里
+     （白名单只有 js/css），所以这里**就地改写已有节点**：不新建结构、不重发 HTML。
+     没有 homeHero 段 / enabled=false 时完全不接管，保留页面原本文案，不会白屏。
+     给 .hero-content 打 data-content 标记，把它排除在「页面文字」枚举之外，
+     避免两套后台入口同时改同一段字互相覆盖。 */
+  var HOME_HERO_OVERLAY = 'linear-gradient(135deg, rgba(10,37,64,0.92) 0%, rgba(6,24,42,0.88) 100%)';
+
+  function renderHomeHero(data) {
+    var h = data && data.homeHero;
+    var sec = document.querySelector('section.hero');
+    if (!h || !sec) return;
+    if (h.enabled === false) return;
+
+    var box = sec.querySelector('.hero-content');
+    if (!box) return;
+    box.setAttribute('data-content', 'homehero');
+
+    if (h.kicker) {
+      var kicker = box.querySelector('.hero-kicker');
+      if (kicker) kicker.textContent = h.kicker;
+    }
+
+    /* 标题拆两段：h.title 白色 + h.titleAccent 橙色（对应原来的 <span>） */
+    if (h.title || h.titleAccent) {
+      var h1 = box.querySelector('h1');
+      if (h1) {
+        h1.innerHTML = esc(h.title || '') +
+          (h.titleAccent ? ' <span>' + esc(h.titleAccent) + '</span>' : '');
+      }
+    }
+
+    /* 说明段落 = hero-content 里第一个非 kicker 的 <p> */
+    if (h.lead) {
+      var lead = null, kids = box.children, i;
+      for (i = 0; i < kids.length; i++) {
+        if (kids[i].tagName === 'P' && String(kids[i].className).indexOf('hero-kicker') === -1) {
+          lead = kids[i]; break;
+        }
+      }
+      if (lead) lead.textContent = h.lead;
+    }
+
+    /* 两个按钮：文字留空 = 不显示该按钮 */
+    var btns = box.querySelectorAll('.hero-btns a');
+    var pairs = [[h.btn1Text, h.btn1Href], [h.btn2Text, h.btn2Href]];
+    for (i = 0; i < pairs.length; i++) {
+      var a = btns[i];
+      if (!a) continue;
+      if (!pairs[i][0]) { a.style.display = 'none'; continue; }
+      a.style.display = '';
+      a.textContent = pairs[i][0];
+      a.setAttribute('href', resolveHref(pairs[i][1] || '#'));
+    }
+
+    /* 下方三项数据：整块重建，条数由数据决定 */
+    if (h.stats && h.stats.length) {
+      var stats = box.querySelector('.hero-stats');
+      if (stats) {
+        stats.innerHTML = h.stats.map(function (s) {
+          return '<div class="hero-stat"><strong>' + esc(s.value || '') +
+            '</strong><span>' + esc(s.label || '') + '</span></div>';
+        }).join('');
+      }
+    }
+
+    /* 背景图：留空则清掉内联样式，回落到样式表里的默认图 */
+    if (h.bgImage !== undefined) {
+      var bg = String(h.bgImage || '').trim();
+      sec.style.backgroundImage = bg
+        ? HOME_HERO_OVERLAY + ", url('" + resolveMedia(bg) + "')"
+        : '';
+    }
+  }
+
   /* ---------- Home 页 SKD/CKD 区块（后台可编辑）----------
      只在存在 [data-content="skd"] 容器（Home 页）时渲染；别的页面零影响。
      没有 skd 段 / enabled=false 时保留 HTML 静态兜底，不白屏。
@@ -861,6 +937,9 @@
     renderFaq(res);
     renderComingNext(res);
     renderCta(res);
+
+    // Home 页首屏 Hero：就地改文字/按钮/数据/背景（HOME_HERO_V1）
+    renderHomeHero(data);
 
     // Home 页 SKD/CKD 区块：由 skd 段重建（没有该段时保留 HTML 静态兜底）
     renderSkd(data);
