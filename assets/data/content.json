@@ -1102,5 +1102,46 @@
         "label": "Power Factor "
       }
     ]
+  },
+  "homeCards": {
+    "enabled": true,
+    "items": [
+      {
+        "slug": "product-street-light",
+        "tag": "Street Light · 40 / 60 W",
+        "title": "Road & Street Light",
+        "desc": "Municipal & industrial road lighting · pole-mount reference design · SKD/CKD for tenders"
+      },
+      {
+        "slug": "product-high-bay",
+        "tag": "High Bay · 100 W",
+        "title": "Warehouse & High Bay",
+        "desc": "≥91.8% efficiency · PF 0.956 · 4kV surge · 18-page test report available"
+      },
+      {
+        "slug": "product-flood-light",
+        "tag": "Flood Light · 50 W",
+        "title": "Yard & Flood Light",
+        "desc": "≥91.4% efficiency · PF 0.957 · 4kV surge · 18-page test report available"
+      },
+      {
+        "slug": "product-linear-bulb",
+        "tag": "Linear Bulb · 9 – 50 W",
+        "title": "Linear LED Bulb",
+        "desc": "PF 0.988 · THD <15% · >105 lm/W · low EMI · E27/B22"
+      },
+      {
+        "slug": "product-batten",
+        "tag": "Batten · 20 / 36 W",
+        "title": "LED Batten Drive",
+        "desc": "High-integration driver · no VCC/COMP cap · full protection"
+      },
+      {
+        "slug": "product-emergency-lamp",
+        "tag": "Emergency Lamp",
+        "title": "Emergency LED Lamp",
+        "desc": "Fast charging · battery management 4.2V/2.4V · 1A emergency drive"
+      }
+    ]
   }
 }
