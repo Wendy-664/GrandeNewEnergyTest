@@ -42,7 +42,8 @@
       "href": "assets/img/favicon.ico",
       "appleTouch": "assets/img/apple-touch-icon.png",
       "version": "v1"
-    }
+    },
+    "seoBase": "https://gmtne.com/"
   },
   "resources": {
     "hero": {
