@@ -1216,10 +1216,11 @@
     if (window.console && console.info) console.info('[content-loader] 已运行时补齐首页 OEM/ODM 骨架（旧版 HTML 双层修法）');
   }
 
-  /* ---------- SEO 运行时修正（SEO_RUNTIME_V1）----------
-     探测报告扫的是仓库原始 HTML，看不到运行时修复；这里在首帧补齐能安全补齐的项，
-     一次同步全站 19 页生效，不用逐页改 HTML。
-       ① canonical / og:url 域名归位（旧站 www.gmtne.com -> 生效站 github.io 子路径）
+  /* ---------- SEO 运行时修正（SEO_RUNTIME_V2）----------
+     2026-11-22：规范域名改为裸域 gmtne.com（自定义域名已生效，www 与 github.io 均 301 到此）。
+     首帧把能安全补齐的项归一到裸域，一次同步全站生效，不用逐页改 HTML。
+       ① canonical / og:url / og:image / twitter:image 两套旧域名 -> gmtne.com 裸域
+       ①b 已有 JSON-LD 里的旧域名一并归位
        ② 缺 og:image 时补一张（页面首图或 logo，绝对地址）
        ③ 有可见面包屑但缺 BreadcrumbList 时补 JSON-LD
        ④ 正文缺 <main> 时把 header 与 footer 之间的区块包进 main
@@ -1228,27 +1229,48 @@
      刻意不动：skd-ckd.html 死链（fixSkdBlock 已处理）、图片路径（会裂图）、
      H 层级（样式绑定，改了会乱）。
   */
-  var SEO_SITE = 'https://wendy-664.github.io/GrandeNewEnergyTest';
-  var SEO_OLD_HOST = 'https://www.gmtne.com';
+  var SEO_SITE = 'https://gmtne.com';
+  var SEO_OLD_HOSTS = ['https://www.gmtne.com', 'https://wendy-664.github.io/GrandeNewEnergyTest'];
+
+  function seoStripOld(u) {
+    if (!u) return '';
+    for (var i = 0; i < SEO_OLD_HOSTS.length; i++) {
+      if (u.indexOf(SEO_OLD_HOSTS[i]) === 0) return SEO_SITE + u.slice(SEO_OLD_HOSTS[i].length);
+    }
+    return u;
+  }
+
+  function seoReplaceAll(u) {
+    if (!u) return u;
+    for (var i = 0; i < SEO_OLD_HOSTS.length; i++) {
+      while (u.indexOf(SEO_OLD_HOSTS[i]) !== -1) u = u.split(SEO_OLD_HOSTS[i]).join(SEO_SITE);
+    }
+    return u;
+  }
 
   function seoAbsUrl(src, base) {
     if (!src) return '';
-    if (/^https?:\/\//i.test(src)) return src.replace(SEO_OLD_HOST, SEO_SITE);
+    if (/^https?:\/\//i.test(src)) return seoStripOld(src);
     try { return new URL(src, base || (SEO_SITE + '/')).href; }
     catch (e) { return SEO_SITE + '/' + String(src).replace(/^\.\.?\//, ''); }
   }
 
   function fixSeoRuntime() {
-    /* ① 域名归位 */
+    /* ① 域名归位：canonical / og:url / og:image / twitter:image —— 两套旧域名统一到裸域 */
     var canon = document.querySelector('link[rel="canonical"]');
-    if (canon && canon.getAttribute('href')) {
-      var ch = canon.getAttribute('href');
-      if (ch.indexOf(SEO_OLD_HOST) === 0) canon.setAttribute('href', SEO_SITE + ch.slice(SEO_OLD_HOST.length));
-    }
+    if (canon && canon.getAttribute('href')) canon.setAttribute('href', seoStripOld(canon.getAttribute('href')));
     var ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl && ogUrl.getAttribute('content')) {
-      var ou = ogUrl.getAttribute('content');
-      if (ou.indexOf(SEO_OLD_HOST) === 0) ogUrl.setAttribute('content', SEO_SITE + ou.slice(SEO_OLD_HOST.length));
+    if (ogUrl && ogUrl.getAttribute('content')) ogUrl.setAttribute('content', seoStripOld(ogUrl.getAttribute('content')));
+    var ogImgOld = document.querySelector('meta[property="og:image"]');
+    if (ogImgOld && ogImgOld.getAttribute('content')) ogImgOld.setAttribute('content', seoStripOld(ogImgOld.getAttribute('content')));
+    var twImg = document.querySelector('meta[name="twitter:image"]');
+    if (twImg && twImg.getAttribute('content')) twImg.setAttribute('content', seoStripOld(twImg.getAttribute('content')));
+    /* ①b 已有 JSON-LD 文本里的旧域名归位（WebSite @id/url 等） */
+    var lds = document.querySelectorAll('script[type="application/ld+json"]'), li, tx, nt;
+    for (li = 0; li < lds.length; li++) {
+      tx = lds[li].textContent || '';
+      nt = seoReplaceAll(tx);
+      if (nt !== tx) lds[li].textContent = nt;
     }
     var pageBase = (canon && canon.getAttribute('href')) || (SEO_SITE + '/');
 
