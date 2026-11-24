@@ -133,6 +133,46 @@
         "type": "pdf",
         "href": "../assets/img/high_bay_install_.png",
         "action": "PNG"
+      },
+      {
+        "title": "hb-scene-warehouse.webp",
+        "product": "—",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/hb-scene-warehouse.webp",
+        "action": "WEBP"
+      },
+      {
+        "title": "hb-scene-sports.webp",
+        "product": "—",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/hb-scene-sports.webp",
+        "action": "WEBP"
+      },
+      {
+        "title": "hb-scene-racking.webp",
+        "product": "—",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/hb-scene-racking.webp",
+        "action": "WEBP"
+      },
+      {
+        "title": "hb-scene-racking.webp",
+        "product": "—",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/hb-scene-racking.webp",
+        "action": "WEBP"
+      },
+      {
+        "title": "hb-scene-workshop.webp",
+        "product": "—",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/hb-scene-workshop.webp",
+        "action": "WEBP"
       }
     ],
     "comingNext": [
