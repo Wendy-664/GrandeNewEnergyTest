@@ -1192,6 +1192,42 @@
     }
   }
 
+  /* ---------- 移除正文里指向已删除 skd-ckd.html 的报错按钮 ----------
+     线上 products.html 正文写死了一段引导文字 + <a href="skd-ckd.html">How SKD / CKD Works</a>，
+     该独立页已删除（HTTP 404），按钮点了报错。fixSkdBlock() 只在首页跑、管不到 products 正文，
+     这里按文字精确匹配把整块引导容器一起移除，避免只删按钮留一句悬空文案。幂等。 */
+  function removeDeadSkdCta() {
+    var links = document.querySelectorAll(
+      'a[href="skd-ckd.html"], a[href="../skd-ckd.html"]'
+    );
+    for (var i = 0; i < links.length; i++) {
+      var a = links[i];
+      var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!/How SKD\s*\/\s*CKD Works/i.test(label)) continue;  // 只删这一个按钮，别碰别的死链
+      var box = a.parentNode;
+      // 整块是 <div class="text-center fade-in"> 里「说明文字 + 按钮」，一起移除
+      if (box && box.tagName === 'DIV' && /Need another wattage/i.test(box.textContent || '')) {
+        if (box.parentNode) box.parentNode.removeChild(box);
+      } else if (a.parentNode) {
+        a.parentNode.removeChild(a);
+      }
+    }
+
+    // footer 的「SKD / CKD Solutions」同为死链，改指首页 #skd 区块（保留入口，消除报错）。
+    // 首页自身的链接由 fixSkdBlock() 统一改成页内 #skd，这里只处理非首页，且避开正文已删的按钮。
+    var p = window.location.pathname.replace(/\\/g, '/');
+    var isHome = !IS_RESOURCES && ((/(^|\/)index\.html$/i.test(p) || /\/$/.test(p)));
+    var footerLinks = document.querySelectorAll(
+      'footer a[href="skd-ckd.html"], footer a[href="../skd-ckd.html"]'
+    );
+    for (var j = 0; j < footerLinks.length; j++) {
+      var fl = footerLinks[j];
+      var flabel = (fl.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!/SKD\s*\/\s*CKD Solutions/i.test(flabel)) continue;  // 只改这一个文案
+      fl.setAttribute('href', isHome ? '#skd' : (ROOT_PREFIX + 'index.html#skd'));
+    }
+  }
+
 
   /* ---------- 旧版首页运行时补齐 OEM/ODM 骨架（双层修法）----------
      线上首页 HTML 从没重发过，没有 [data-content="oem"] 容器。
@@ -1368,6 +1404,7 @@
 
   function boot() {
     removeDeadNavLinksImmediately();  // 首帧即清掉导航死链，避免切页时 SKD/CKD 闪动
+    removeDeadSkdCta();   // 首帧移除 products 正文指向 404 的「How SKD / CKD Works」报错按钮
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
     fixArticleTables();
