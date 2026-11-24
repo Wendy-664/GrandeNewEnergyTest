@@ -321,10 +321,10 @@
           {
             "slug": "product-high-bay",
             "image": "assets/img/rl-highbay-100w.png",
-            "alt": "YE-01 100W high bay",
-            "tag": "High Bay · SKD/CKD",
-            "title": "High Bay 100W",
-            "desc": "FL-YE-01W0100V144V01 · lab test report available",
+            "alt": "high bay",
+            "tag": "High Bay",
+            "title": "High Bay ",
+            "desc": "Die-cast aluminum housing with integrated DOB driver solution. 165-280Vac wide voltage input and 4kV surge protection, engineered for unstable grid environments in South Asia.",
             "specsText": "Output | 144V / 610mA\nEfficiency | ≥ 91.8 %\nPF | 0.956\nSurge | 4 kV"
           }
         ]
@@ -462,14 +462,14 @@
       },
       "product-high-bay": {
         "slug": "product-high-bay",
-        "pageTitle": "High Bay 100W - FL-YE-01W0100V144V01 | Grande New Energy",
+        "pageTitle": "High Bay  | Grande New Energy",
         "description": "Grande New Energy 100W high bay luminaire, FL-YE-01W0100V144V01. 144V / 610mA, 100-440Vac input, PF 0.956, 4kV surge, ≥91.8% efficiency. Lab test report downloadable. SKD/CKD for local assembly.",
         "crumbCategory": "High Bay & Flood Light",
-        "kicker": "Outdoor Luminaires · SKD / CKD",
-        "title": "High Bay 100W",
-        "lead": "FL-YE-01W0100V144V01 — a 100 W UFO high bay on the YE-01 platform, lab-tested with our self-developed driver technology. Ship finished luminaires, or knocked-down kits for local assembly.",
-        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai / Nhava Sheva",
-        "badge": "YE-01 · HIGH BAY 100 W",
+        "kicker": "OUTDOOR",
+        "title": "High Bay ",
+        "lead": "Die-cast aluminum housing with integrated DOB driver solution. 168-240Vac wide voltage input and 4kV surge protection, engineered for unstable grid environments in South Asia.",
+        "meta": "MOQ 300 pcs · Lead time 25 days · FOB Shanghai ",
+        "badge": " HIGH BAY 100-1200W",
         "certsLabel": "Options:",
         "media": [
           {
@@ -480,8 +480,8 @@
         ],
         "specTitle": "Specifications",
         "specNote": "",
-        "specTable": "Parameter | Specification\nPart number | FL-YE-01W0100V144V01\nType | High Bay · 100 W (UFO)\nOutput | 144 V / 610 mA ±5 %\nLED load | 24C6B · 6 V LEDs (144 × SMD2835)\nDriver | Self-developed high-PF flyback (single-board)\nInput | 100–440 Vac · 47–63 Hz\nEfficiency @ 230 Vac | ≥ 91.8 %\nPF / THD | 0.956 / 28.53 %\nSurge | 4 kV\nDriver board size | 191.5 × 165 mm",
-        "faqKicker": "High Bay 100 W · YE-01",
+        "specTable": "Mounting Height|Typical Application|Suggested Power|Beam Angle\n4 – 6 m|Retail, small workshops, low-ceiling storage|100 – 150W|Wide (90°–120°)\n6 – 8 m|General warehouses, assembly areas|120 – 200W|Medium-wide (90°)\n8 – 12 m|Distribution centers, manufacturing halls|200 – 300W|Medium (60°–90°)\n12 – 16 m|High-rack storage, large factories|300 – 500W|Narrow-medium (60°)\n16 m +|Stadiums, ballparks, mining, ports|400 – 1200W|Narrow (high-mast optics)",
+        "faqKicker": "High Bay",
         "faq": [
           {
             "q": "What happens above 290 Vac on a 440 V supply?",
@@ -516,9 +516,9 @@
             "a": "Yes. The driver is a single board measuring 191.5 × 165 mm, mounted on standoffs and connected by plug-in leads, so it lifts out without disturbing the LED board or the optic. Keep a small stock of boards and a failed unit is a bench repair rather than a scrapped fixture."
           }
         ],
-        "bulletsText": "144 V / 610 mA ±5 % output — 24C6B · 6 V LED string\n100–440 Vac input, verified across the full range in an 18-page lab report\nPF 0.956 and THD 28.53 % at 230 Vac full load — measured, not estimated\n4 kV surge passed: 5 counts per polarity at 0 / 90 / 180 / 270° phase\nProgrammable current foldback at low and high line; open, short and OTP protection",
-        "actionsText": "Download Test Report | #downloads\nRequest Quote | contact.html",
-        "certsText": "RoHS, IP66, CE on request, BIS on request"
+        "bulletsText": "Power range:  100-1200W \nColor temperature: warm white / cool white optional\nAdjustable U-shaped mounting bracket, 180° tilt angle\nOEM logo printing and neutral packaging available\nMOQ flexible for project orders and distributor partners",
+        "actionsText": "Download Test Report | #Sdownloads\nRequest Quote | contact.html",
+        "certsText": "RoHS, IP66, CE , BIS "
       },
       "product-flood-light": {
         "slug": "product-flood-light",
