@@ -550,6 +550,92 @@
     }
   }
 
+  /* ---------- High Bay 页：Why 四卡 + 应用场景（HB_MODULE_V1） ----------
+     content.json 的 highBay 段可后台编辑；有数据时重建两块，无数据/关闭时保留 HTML 静态兜底。 */
+  var HB_CSS = ''
+    + '.hb-sub{font-size:1rem;line-height:1.7;color:var(--text-muted);max-width:820px;margin:0 0 2rem;}'
+    + '.hb-why{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}'
+    + '.hb-why-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:26px 24px 28px;position:relative;overflow:hidden;transition:border-color .22s ease,box-shadow .22s ease,transform .22s ease;}'
+    + '.hb-why-card::before{content:"";position:absolute;left:0;top:0;width:100%;height:3px;background:linear-gradient(90deg,var(--cyan),var(--accent));opacity:0;transition:opacity .25s ease;}'
+    + '.hb-why-card:hover{border-color:var(--accent);box-shadow:0 14px 30px rgba(10,37,64,.10);transform:translateY(-4px);}'
+    + '.hb-why-card:hover::before{opacity:1;}'
+    + '.hb-why-card .num{font-size:.75rem;font-weight:800;letter-spacing:1.5px;color:var(--cyan);margin-bottom:.7rem;display:block;}'
+    + '.hb-why-card h3{font-size:1.05rem;font-weight:700;color:var(--primary);line-height:1.4;margin:0 0 .7rem;}'
+    + '.hb-why-card p{margin:0;font-size:.9rem;line-height:1.75;color:#55637A;}'
+    + '.hb-scene{display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:repeat(3,1fr);gap:18px;align-items:stretch;}'
+    + '.hb-scene figure{display:flex;flex-direction:column;margin:0;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:0;transition:border-color .22s ease,box-shadow .22s ease,transform .22s ease;}'
+    + '.hb-scene figure:hover{border-color:var(--accent);box-shadow:0 12px 28px rgba(10,37,64,.09);transform:translateY(-3px);}'
+    + '.hb-scene .hb-big{grid-row:span 3;}'
+    + '.hb-scene-media{position:relative;overflow:hidden;background:var(--primary);flex:1 1 0;min-height:0;}'
+    + '.hb-scene figure:not(.hb-big) .hb-scene-media{flex:0 0 108px;min-height:108px;}'
+    + '.hb-scene figure img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s ease;}'
+    + '.hb-scene figure:hover img{transform:scale(1.05);}'
+    + '.hb-scene figcaption{flex:0 0 auto;padding:14px 18px 17px;}'
+    + '.hb-scene figcaption .tag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--cyan);margin-bottom:.35rem;}'
+    + '.hb-scene figcaption strong{display:block;font-size:1rem;font-weight:700;color:var(--primary);line-height:1.4;}'
+    + '.hb-scene figcaption span{display:block;margin-top:.3rem;font-size:.83rem;line-height:1.55;color:#55637A;}'
+    + '.hb-scene .hb-big figcaption{padding:20px 24px 22px;}'
+    + '.hb-scene .hb-big figcaption strong{font-size:1.2rem;}'
+    + '.hb-scene .hb-big figcaption span{font-size:.9rem;margin-top:.4rem;}'
+    + '@media(max-width:1000px){.hb-why{grid-template-columns:repeat(2,1fr);gap:16px;}.hb-scene{grid-template-columns:1fr;grid-template-rows:auto;}.hb-scene .hb-big{grid-row:auto;}.hb-scene .hb-big .hb-scene-media,.hb-scene figure:not(.hb-big) .hb-scene-media{aspect-ratio:16/9;flex:0 0 auto;}}'
+    + '@media(max-width:640px){.hb-why{grid-template-columns:1fr;}}';
+  function injectHighBayCss(){
+    if(!document.getElementById('gmtne-hb-css')){
+      var st=document.createElement('style');
+      st.id='gmtne-hb-css'; st.textContent=HB_CSS;
+      document.head.appendChild(st);
+    }
+  }
+  function renderHighBay(data){
+    var hb = data.highBay;
+    if(!hb || hb.enabled === false) return;   // 没配 / 关闭 -> 保留 HTML 静态兜底
+    var whyBox = document.querySelector('[data-content="hbwhy"]');
+    var sceneBox = document.querySelector('[data-content="hbscenes"]');
+    if(!whyBox && !sceneBox) return;          // 不是 high bay 页
+    injectHighBayCss();
+
+    // --- Why 四卡 ---
+    if(whyBox && hb.why){
+      var w = hb.why, wh = '';
+      if(w.title) wh += '<h2 class="section-title">'+esc(w.title)+'</h2>';
+      if(w.sub)   wh += '<p class="hb-sub">'+esc(w.sub)+'</p>';
+      if(w.cards && w.cards.length){
+        wh += '<div class="hb-why">';
+        w.cards.forEach(function(c){
+          wh += '<div class="hb-why-card">'
+             + (c.no ? '<span class="num">'+esc(c.no)+'</span>' : '')
+             + (c.title ? '<h3>'+esc(c.title)+'</h3>' : '')
+             + (c.text ? '<p>'+esc(c.text)+'</p>' : '')
+             + '</div>';
+        });
+        wh += '</div>';
+      }
+      if(wh){ whyBox.innerHTML = wh; whyBox.setAttribute('data-content','hbwhy'); }
+    }
+
+    // --- 应用场景：第一张 big，其余小图 ---
+    if(sceneBox && hb.scenes){
+      var sc = hb.scenes, sh = '';
+      if(sc.title) sh += '<h2 class="section-title">'+esc(sc.title)+'</h2>';
+      if(sc.sub)   sh += '<p class="hb-sub">'+esc(sc.sub)+'</p>';
+      if(sc.items && sc.items.length){
+        sh += '<div class="hb-scene">';
+        sc.items.forEach(function(it,i){
+          var big = (i === 0);
+          sh += '<figure'+(big?' class="hb-big"':'')+'>';
+          sh += '<div class="hb-scene-media"><img src="'+esc(resolveMedia(it.image))+'" alt="'+esc(it.alt||it.title||'')+'" decoding="async"></div>';
+          sh += '<figcaption>';
+          if(big && it.tag) sh += '<span class="tag">'+esc(it.tag)+'</span>';
+          sh += '<strong>'+esc(it.title||'')+'</strong>';
+          if(it.desc) sh += '<span>'+esc(it.desc)+'</span>';
+          sh += '</figcaption></figure>';
+        });
+        sh += '</div>';
+      }
+      if(sh){ sceneBox.innerHTML = sh; sceneBox.setAttribute('data-content','hbscenes'); }
+    }
+  }
+
   /* ---------- Products 页 ----------
      产品列表页不改动 HTML 一个字：检测到页面上有 .cat-jump / .cat-block，
      就用 content.json 的 products.categories 整体重建大类与卡片。
@@ -1030,6 +1116,7 @@
     // Home 页 SKD/CKD 区块：由 skd 段重建（没有该段时保留 HTML 静态兜底）
     renderSkd(data);
     renderOem(data);   // OEM_MODULE_V1
+    renderHighBay(data);   // HB_MODULE_V1
 
     // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
     renderProductsPage(data);
@@ -1047,7 +1134,41 @@
     revealDynamicFadeIns();
   }
 
+  /* ---------- 缓存优先：消除"文字先旧后新" ----------
+     根因：每个 HTML 写死一份旧正文，异步 fetch content.json 回来才 apply 成新文字，
+     点导览时先看到旧文字、几十~几百 ms 后才变新文字（用户反馈"显示之前的数据"）。
+     方案：把 content.json 存进 sessionStorage（同源跨页共享、标签页隔离）。
+       · 已访问过 → 缓存存在 → boot 时同步 apply，首帧即新文字，不经网络空档；
+       · 后台改了数据 → fetch 结果与缓存不同 → 再 apply 一次新数据并刷新缓存；
+       · 首次访问 / 缓存失效 → 走原 fetch 流程，行为不变。
+     注意：同步 apply 放在 boot() 里、所有 fixXxx 之后，保证 renderPageTexts 的
+     元素索引与实际 DOM 结构一致，不会因结构未就绪而跳过文字渲染。 */
+  var CONTENT_CACHE_KEY = 'gmtne_content_v1';
+  function readContentCache() {
+    try {
+      var raw = sessionStorage.getItem(CONTENT_CACHE_KEY);
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      if (!d || typeof d !== 'object' || (!d.site && !d.pages && !d.products)) return null;
+      return d;
+    } catch (e) { return null; }
+  }
+  function writeContentCache(data) {
+    try { sessionStorage.setItem(CONTENT_CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
   function load() {
+    var cached = readContentCache();
+    var cachedSig = '';
+    var appliedFromCache = false;
+    if (cached) {
+      try {
+        cachedSig = JSON.stringify(cached);
+        apply(cached);              // 同步应用缓存：首帧即新文字，消除旧→新空档
+        appliedFromCache = true;
+      } catch (e) { appliedFromCache = false; }
+    }
+
     // 带时间戳 + no-store：绕过 GitHub Pages 对静态文件约 10 分钟的 CDN 缓存，
     // 保证后台发布后刷新页面即可看到新内容（content.json 仅几 KB，流量可忽略）。
     fetch(CONTENT_PATH + '?v=' + Date.now(), { cache: 'no-store' })
@@ -1055,10 +1176,16 @@
         if (!resp.ok) throw new Error('content.json HTTP ' + resp.status);
         return resp.json();
       })
-      .then(apply)
+      .then(function (data) {
+        var sig = JSON.stringify(data);
+        // 缓存已渲染且线上数据未变：跳过二次 apply，避免重复渲染影响 pages 文字索引
+        if (appliedFromCache && sig === cachedSig) return;
+        apply(data);
+        writeContentCache(data);
+      })
       .catch(function (err) {
-        // 降级：保留页面原有硬编码内容，不白屏
-        restoreLegacyFloats();  // fetch 失败：把首帧隐藏的旧悬浮图标恢复，保证联系按钮还在
+        // fetch 失败：缓存已 apply 则数据显示正常；否则恢复 HTML 写死的旧图标兜底
+        if (!appliedFromCache) restoreLegacyFloats();
         if (window.console && console.warn) {
           console.warn('[content-loader] 未能加载 content.json，使用页面内置内容。', err);
         }
@@ -1399,7 +1526,7 @@
         if (/(logo|icon|favicon|pixel)/i.test(s)) continue;
         img = imgs[i]; break;
       }
-      var imgSrc = img ? img.getAttribute('src') : 'assets/img/logo.png';
+      var imgSrc = img ? img.getAttribute('src') : 'assets/img/logo.webp';
       if (!ogImg) { ogImg = document.createElement('meta'); ogImg.setAttribute('property', 'og:image'); document.head.appendChild(ogImg); }
       ogImg.setAttribute('content', seoAbsUrl(imgSrc, pageBase));
     }
