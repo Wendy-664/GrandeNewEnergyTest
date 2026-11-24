@@ -117,6 +117,22 @@
         "type": "pdf",
         "href": "../assets/img/about-qc.webp",
         "action": "WEBP"
+      },
+      {
+        "title": "hight_bay_in.png",
+        "product": "high bay",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/hight_bay_in.png",
+        "action": "PNG"
+      },
+      {
+        "title": "high_bay_install_.png",
+        "product": "high bay",
+        "pages": "—",
+        "type": "pdf",
+        "href": "../assets/img/high_bay_install_.png",
+        "action": "PNG"
       }
     ],
     "comingNext": [
@@ -475,10 +491,20 @@
           {
             "type": "image",
             "src": "assets/img/rl-highbay-100w.png",
-            "caption": " HIGH BAY 100 W"
+            "caption": " HIGH BAY "
+          },
+          {
+            "type": "image",
+            "src": "assets/img/hight_bay_in.png",
+            "caption": " HIGH BAY "
+          },
+          {
+            "type": "image",
+            "src": "assets/img/high_bay_install_.png",
+            "caption": " HIGH BAY "
           }
         ],
-        "specTitle": "Specifications",
+        "specTitle": "— Selection Guide",
         "specNote": "",
         "specTable": "Mounting Height|Typical Application|Suggested Power|Beam Angle\n4 – 6 m|Retail, small workshops, low-ceiling storage|100 – 150W|Wide (90°–120°)\n6 – 8 m|General warehouses, assembly areas|120 – 200W|Medium-wide (90°)\n8 – 12 m|Distribution centers, manufacturing halls|200 – 300W|Medium (60°–90°)\n12 – 16 m|High-rack storage, large factories|300 – 500W|Narrow-medium (60°)\n16 m +|Stadiums, ballparks, mining, ports|400 – 1200W|Narrow (high-mast optics)",
         "faqKicker": "High Bay",
