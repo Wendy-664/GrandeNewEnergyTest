@@ -1081,6 +1081,63 @@
     document.head.appendChild(st);
   }
 
+  /* ---------- 内页首屏 page-hero：补样式 + 首帧可见（双层修法）----------
+     线上 products/about 等内页的 <section class="page-hero"> 在 styles.css 里没有任何定义，
+     fixed header(72px) 会压住标题；且 .fade-in 初始 opacity:0，切页瞬间只露出段落尾部
+     残影（"…kits for local assembly." / "…promise."），表现为白屏/残影闪烁。
+     这里运行时补上 page-hero 样式（预留 header 高度 + 合理间距），并把首屏 h1/p
+     立即标记 visible，消除首帧闪烁。幂等，不碰 .hero 首页大图。 */
+  function fixPageHero() {
+    if (!document.getElementById('gmtne-page-hero-css')) {
+      var css =
+        '.page-hero{padding:calc(var(--header-height,72px) + 56px) 0 56px;}' +
+        '.page-hero h1{font-size:2.5rem;font-weight:800;color:var(--primary);margin-bottom:1rem;line-height:1.15;}' +
+        '.page-hero p{font-size:1.05rem;color:var(--text-muted);}' +
+        '@media(max-width:700px){.page-hero{padding:calc(var(--header-height,72px) + 36px) 0 36px;}' +
+        '.page-hero h1{font-size:1.9rem;}}';
+      var st = document.createElement('style');
+      st.id = 'gmtne-page-hero-css';
+      st.textContent = css;
+      document.head.appendChild(st);
+    }
+    // 首屏元素立即可见，不等 IntersectionObserver，消除切页白屏/残影
+    var hero = document.querySelector('.page-hero');
+    if (hero) {
+      var els = hero.querySelectorAll('.fade-in');
+      for (var i = 0; i < els.length; i++) els[i].classList.add('visible');
+    }
+  }
+
+  /* ---------- 内页 footer Company 列：换成站点导览（双层修法）----------
+     线上 footer 的 Company 列写死为 SKD/CKD Solutions / About Us / Contact，
+     用户要求这里展示站点导览 Home / Products / Resources / About / Contact。
+     按 <h5>Company</h5> 定位整列，替换其后的链接组，保留标题与列结构。幂等。 */
+  function fixFooterCompany() {
+    var heads = document.querySelectorAll('footer h5');
+    var col = null;
+    for (var i = 0; i < heads.length; i++) {
+      if (/^Company$/i.test((heads[i].textContent || '').trim())) { col = heads[i].parentNode; break; }
+    }
+    if (!col || col.getAttribute('data-nav-fixed') === '1') return;
+    // 只处理仍是旧三项（含 skd-ckd 死链）的列，避免覆盖用户在后台改过的内容
+    var oldText = (col.textContent || '');
+    if (!/SKD\s*\/\s*CKD Solutions/i.test(oldText)) return;
+    var prefix = IS_RESOURCES ? '../' : '';
+    var nav = [
+      { t: 'Home', h: 'index.html' },
+      { t: 'Products', h: 'products.html' },
+      { t: 'Resources', h: 'resources/index.html' },
+      { t: 'About', h: 'about.html' },
+      { t: 'Contact', h: 'contact.html' }
+    ];
+    var html = '<h5>Company</h5>';
+    for (var j = 0; j < nav.length; j++) {
+      html += '<a href="' + prefix + nav[j].h + '">' + nav[j].t + '</a>';
+    }
+    col.innerHTML = html;
+    col.setAttribute('data-nav-fixed', '1');
+  }
+
   /* ---------- 首页 SKD/CKD 区块：历史页面双层修法 ----------
      线上 index.html 从未重发（旧版只有精简的 Why SKD/CKD 两栏）。
      这里在运行时把旧版骨架替换成完整区块并注入样式，
@@ -1407,7 +1464,9 @@
     removeDeadSkdCta();   // 首帧移除 products 正文指向 404 的「How SKD / CKD Works」报错按钮
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
+    fixPageHero();        // 内页首屏补样式 + 首帧可见，消除切页白屏/段落残影闪烁
     fixArticleTables();
+    fixFooterCompany();   // footer Company 列换成站点导览
     fixSkdBlock();        // 旧版首页运行时补齐 SKD/CKD 完整区块（同步一次 loader 即生效）
     fixOemBlock();        // 旧版首页运行时补齐 OEM/ODM 骨架（同步一次 loader 即生效）
     fixSeoRuntime();      // SEO 兜底：域名归位 / OG / 面包屑结构化 / main / aria-label（首帧，不等 JSON）
