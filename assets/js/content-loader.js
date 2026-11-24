@@ -802,9 +802,31 @@
     return '#';
   }
 
+  /* ---------- 首帧隐藏写死的旧悬浮图标，消除切页"先闪出 2 个旧按钮" ----------
+     静态 HTML 每个页面写死 <a class="whatsapp-float">/<a class="linkedin-float">，
+     新版 5 个图标要等 content.json fetch 回来由 renderFloats() 注入。
+     网络往返期间先看到旧 2 个 = 用户反馈的"闪出初始页面右下角图标"。
+     首帧同步隐藏；renderFloats 接管会移除它们；fetch 失败/旧 JSON 由 restoreLegacyFloats 兜底恢复。 */
+  function hideLegacyFloatsImmediate() {
+    var olds = document.querySelectorAll('a.whatsapp-float, a.linkedin-float');
+    for (var i = 0; i < olds.length; i++) {
+      if (!olds[i].getAttribute('data-hidden-by-loader')) {
+        olds[i].setAttribute('data-hidden-by-loader', '1');
+        olds[i].style.setProperty('display', 'none', 'important');
+      }
+    }
+  }
+  function restoreLegacyFloats() {
+    var olds = document.querySelectorAll('a[data-hidden-by-loader="1"]');
+    for (var i = 0; i < olds.length; i++) {
+      olds[i].style.removeProperty('display');
+      olds[i].removeAttribute('data-hidden-by-loader');
+    }
+  }
+
   function renderFloats(data){
     var list = data.floats;
-    if (!Array.isArray(list)) return;          // 旧 JSON：保留写死的两个按钮，不接管
+    if (!Array.isArray(list)) { restoreLegacyFloats(); return; }  // 旧 JSON：恢复写死的两个按钮，不接管
 
     if (!document.getElementById('gmtne-floats-css')) {
       var st = document.createElement('style');
@@ -1036,6 +1058,7 @@
       .then(apply)
       .catch(function (err) {
         // 降级：保留页面原有硬编码内容，不白屏
+        restoreLegacyFloats();  // fetch 失败：把首帧隐藏的旧悬浮图标恢复，保证联系按钮还在
         if (window.console && console.warn) {
           console.warn('[content-loader] 未能加载 content.json，使用页面内置内容。', err);
         }
@@ -1462,6 +1485,7 @@
   function boot() {
     removeDeadNavLinksImmediately();  // 首帧即清掉导航死链，避免切页时 SKD/CKD 闪动
     removeDeadSkdCta();   // 首帧移除 products 正文指向 404 的「How SKD / CKD Works」报错按钮
+    hideLegacyFloatsImmediate();  // 首帧隐藏写死的旧 2 个悬浮图标，消除切页闪动（新图标由 renderFloats 注入）
     applyFavicon(null);   // 先按默认图标注入，不等 content.json —— 页面一打开就有图标
     fixLegacyLogos();
     fixPageHero();        // 内页首屏补样式 + 首帧可见，消除切页白屏/段落残影闪烁
