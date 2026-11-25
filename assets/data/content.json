@@ -1136,6 +1136,38 @@
       "button1Href": "contact.html",
       "button2Text": "WhatsApp",
       "button2Href": "https://wa.me/8618154614514"
+    },
+    "markets": {
+      "enabled": true,
+      "title": "Markets we serve",
+      "subtitle": "Shipping SKD/CKD kits across Southeast Asia — now onboarding local assembly partners.",
+      "items": [
+        {
+          "code": "VN",
+          "country": "Vietnam",
+          "status": "onboarding"
+        },
+        {
+          "code": "TH",
+          "country": "Thailand",
+          "status": "onboarding"
+        },
+        {
+          "code": "ID",
+          "country": "Indonesia",
+          "status": "onboarding"
+        },
+        {
+          "code": "PH",
+          "country": "Philippines",
+          "status": "onboarding"
+        },
+        {
+          "code": "IN",
+          "country": "India",
+          "status": "live"
+        }
+      ]
     }
   },
   "homeHero": {
