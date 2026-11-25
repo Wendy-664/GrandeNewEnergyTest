@@ -201,6 +201,37 @@
     if (f.domainNote) txt('domainNote', f.domainNote);
   }
 
+  /* ---------- 页脚导览两列：Products / Company（FOOTER_NAV_V1）----------
+     content.json 顶层 footerNav 段可后台编辑；有数据时按 <h5> 标题重建两列链接，
+     静态 HTML 作兜底。给列容器打 data-content 标记，避免被全站正文文字枚举接管。 */
+  function renderFooterNav(data) {
+    var fn = data.footerNav;
+    if (!fn || fn.enabled === false) return;      // 没配 / 关闭 -> 保留 HTML 静态兜底
+    var grid = document.querySelector('footer.footer .footer-grid') || document.querySelector('.footer-grid');
+    if (!grid) return;
+    function findCol(title) {
+      var heads = grid.querySelectorAll('h5');
+      for (var i = 0; i < heads.length; i++) {
+        if (new RegExp('^' + title + '$', 'i').test((heads[i].textContent || '').trim())) return heads[i].parentNode;
+      }
+      return null;
+    }
+    function fill(col, title, items) {
+      if (!col || !items || !items.length) return;
+      var html = '<h5>' + esc(title) + '</h5>';
+      for (var k = 0; k < items.length; k++) {
+        var it = items[k];
+        var t = it.t || it.text || '';
+        var h = it.h || it.href || '#';
+        if (t) html += '<a href="' + esc(h) + '">' + esc(t) + '</a>';
+      }
+      col.innerHTML = html;
+      col.setAttribute('data-content', 'footernav');   // 防全站正文文字枚举接管
+    }
+    fill(findCol('Products'), 'Products', fn.products);
+    fill(findCol('Company'), 'Company', fn.company);
+  }
+
   /* 品牌名称只作用于 logo 图片的替代文字。
      页面 <title> / description / og: / JSON-LD 里的品牌名是给搜索引擎读的，
      用 JS 动态改不会被抓取，所以故意保留在 HTML 中，不纳入后台管理。 */
@@ -1097,6 +1128,7 @@
     renderNav(site);
     renderBrand(site);
     renderFooterContact(site);
+    renderFooterNav(data);   // FOOTER_NAV_V1
     renderWhatsApp(site);
     renderLinkedIn(site);
     renderFloats(data);
