@@ -296,6 +296,8 @@ h1, h2, h3, h4, p { margin: 0; }
   font-size: 1.4rem; font-weight: 800; box-shadow: var(--shadow-lg); z-index: 999; transition: transform 0.2s;
 }
 .linkedin-float:hover { transform: scale(1.08); color: #fff; }
+/* Hide legacy hard-coded float buttons from first paint; content-loader.js injects the 5 data-driven icons. */
+.whatsapp-float,.linkedin-float{display:none!important}
 
 /* ===== Animations ===== */
 .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
