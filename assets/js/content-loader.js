@@ -459,13 +459,13 @@
         (items[k].size ? '<span class="pr-size">' + esc(items[k].size) + '</span>' : '') +
         '</span></label>';
     }
-    modal.innerHTML = '<div class="pr-box" role="dialog" aria-modal="true" aria-label="选择要下载的报告">' +
-      '<h3>选择测试报告</h3>' +
-      '<p class="pr-sub">勾选需要的文件，可多选。共 ' + items.length + ' 份。</p>' +
+    modal.innerHTML = '<div class="pr-box" role="dialog" aria-modal="true" aria-label="Select test reports to download">' +
+      '<h3>Select Test Reports</h3>' +
+      '<p class="pr-sub">Tick the files you need — multiple selection allowed. ' + items.length + ' available.</p>' +
       rows +
-      '<div class="pr-acts"><button type="button" class="pr-btn go" id="prDownload">下载选中</button>' +
-      '<button type="button" class="pr-btn no" id="prClose">取消</button></div>' +
-      '<p class="pr-tip">浏览器可能提示「允许多个文件下载」，请选择允许，否则只会下载第一份。</p>' +
+      '<div class="pr-acts"><button type="button" class="pr-btn go" id="prDownload">Download Selected</button>' +
+      '<button type="button" class="pr-btn no" id="prClose">Cancel</button></div>' +
+      '<p class="pr-tip">Your browser may ask to allow multiple downloads. Please allow it, otherwise only the first file will be downloaded.</p>' +
       '</div>';
     document.body.appendChild(modal);
 
@@ -484,7 +484,7 @@
       var cbs = modal.querySelectorAll('.pr-cb');
       var picked = [];
       for (var n = 0; n < cbs.length; n++) if (cbs[n].checked) picked.push(items[parseInt(cbs[n].getAttribute('data-i'), 10)]);
-      if (!picked.length) { alert('请先勾选至少一份报告'); return; }
+      if (!picked.length) { alert('Please select at least one report.'); return; }
       // 逐个下载：错开 250ms，避开浏览器对同时下载的合并拦截
       picked.forEach(function (it, idx) {
         setTimeout(function () {
