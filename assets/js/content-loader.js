@@ -232,6 +232,95 @@
     fill(findCol('Company'), 'Company', fn.company);
   }
 
+  /* ===== FOOTER_PRODUCTS_V2: 页脚产品列 = 后台产品数据二级菜单 ===== */
+  function injectFooterProductsCss() {
+    if (document.getElementById('gmtne-footer-products-css')) return;
+    var css = ''
+      + '.footer .fp-group{position:relative;}'
+      + '.footer .fp-row{display:flex;align-items:center;gap:4px;}'
+      + '.footer .fp-row .fp-cat{display:inline-block;margin-bottom:.45rem;color:rgba(255,255,255,.7);font-size:.9rem;}'
+      + '.footer .fp-row .fp-cat:hover{color:var(--accent);}'
+      + '.footer .fp-toggle{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin:0 0 .45rem 0;padding:0;border:1px solid rgba(255,255,255,.25);border-radius:3px;background:transparent;color:rgba(255,255,255,.75);font-size:.7rem;line-height:1;cursor:pointer;transition:background .18s,color .18s;}'
+      + '.footer .fp-toggle:hover{background:rgba(255,255,255,.12);color:#fff;}'
+      + '.footer .fp-toggle::after{content:"\\25BE";}'
+      + '.footer .fp-toggle[aria-expanded="true"]::after{content:"\\25B4";}'
+      + '.footer .fp-sub{display:none;padding:1px 0 2px 12px;margin:-2px 0 8px 2px;border-left:1px solid rgba(255,255,255,.18);}'
+      + '.footer .fp-sub a{display:block;margin-bottom:.35rem;font-size:.82rem;color:rgba(255,255,255,.58);}'
+      + '.footer .fp-sub a:hover{color:var(--accent);}'
+      + '@media (hover:hover){.footer .fp-group:hover .fp-sub{display:block;}}'
+      + '.footer .fp-group.open .fp-sub{display:block;}'
+      + '@media(max-width:768px){.footer .fp-sub a{font-size:.8rem;}}';
+    var st = document.createElement('style');
+    st.id = 'gmtne-footer-products-css';
+    st.appendChild(document.createTextNode(css));
+    (document.head || document.documentElement).appendChild(st);
+  }
+
+  function bindFooterProductsToggle() {
+    if (window.__gmtneFooterProductsBound) return;
+    window.__gmtneFooterProductsBound = true;
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var btn = t.closest('.fp-toggle');
+      if (!btn) return;
+      e.preventDefault();
+      var g = btn.closest('.fp-group');
+      if (!g) return;
+      var open = !g.classList.contains('open');
+      g.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  function renderFooterProducts(data) {
+    var p = data && data.products;
+    var cats = p && p.categories;
+    if (!cats || !cats.length) return;              // 无产品数据 -> 静态兜底
+    var grid = document.querySelector('footer.footer .footer-grid') || document.querySelector('.footer-grid');
+    if (!grid) return;
+    var heads = grid.querySelectorAll('h5');
+    var col = null;
+    for (var i = 0; i < heads.length; i++) {
+      if (/^Products$/i.test((heads[i].textContent || '').trim())) { col = heads[i].parentNode; break; }
+    }
+    if (!col) return;
+    var prefix = IS_RESOURCES ? '../' : '';
+    var html = '<h5>Products</h5>';
+    for (var c = 0; c < cats.length; c++) {
+      var cat = cats[c];
+      var name = cat.name || cat.title || '';
+      if (!name) continue;
+      var anchor = cat.id || '';
+      var catHref = prefix + 'products.html' + (anchor ? '#' + anchor : '');
+      var cards = cat.cards || [];
+      html += '<div class="fp-group">';
+      html += '<div class="fp-row">';
+      html += '<a class="fp-cat" href="' + esc(catHref) + '">' + esc(name) + '</a>';
+      if (cards.length) {
+        html += '<button type="button" class="fp-toggle" aria-label="Expand ' + esc(name) + ' products" aria-expanded="false"></button>';
+      }
+      html += '</div>';
+      if (cards.length) {
+        html += '<div class="fp-sub">';
+        for (var k = 0; k < cards.length; k++) {
+          var card = cards[k];
+          var slug = card.slug || '';
+          if (!slug) continue;
+          var href = /\.html$/.test(slug) ? prefix + slug : prefix + slug + '.html';
+          var title = card.title || card.name || slug;
+          html += '<a href="' + esc(href) + '">' + esc(title) + '</a>';
+        }
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+    col.innerHTML = html;
+    col.setAttribute('data-content', 'footerproducts');   // 防全站正文文字枚举接管
+    injectFooterProductsCss();
+    bindFooterProductsToggle();
+  }
+
   /* 品牌名称只作用于 logo 图片的替代文字。
      页面 <title> / description / og: / JSON-LD 里的品牌名是给搜索引擎读的，
      用 JS 动态改不会被抓取，所以故意保留在 HTML 中，不纳入后台管理。 */
@@ -1172,6 +1261,7 @@
     renderBrand(site);
     renderFooterContact(site);
     renderFooterNav(data);   // FOOTER_NAV_V1
+    renderFooterProducts(data);   // FOOTER_PRODUCTS_V2
     renderWhatsApp(site);
     renderLinkedIn(site);
     renderFloats(data);
