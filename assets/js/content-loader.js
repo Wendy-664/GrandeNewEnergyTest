@@ -1198,7 +1198,9 @@
   function restoreLegacyFloats() {
     var olds = document.querySelectorAll('a[data-hidden-by-loader="1"]');
     for (var i = 0; i < olds.length; i++) {
-      olds[i].style.removeProperty('display');
+      /* styles.css 已把旧按钮默认 display:none!important（消除首帧闪现）。
+         兜底时必须用内联 !important 覆盖它，单纯 removeProperty 会失效。 */
+      olds[i].style.setProperty('display', 'flex', 'important');
       olds[i].removeAttribute('data-hidden-by-loader');
     }
   }
