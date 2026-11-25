@@ -331,6 +331,32 @@
     if (f.domainNote) txt('domainNote', f.domainNote);
   }
 
+  /* ---------- 页脚品牌简介（FOOTER_INTRO_V1）----------
+     页脚 logo 下方那两段英文简介写死在全部 14 个 HTML 里，现改为后台可编辑：
+       · site.footer.intro   主简介（长段）
+       · site.footer.tagline 副标语（灰色小字）
+     用 .footer-logo 的父容器定位前两个 <p>，首帧打 data-c 标记防止被「全站正文文字」功能重复接管，
+     再按数据写入；留空 = 保留 HTML 原文，不冲掉用户没改过的页面。 */
+  function fixFooterIntro() {
+    var logo = document.querySelector('.footer .footer-logo');
+    if (!logo || !logo.parentNode) return;
+    var ps = logo.parentNode.querySelectorAll('p');
+    if (ps[0] && !ps[0].getAttribute('data-c')) ps[0].setAttribute('data-c', 'footerIntro');
+    if (ps[1] && !ps[1].getAttribute('data-c')) ps[1].setAttribute('data-c', 'footerTagline');
+  }
+
+  function renderFooterIntro(site) {
+    var f = site.footer || {};
+    if (f.intro) {
+      var a = document.querySelectorAll('[data-c="footerIntro"]');
+      for (var i = 0; i < a.length; i++) a[i].textContent = f.intro;
+    }
+    if (f.tagline) {
+      var b = document.querySelectorAll('[data-c="footerTagline"]');
+      for (var j = 0; j < b.length; j++) b[j].textContent = f.tagline;
+    }
+  }
+
   /* ---------- 页脚导览两列：Products / Company（FOOTER_NAV_V1）----------
      content.json 顶层 footerNav 段可后台编辑；有数据时按 <h5> 标题重建两列链接，
      静态 HTML 作兜底。给列容器打 data-content 标记，避免被全站正文文字枚举接管。 */
@@ -1393,6 +1419,7 @@
     renderNavProducts(data);   // NAV_PRODUCTS_V1：顶部 Products 两级下拉
     renderBrand(site);
     renderFooterContact(site);
+    renderFooterIntro(site);   // FOOTER_INTRO_V1：页脚 logo 下两段简介
     renderFooterNav(data);   // FOOTER_NAV_V1
     renderFooterProducts(data);   // FOOTER_PRODUCTS_V2
     renderWhatsApp(site);
@@ -1923,6 +1950,7 @@
     fixPageHero();        // 内页首屏补样式 + 首帧可见，消除切页白屏/段落残影闪烁
     fixArticleTables();
     fixFooterCompany();   // footer Company 列换成站点导览
+    fixFooterIntro();     // 首帧给页脚两段简介打 data-c 标记，防正文枚举错位（FOOTER_INTRO_V1）
     fixSkdBlock();        // 旧版首页运行时补齐 SKD/CKD 完整区块（同步一次 loader 即生效）
     fixOemBlock();        // 旧版首页运行时补齐 OEM/ODM 骨架（同步一次 loader 即生效）
     fixSeoRuntime();      // SEO 兜底：域名归位 / OG / 面包屑结构化 / main / aria-label（首帧，不等 JSON）
