@@ -1143,6 +1143,11 @@
       "subtitle": "Shipping SKD/CKD kits across Southeast Asia — now onboarding local assembly partners.",
       "items": [
         {
+          "code": "IN",
+          "country": "India",
+          "status": "live"
+        },
+        {
           "code": "VN",
           "country": "Vietnam",
           "status": "onboarding"
@@ -1161,11 +1166,6 @@
           "code": "PH",
           "country": "Philippines",
           "status": "onboarding"
-        },
-        {
-          "code": "IN",
-          "country": "India",
-          "status": "live"
         }
       ]
     }
