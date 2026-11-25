@@ -22,7 +22,7 @@
      - resources/ -> 前缀 '../'   content.json = ../assets/data/content.json
      若将来新增更深层目录，可在 <body> 上加 data-root-prefix="../.." 覆盖。
   */
-  var OEM_CSS = ".oem-kicker{color:var(--cyan);font-weight:800;letter-spacing:1.2px;font-size:.8rem;text-transform:uppercase;margin-bottom:.6rem}.oem-sub{font-size:1.25rem;color:var(--primary);font-weight:800;margin:2.6rem 0 1.1rem}.oem-routes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.oem-route{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-sm)}.oem-route-tag{display:inline-block;background:var(--cyan-light);color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.8px;padding:.3rem .7rem;border-radius:999px;margin-bottom:.8rem}.oem-route h4{font-size:1.15rem;color:var(--primary);margin:0 0 .5rem}.oem-route p{font-size:.9rem;color:var(--text-muted);margin:0 0 .9rem}.oem-route ul{margin:0;padding-left:1.1rem;color:var(--text-muted);font-size:.86rem;line-height:1.9}.oem-route ul a{text-decoration:none;color:var(--cyan);font-weight:700}.oem-note{margin-top:1rem;font-size:.88rem;color:var(--text-muted);background:var(--bg-alt);border-left:3px solid var(--cyan);padding:.7rem 1rem;border-radius:0 var(--radius) var(--radius) 0}.oem-custom{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.oem-custom-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1rem;display:flex;flex-direction:column;gap:.3rem;box-shadow:var(--shadow-sm)}.oem-ic{font-size:1.4rem;line-height:1}.oem-custom-item strong{color:var(--primary);font-size:.95rem}.oem-custom-item span:last-child{color:var(--text-muted);font-size:.8rem;line-height:1.5}.oem-moq{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.oem-moq-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;text-align:center;display:flex;flex-direction:column;gap:.3rem}.oem-moq-num{font-size:1.5rem;font-weight:800;color:var(--primary)}.oem-moq-card strong{font-size:.9rem;color:var(--primary)}.oem-moq-card span:last-child{font-size:.78rem;color:var(--text-muted)}.oem-tbd{color:var(--accent-hover)!important;font-weight:700}.oem-cta{margin-top:2.6rem;background:var(--primary);color:#fff;border-radius:var(--radius);padding:2rem 2.2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}.oem-cta h3{color:#fff;font-size:1.5rem;margin:0 0 .4rem}.oem-cta p{color:rgba(255,255,255,.75);margin:0;font-size:.95rem}.oem-cta-btns{display:flex;gap:.8rem;flex-shrink:0}.oem-cta-btns .btn-outline{color:#fff;border-color:#fff}.oem-cta-btns .btn-outline:hover{background:#fff;color:var(--primary)}@media(max-width:900px){.oem-routes,.oem-moq{grid-template-columns:1fr}.oem-custom{grid-template-columns:repeat(2,1fr)}.oem-cta{flex-direction:column;align-items:flex-start}}";
+  var OEM_CSS = ".oem-kicker{color:var(--cyan);font-weight:800;letter-spacing:1.2px;font-size:.8rem;text-transform:uppercase;margin-bottom:.6rem}.oem-sub{font-size:1.25rem;color:var(--primary);font-weight:800;margin:2.6rem 0 1.1rem}.oem-routes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.oem-route{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-sm)}.oem-route-tag{display:inline-block;background:var(--cyan-light);color:var(--cyan);font-size:.72rem;font-weight:800;letter-spacing:.8px;padding:.3rem .7rem;border-radius:999px;margin-bottom:.8rem}.oem-route h4{font-size:1.15rem;color:var(--primary);margin:0 0 .5rem}.oem-route p{font-size:.9rem;color:var(--text-muted);margin:0 0 .9rem}.oem-route ul{margin:0;padding-left:1.1rem;color:var(--text-muted);font-size:.86rem;line-height:1.9}.oem-route ul a{text-decoration:none;color:var(--cyan);font-weight:700}.oem-note{margin-top:1rem;font-size:.88rem;color:var(--text-muted);background:var(--bg-alt);border-left:3px solid var(--cyan);padding:.7rem 1rem;border-radius:0 var(--radius) var(--radius) 0}.oem-custom{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.oem-custom-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1rem;display:flex;flex-direction:column;gap:.3rem;box-shadow:var(--shadow-sm)}.oem-ic{font-size:1.4rem;line-height:1}.oem-custom-item strong{color:var(--primary);font-size:.95rem}.oem-custom-item span:last-child{color:var(--text-muted);font-size:.8rem;line-height:1.5}.oem-moq{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}.oem-moq-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;text-align:center;display:flex;flex-direction:column;gap:.3rem}.oem-moq-num{font-size:1.5rem;font-weight:800;color:var(--primary)}.oem-moq-card strong{font-size:.9rem;color:var(--primary)}.oem-moq-card span:last-child{font-size:.78rem;color:var(--text-muted)}.oem-tbd{color:var(--accent-hover)!important;font-weight:700}.oem-cta{margin-top:2.6rem;background:var(--primary);color:#fff;border-radius:var(--radius);padding:2rem 2.2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}.oem-cta h3{color:#fff;font-size:1.5rem;margin:0 0 .4rem}.oem-cta p{color:rgba(255,255,255,.75);margin:0;font-size:.95rem}.oem-cta-btns{display:flex;gap:.8rem;flex-shrink:0}.oem-cta-btns .btn-outline{color:#fff;border-color:#fff}.oem-cta-btns .btn-outline:hover{background:#fff;color:var(--primary)}@media(max-width:900px){.oem-routes,.oem-moq{grid-template-columns:1fr}.oem-custom{grid-template-columns:repeat(2,1fr)}.oem-cta{flex-direction:column;align-items:flex-start}}.oem-markets{display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));gap:1rem}.oem-markets-lead{font-size:.92rem;color:var(--text-muted);margin:.2rem 0 1.1rem;max-width:780px}.oem-market{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.15rem .9rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.25rem;box-shadow:var(--shadow-sm);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}.oem-market:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 22px rgba(10,37,64,.08)}.oem-market-code{font-size:.72rem;font-weight:800;letter-spacing:1.4px;color:var(--text-muted)}.oem-market strong{font-size:.98rem;color:var(--primary);font-weight:800;line-height:1.25}.oem-market-status{display:inline-flex;align-items:center;gap:.34rem;font-size:.76rem;font-weight:700}.oem-market-status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}.oem-market-status.is-onboarding{color:#B45309}.oem-market-status.is-live{color:#15803D}.oem-market-status.is-planned{color:#64748B}@media(max-width:1000px){.oem-markets{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.oem-markets{grid-template-columns:repeat(2,minmax(0,1fr))}}";
   var ROOT_PREFIX = '';
   var IS_RESOURCES = false;
 
@@ -409,6 +409,33 @@
       html += '</div>';
     }
 
+    /* 服务市场（MARKETS_V1）：并进 OEM 区块，排在 CTA 之前。
+       status 三档固定：onboarding=招商中 / live=已落地 / planned=规划中；
+       填了别的词就原样显示，颜色按 onboarding 处理（兼容自由文字）。 */
+    var mk = o.markets;
+    if(mk && mk.enabled !== false && mk.items && mk.items.length){
+      var MLBL = {onboarding:'Now onboarding', live:'Live', planned:'Planned'};
+      var MCLS = {onboarding:'is-onboarding', live:'is-live', planned:'is-planned'};
+      var shown = mk.items.filter(function(x){ return x && x.visible !== false && (x.country || x.code); });
+      if(shown.length){
+        if(mk.title)    html += '<h3 class="oem-sub fade-in">'+esc(mk.title)+'</h3>';
+        if(mk.subtitle) html += '<p class="oem-markets-lead fade-in">'+esc(mk.subtitle)+'</p>';
+        html += '<div class="oem-markets fade-in" style="--cols:'+(shown.length>=6?6:5)+'">';
+        shown.forEach(function(x){
+          var st = x.status || 'onboarding';
+          html += '<div class="oem-market">';
+          if(x.code) html += '<span class="oem-market-code">'+esc(x.code)+'</span>';
+          html += '<strong>'+esc(x.country || x.code || '')+'</strong>';
+          html += '<span class="oem-market-status '+(MCLS[st]||'is-onboarding')+'">'+esc(MLBL[st]||st)+'</span>';
+          html += '</div>';
+        });
+        html += '</div>';
+        hideLegacyMarkets();
+      }
+    } else if(mk && mk.enabled === false){
+      hideLegacyMarkets();
+    }
+
     var cta = o.cta || {};
     if(cta.title || cta.text){
       html += '<div class="oem-cta fade-in"><div>';
@@ -424,6 +451,22 @@
       box.innerHTML = '<div class="container">'+html+'</div>';
       box.setAttribute('data-content','oem');
     }
+  }
+
+  /* 旧首页里「Markets we serve」是写死的一节；现已并进 OEM 区块 → 运行时隐藏，避免出现两遍。
+     找不到这个标题（以后 HTML 重发已删掉）也安全返回 false。 */
+  function hideLegacyMarkets(){
+    var secs = document.getElementsByTagName('section'), i, h2;
+    for(i = 0; i < secs.length; i++){
+      if(secs[i].getAttribute('data-content') === 'oem') continue;   // 新容器不动
+      h2 = secs[i].querySelector('h2');
+      if(h2 && /^markets\s+we\s+serve$/i.test((h2.textContent||'').replace(/\s+/g,' ').trim())){
+        secs[i].style.display = 'none';
+        secs[i].setAttribute('data-legacy-markets','hidden');
+        return true;
+      }
+    }
+    return false;
   }
 
   /* ---------- Home 页首屏 Hero（后台可编辑）----------
