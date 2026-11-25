@@ -1340,13 +1340,20 @@
   function fixFooterCompany() {
     var heads = document.querySelectorAll('footer h5');
     var col = null;
+    var legacyLuminaires = false;
     for (var i = 0; i < heads.length; i++) {
-      if (/^Company$/i.test((heads[i].textContent || '').trim())) { col = heads[i].parentNode; break; }
+      var ht = (heads[i].textContent || '').trim();
+      if (/^Company$/i.test(ht)) { col = heads[i].parentNode; break; }
+      // contact 页写死的是 Luminaires（3 个应用链接），也一并对齐为 Company 导览
+      if (/^Luminaires$/i.test(ht)) { col = heads[i].parentNode; legacyLuminaires = true; break; }
     }
     if (!col || col.getAttribute('data-nav-fixed') === '1') return;
-    // 只处理仍是旧三项（含 skd-ckd 死链）的列，避免覆盖用户在后台改过的内容
-    var oldText = (col.textContent || '');
-    if (!/SKD\s*\/\s*CKD Solutions/i.test(oldText)) return;
+    // Company 列：只处理仍是旧三项（含 skd-ckd 死链）的，避免覆盖用户在后台改过的内容
+    // Luminaires 列：contact 页写死的应用链接，直接统一为站点导览
+    if (!legacyLuminaires) {
+      var oldText = (col.textContent || '');
+      if (!/SKD\s*\/\s*CKD Solutions/i.test(oldText)) return;
+    }
     var prefix = IS_RESOURCES ? '../' : '';
     var nav = [
       { t: 'Home', h: 'index.html' },
