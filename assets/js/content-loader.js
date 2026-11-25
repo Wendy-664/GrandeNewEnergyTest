@@ -159,6 +159,136 @@
     });
   }
 
+  /* ===== NAV_PRODUCTS_V1: 顶部 Products 两级下拉（大类 + 横向子类）=====
+     数据源同页脚：products.categories[].{name,id,cards[].{title,slug}}。
+     后台增删产品后，下拉自动同步。桌面悬停展开、悬停大类切换子类；
+     移动端点 ▾ 展开、点大类切换。样式运行时注入（styles.css 不在同步白名单）。*/
+  function injectNavProductsCss() {
+    if (document.getElementById('gmtne-nav-products-css')) return;
+    var css = ''
+      + 'nav.nav .np-wrap{position:relative;}'
+      + 'nav.nav .np-top{display:inline-flex;align-items:center;gap:5px;}'
+      + 'nav.nav .np-caret{display:none;font-size:.72em;line-height:1;color:var(--accent);cursor:pointer;padding:2px 5px;}'
+      + 'nav.nav .np-mega{position:absolute;top:100%;left:50%;margin-left:-270px;width:540px;box-sizing:border-box;z-index:1200;display:flex;gap:0;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 18px 46px rgba(10,37,64,.16);padding:10px;text-align:left;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s,transform .18s,visibility .18s;}'
+      + '@media (hover:hover) and (pointer:fine){nav.nav .np-wrap:hover .np-mega{opacity:1;visibility:visible;transform:translateY(0);}}'
+      + 'nav.nav .np-wrap.open .np-mega{opacity:1;visibility:visible;transform:translateY(0);}'
+      + 'nav.nav .np-cats{width:38%;border-right:1px solid var(--border);padding-right:8px;}'
+      + 'nav.nav .np-cat{display:block;padding:10px 12px;border-radius:8px;color:var(--primary);font-size:.9rem;font-weight:500;text-decoration:none;}'
+      + 'nav.nav .np-cat:hover,nav.nav .np-cat.on{color:var(--accent);background:#FFF7E8;}'
+      + 'nav.nav .np-subwrap{flex:1;padding:6px 10px;}'
+      + 'nav.nav .np-subhead{font-size:.8rem;color:var(--text-muted);margin:2px 0 10px;font-weight:600;}'
+      + 'nav.nav .np-subhead[hidden]{display:none;}'
+      + 'nav.nav .np-subrow{display:flex;flex-wrap:wrap;gap:8px;}'
+      + 'nav.nav .np-subrow[hidden]{display:none;}'
+      + 'nav.nav .np-subrow a{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.82rem;color:var(--primary);background:#fff;}'
+      + 'nav.nav .np-subrow a:hover{color:var(--accent);border-color:var(--accent);background:#FFF7E8;}'
+      + '@media (max-width:1024px){'
+      + 'nav.nav .np-wrap{width:100%;}'
+      + 'nav.nav .np-top{width:100%;justify-content:space-between;}'
+      + 'nav.nav .np-caret{display:inline-flex;}'
+      + 'nav.nav .np-mega{position:static;width:100%;min-width:0;margin:8px 0 0;padding:6px 0 6px 12px;border:0;border-left:2px solid var(--accent);border-radius:0;box-shadow:none;opacity:1;visibility:visible;transform:none;display:none;}'
+      + 'nav.nav .np-wrap.open .np-mega{display:flex;}'
+      + 'nav.nav .np-cats{width:42%;}'
+      + '}';
+    var st = document.createElement('style');
+    st.id = 'gmtne-nav-products-css';
+    st.appendChild(document.createTextNode(css));
+    (document.head || document.documentElement).appendChild(st);
+  }
+
+  function bindNavProducts() {
+    if (window.__gmtneNavProductsBound) return;
+    window.__gmtneNavProductsBound = true;
+    function activateCat(cat) {
+      var mega = cat.closest('.np-mega');
+      if (!mega) return;
+      var idx = cat.getAttribute('data-np');
+      var cats = mega.querySelectorAll('.np-cat');
+      for (var i = 0; i < cats.length; i++) cats[i].classList.toggle('on', cats[i] === cat);
+      var panels = mega.querySelectorAll('.np-subrow');
+      for (var j = 0; j < panels.length; j++) panels[j].hidden = (panels[j].getAttribute('data-np-panel') !== idx);
+      var heads = mega.querySelectorAll('.np-subhead');
+      for (var h = 0; h < heads.length; h++) heads[h].hidden = (heads[h].getAttribute('data-np-head') !== idx);
+    }
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var caret = t.closest('.np-caret');
+      if (caret) {
+        e.preventDefault();
+        e.stopPropagation();
+        var wrap = caret.closest('.np-wrap');
+        if (!wrap) return;
+        var open = !wrap.classList.contains('open');
+        wrap.classList.toggle('open', open);
+        caret.setAttribute('aria-expanded', open ? 'true' : 'false');
+        return;
+      }
+      var cat = t.closest('.np-cat');
+      if (cat) activateCat(cat);   // 大类同时保留链接跳转
+    });
+    document.addEventListener('mouseover', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var cat = t.closest('.np-cat');
+      if (cat && !cat.classList.contains('on')) activateCat(cat);
+    });
+  }
+
+  function renderNavProducts(data) {
+    var p = data && data.products, cats = p && p.categories;
+    if (!cats || !cats.length) return;
+    var navs = document.querySelectorAll('nav.nav');
+    if (!navs.length) return;
+    var prefix = IS_RESOURCES ? '../' : '';
+    navs.forEach(function (nav) {
+      var links = nav.querySelectorAll('a');
+      var prodA = null;
+      for (var i = 0; i < links.length; i++) {
+        if (/products\.html/i.test(links[i].getAttribute('href') || '') &&
+            /products/i.test(links[i].textContent || '')) { prodA = links[i]; break; }
+      }
+      if (!prodA || prodA.parentNode.querySelector('.np-wrap')) return;  // 已注入 / 找不到锚点
+      var activeCls = (prodA.className || '').indexOf('active') > -1 ? ' active' : '';
+      var topHref = prodA.getAttribute('href') || (prefix + 'products.html');
+      var megaCats = '', megaPanels = '';
+      for (var c = 0; c < cats.length; c++) {
+        var cat = cats[c];
+        var name = cat.name || cat.title || '';
+        if (!name) continue;
+        var anchor = cat.id || '';
+        var catHref = prefix + 'products.html' + (anchor ? '#' + anchor : '');
+        megaCats += '<a class="np-cat' + (c === 0 ? ' on' : '') + '" href="' + esc(catHref) +
+          '" data-np="' + c + '">' + esc(name) + '</a>';
+        var cards = cat.cards || [];
+        var row = '<div class="np-subhead"' + (c === 0 ? '' : ' hidden') +
+          ' data-np-head="' + c + '">' + esc(name) + '</div><div class="np-subrow"' +
+          (c === 0 ? '' : ' hidden') + ' data-np-panel="' + c + '">';
+        for (var k = 0; k < cards.length; k++) {
+          var card = cards[k];
+          var slug = card.slug || '';
+          if (!slug) continue;
+          var href = /\.html$/.test(slug) ? prefix + slug : prefix + slug + '.html';
+          var title = card.title || card.name || slug;
+          row += '<a href="' + esc(href) + '">' + esc(title) + '</a>';
+        }
+        row += '</div>';
+        megaPanels += row;
+      }
+      var wrap = document.createElement('div');
+      wrap.className = 'np-wrap';
+      wrap.setAttribute('data-content', 'navproducts');
+      wrap.innerHTML = '<a class="np-top' + activeCls + '" href="' + esc(topHref) + '">' +
+        esc(prodA.textContent || 'Products') +
+        '<span class="np-caret" role="button" aria-label="Expand product categories" aria-expanded="false">&#9662;</span></a>' +
+        '<div class="np-mega"><div class="np-cats">' + megaCats + '</div>' +
+        '<div class="np-subwrap">' + megaPanels + '</div></div>';
+      prodA.parentNode.replaceChild(wrap, prodA);
+    });
+    injectNavProductsCss();
+    bindNavProducts();
+  }
+
   function renderFooterContact(site) {
     function txt(key, value) {
       document.querySelectorAll('[data-c="' + key + '"]').forEach(function (el) {
@@ -244,11 +374,11 @@
       + '.footer .fp-toggle:hover{background:rgba(255,255,255,.12);color:#fff;}'
       + '.footer .fp-toggle::after{content:"\\25BE";}'
       + '.footer .fp-toggle[aria-expanded="true"]::after{content:"\\25B4";}'
-      + '.footer .fp-sub{display:none;padding:1px 0 2px 12px;margin:-2px 0 8px 2px;border-left:1px solid rgba(255,255,255,.18);}'
-      + '.footer .fp-sub a{display:block;margin-bottom:.35rem;font-size:.82rem;color:rgba(255,255,255,.58);}'
+      + '.footer .fp-sub{display:none;flex-wrap:wrap;gap:6px 10px;padding:2px 0 4px;margin:0 0 10px;}'
+      + '.footer .fp-sub a{display:inline-block;margin:0;font-size:.82rem;color:rgba(255,255,255,.58);white-space:nowrap;}'
       + '.footer .fp-sub a:hover{color:var(--accent);}'
-      + '@media (hover:hover){.footer .fp-group:hover .fp-sub{display:block;}}'
-      + '.footer .fp-group.open .fp-sub{display:block;}'
+      + '@media (hover:hover){.footer .fp-group:hover .fp-sub{display:flex;}}'
+      + '.footer .fp-group.open .fp-sub{display:flex;}'
       + '@media(max-width:768px){.footer .fp-sub a{font-size:.8rem;}}';
     var st = document.createElement('style');
     st.id = 'gmtne-footer-products-css';
@@ -1258,6 +1388,7 @@
     // 全站通用
     applyFavicon(site);
     renderNav(site);
+    renderNavProducts(data);   // NAV_PRODUCTS_V1：顶部 Products 两级下拉
     renderBrand(site);
     renderFooterContact(site);
     renderFooterNav(data);   // FOOTER_NAV_V1
