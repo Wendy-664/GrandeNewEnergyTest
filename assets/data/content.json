@@ -1141,26 +1141,26 @@
   "homeHero": {
     "enabled": true,
     "kicker": "LED Luminaires · SKD / CKD Export",
-    "title": "Grid-Hardened.",
-    "titleAccent": "Built for Asia.",
-    "lead": "Your brand on the light. Our proven driver inside — assembled locally, built for Asian grids.",
-    "btn1Text": "Explore Luminaires",
+    "title": "Our driver inside. ",
+    "titleAccent": "Your name outside.",
+    "lead": "Constant current 165–280 Vac, 4 kV surge, 22 points measured. Kits or finished fixtures with your logo on the housing — TISI, SNI, SIRIM, CR and BPS PS Mark filed in your company's name.",
+    "btn1Text": "product",
     "btn1Href": "products.html",
     "btn2Text": "Why SKD / CKD?",
     "btn2Href": "#skd",
     "bgImage": "",
     "stats": [
       {
-        "value": "165-280Vac",
-        "label": "Verified Input Range"
+        "value": "CKD",
+        "label": "parts only"
       },
       {
-        "value": "4kV",
-        "label": "Surge Passed"
+        "value": "SKD",
+        "label": "semi-assembled"
       },
       {
-        "value": ">0.9",
-        "label": "Power Factor "
+        "value": "FG",
+        "label": "ready to sell"
       }
     ]
   },
