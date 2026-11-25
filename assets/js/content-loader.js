@@ -357,6 +357,149 @@
     }
   }
 
+  /* ---------- 产品详情页测试报告下载（PRODUCT_REPORTS_V1）----------
+     后台「测试报告」标签页把附件绑定到产品：productReports[slug]=[{title,href,size}]。
+     前台按当前产品 slug 取绑定的报告，接管 hero 里的 Download 按钮：
+       · 0 份  -> 保留 HTML 原样（静态兜底；顺手修掉 high-bay 的 #Sdownloads 死链）
+       · 1 份  -> 点按钮直接下载（不弹框）
+       · ≥2 份 -> 点按钮弹多选面板，勾选后逐个下载
+     href 兼容 ../assets/dl/x.pdf（下载清单写法）与 assets/dl/x.pdf（根相对），
+     产品页在站点根目录，统一去掉开头 ../ 才能真正下到文件。 */
+  var PRODUCT_REPORTS_CSS = ''
+    + '.pr-modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(6,31,50,.55);}'
+    + '.pr-modal.open{display:flex;}'
+    + '.pr-box{background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:80vh;overflow:auto;padding:24px;}'
+    + '.pr-box h3{margin:0 0 4px;font-size:1.15rem;color:var(--text,#061F32);}'
+    + '.pr-box .pr-sub{margin:0 0 16px;font-size:.85rem;color:var(--text-muted,#64748B);}'
+    + '.pr-row{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid #E2E8F0;border-radius:9px;margin-bottom:9px;cursor:pointer;}'
+    + '.pr-row:hover{border-color:var(--accent,#F59E0B);background:#FFF9EE;}'
+    + '.pr-row input{margin-top:3px;accent-color:var(--accent,#F59E0B);width:16px;height:16px;flex:0 0 auto;}'
+    + '.pr-row .pr-name{display:block;font-size:.92rem;color:var(--text,#061F32);line-height:1.4;}'
+    + '.pr-row .pr-size{display:block;font-size:.76rem;color:var(--text-muted,#64748B);margin-top:2px;}'
+    + '.pr-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}'
+    + '.pr-btn{border:0;border-radius:8px;padding:10px 18px;font-size:.9rem;font-weight:600;cursor:pointer;}'
+    + '.pr-btn.go{background:var(--accent,#F59E0B);color:#fff;}'
+    + '.pr-btn.no{background:#F1F5F9;color:#475569;}'
+    + '.pr-tip{font-size:.75rem;color:var(--text-muted,#64748B);margin-top:12px;line-height:1.5;}';
+
+  function reportHref(href) {
+    var h = String(href || '').trim();
+    // 产品页在站点根：去掉下载清单的 ../ 前缀，避免跳到站点上一级
+    while (h.indexOf('../') === 0) h = h.slice(3);
+    return h;
+  }
+
+  function currentReportSlug() {
+    var id = currentPageId();  // 例：product-high-bay.html
+    return id.replace(/\.html?$/i, '');
+  }
+
+  function renderProductReports(data) {
+    var slug = currentReportSlug();
+    if (slug.indexOf('product-') !== 0) return;   // 只在产品详情页生效
+    var actions = document.querySelector('.pdp-actions');
+    if (!actions) return;
+    var btn = actions.querySelector('a.btn-primary') || actions.querySelector('a.btn');
+    if (!btn) return;
+
+    // 先修 high-bay 写死的 #Sdownloads 死链（不依赖 content.json 是否有 productReports 段）
+    if ((btn.getAttribute('href') || '').indexOf('#Sdownloads') >= 0) {
+      var dlTarget = document.getElementById('downloads');
+      btn.setAttribute('href', dlTarget ? '#downloads' : 'contact.html');
+    }
+
+    var map = data.productReports;
+    if (!map || typeof map !== 'object') return;
+    var list = map[slug];
+
+    // 没有绑定：保留原按钮（死链上面已修）
+    if (!Array.isArray(list) || !list.length) return;
+
+    // 归一化有效条目
+    var items = [];
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i] || {};
+      var href = reportHref(r.href);
+      if (!href) continue;
+      items.push({ title: r.title || href.split('/').pop(), href: href, size: r.size || '' });
+    }
+    if (!items.length) return;
+
+    if (!document.getElementById('pr-modal-css')) {
+      var st = document.createElement('style');
+      st.id = 'pr-modal-css';
+      st.textContent = PRODUCT_REPORTS_CSS;
+      document.head.appendChild(st);
+    }
+
+    // 单份：直接改成直链下载
+    if (items.length === 1) {
+      btn.setAttribute('href', items[0].href);
+      btn.setAttribute('download', '');
+      btn.setAttribute('data-content', 'productReports');
+      return;
+    }
+
+    // 多份：按钮改成触发选择面板
+    btn.setAttribute('href', '#');
+    btn.setAttribute('data-content', 'productReports');
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('tabindex', '0');
+    var label = btn.textContent.trim();
+    btn.textContent = label;   // 文案不变，仍是 Download Test Report / Download documents
+
+    var modal = document.createElement('div');
+    modal.className = 'pr-modal';
+    modal.setAttribute('data-content', 'productReports');
+    modal.id = 'prModal';
+    var rows = '';
+    for (var k = 0; k < items.length; k++) {
+      rows += '<label class="pr-row"><input type="checkbox" class="pr-cb" data-i="' + k + '">' +
+        '<span><span class="pr-name">' + esc(items[k].title) + '</span>' +
+        (items[k].size ? '<span class="pr-size">' + esc(items[k].size) + '</span>' : '') +
+        '</span></label>';
+    }
+    modal.innerHTML = '<div class="pr-box" role="dialog" aria-modal="true" aria-label="选择要下载的报告">' +
+      '<h3>选择测试报告</h3>' +
+      '<p class="pr-sub">勾选需要的文件，可多选。共 ' + items.length + ' 份。</p>' +
+      rows +
+      '<div class="pr-acts"><button type="button" class="pr-btn go" id="prDownload">下载选中</button>' +
+      '<button type="button" class="pr-btn no" id="prClose">取消</button></div>' +
+      '<p class="pr-tip">浏览器可能提示「允许多个文件下载」，请选择允许，否则只会下载第一份。</p>' +
+      '</div>';
+    document.body.appendChild(modal);
+
+    function openModal(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      modal.classList.add('open');
+    }
+    function closeModal() { modal.classList.remove('open'); }
+    btn.addEventListener('click', openModal);
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') openModal(e);
+    });
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    document.getElementById('prClose').addEventListener('click', closeModal);
+    document.getElementById('prDownload').addEventListener('click', function () {
+      var cbs = modal.querySelectorAll('.pr-cb');
+      var picked = [];
+      for (var n = 0; n < cbs.length; n++) if (cbs[n].checked) picked.push(items[parseInt(cbs[n].getAttribute('data-i'), 10)]);
+      if (!picked.length) { alert('请先勾选至少一份报告'); return; }
+      // 逐个下载：错开 250ms，避开浏览器对同时下载的合并拦截
+      picked.forEach(function (it, idx) {
+        setTimeout(function () {
+          var a = document.createElement('a');
+          a.href = it.href;
+          a.setAttribute('download', '');
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }, idx * 250);
+      });
+      closeModal();
+    });
+  }
+
   /* ---------- 页脚导览两列：Products / Company（FOOTER_NAV_V1）----------
      content.json 顶层 footerNav 段可后台编辑；有数据时按 <h5> 标题重建两列链接，
      静态 HTML 作兜底。给列容器打 data-content 标记，避免被全站正文文字枚举接管。 */
@@ -1451,6 +1594,9 @@
 
     // 产品详情页：轮播首图强制跟随列表卡片图，两处永远同一张（PRODUCT_HERO_SYNC）
     syncProductHero(data);
+
+    // 产品详情页：测试报告按后台绑定多选下载（PRODUCT_REPORTS_V1）
+    renderProductReports(data);
 
     // 最后接管全站正文文字：此时动态区块已渲染完毕，排除规则与索引构建时一致
     renderPageTexts(data);
