@@ -873,6 +873,20 @@
     return false;
   }
 
+  /* ---------- About 页「合作品牌」运行时样式（BRANDS_V1）----------
+     线上旧版 about.html 既没有 data-content="brands" 容器，也没有这段内联样式；
+     HTML 不在「同步前台文件」白名单（只有 js/css），所以样式与区块都由 loader 注入。 */
+  var BRANDS_CSS =
+    '.brands-intro{font-size:.95rem;color:var(--text-muted);margin-bottom:2rem;}' +
+    '.brand-group{margin-bottom:1.8rem;}' +
+    '.brand-group-title{font-size:.85rem;font-weight:700;color:var(--primary);letter-spacing:.04em;margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem;}' +
+    '.brand-group-title::before{content:"";width:3px;height:14px;background:var(--accent);border-radius:2px;}' +
+    '.brand-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}' +
+    '.brand-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);height:96px;display:flex;align-items:center;justify-content:center;padding:1rem;box-shadow:var(--shadow-sm);transition:border-color .18s,transform .18s;}' +
+    '.brand-card:hover{border-color:var(--accent);transform:translateY(-2px);}' +
+    '.brand-card img{max-width:82%;max-height:46px;object-fit:contain;}' +
+    '.brand-card span{font-weight:600;color:var(--text);}';
+
   /* ---------- About 页「合作品牌」区块（后台可编辑）----------
      BRANDS_V1
      线上 about.html 已写好静态兜底（data-content="brands"），本函数按 content.json
@@ -880,10 +894,44 @@
      带 data-content 标记，排除「全站正文文字」枚举，避免 pages 段索引错位。
      每张卡：有 logo 显示图片，无 logo 显示文字名。 */
   function renderCoBrands(data) {
-    var box = document.querySelector('[data-content="brands"]');
-    if (!box) return;                       // 只有 about 页有此容器
     var b = data && data.brands;
-    if (!b) return;                         // 线上旧 JSON 无此段 → 保留静态兜底
+    if (!b) return;                         // 旧 JSON 无此段 → 保留静态兜底，不接管
+
+    var box = document.querySelector('[data-content="brands"]');
+    if (!box) {
+      // 线上旧版 about.html 没有容器：只在 about 页运行时补建整块，插到 footer 前，
+      // 避免污染首页/产品页。幂等：再次执行会命中上面 querySelector。
+      if (!/about(?:\.html)?(?:[/?#]|$)/i.test(location.pathname + location.search)) return;
+      var footer = document.querySelector('footer.footer') || document.querySelector('footer');
+      if (!footer || !footer.parentNode) return;
+      box = document.createElement('section');
+      box.className = 'section section-alt';
+      box.setAttribute('data-content', 'brands');
+      box.innerHTML =
+        '<div class="container">' +
+          '<h2 class="section-title mb-3" data-c="brandsTitle">Brands we work with</h2>' +
+          '<p class="brands-intro" data-c="brandsIntro">Luminaires and driver platforms deployed with our partners across global and Indian markets.</p>' +
+          '<div>' +
+            '<div class="brand-group">' +
+              '<div class="brand-group-title" data-c="brandsGlobalLabel">Global</div>' +
+              '<div class="brand-grid" data-brands-group="global"></div>' +
+            '</div>' +
+            '<div class="brand-group">' +
+              '<div class="brand-group-title" data-c="brandsIndiaLabel">India</div>' +
+              '<div class="brand-grid" data-brands-group="india"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      footer.parentNode.insertBefore(box, footer);
+    }
+
+    // 运行时注入样式（线上旧版 about.html 没有这段内联 CSS），带 id 防重复
+    if (!document.getElementById('gmtne-brands-css')) {
+      var st = document.createElement('style');
+      st.id = 'gmtne-brands-css';
+      st.textContent = BRANDS_CSS;
+      document.head.appendChild(st);
+    }
 
     function putText(key, value) {
       if (value === undefined || value === null || value === '') return;
@@ -913,7 +961,7 @@
         if (src) {
           html += '<img src="' + esc(src) + '" alt="' + esc(name) + '">';
         } else {
-          html += '<span>' + esc(name || '&nbsp;') + '</span>';
+          html += '<span>' + esc(name || '\u00A0') + '</span>';
         }
         html += '</div>';
       }
