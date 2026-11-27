@@ -375,3 +375,6 @@ h1, h2, h3, h4, p { margin: 0; }
   .faq-item summary { padding: 16px 48px 16px 18px; font-size: 1rem; }
   .faq-answer { padding: 0 18px 18px; font-size: 0.9375rem; }
 }
+
+/* SKD/CKD dead nav link in legacy HTML: hide from first paint; loader removes the node on DOMContentLoaded */
+nav.nav a[href="skd-ckd.html"], nav.nav a[href="../skd-ckd.html"] { display: none !important; }
