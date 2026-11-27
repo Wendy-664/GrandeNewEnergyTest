@@ -873,6 +873,56 @@
     return false;
   }
 
+  /* ---------- About 页「合作品牌」区块（后台可编辑）----------
+     BRANDS_V1
+     线上 about.html 已写好静态兜底（data-content="brands"），本函数按 content.json
+     的 brands 段重建两组品牌卡片。无 brands 段 / 无数据时完全不接管，保留静态原文。
+     带 data-content 标记，排除「全站正文文字」枚举，避免 pages 段索引错位。
+     每张卡：有 logo 显示图片，无 logo 显示文字名。 */
+  function renderCoBrands(data) {
+    var box = document.querySelector('[data-content="brands"]');
+    if (!box) return;                       // 只有 about 页有此容器
+    var b = data && data.brands;
+    if (!b) return;                         // 线上旧 JSON 无此段 → 保留静态兜底
+
+    function putText(key, value) {
+      if (value === undefined || value === null || value === '') return;
+      var el = box.querySelector('[data-c="' + key + '"]');
+      if (el) el.textContent = value;
+    }
+    putText('brandsTitle', b.title);
+    putText('brandsIntro', b.intro);
+    putText('brandsGlobalLabel', b.globalLabel);
+    putText('brandsIndiaLabel', b.indiaLabel);
+
+    function renderGroup(key, items) {
+      var grid = box.querySelector('[data-brands-group="' + key + '"]');
+      if (!grid || !Array.isArray(items) || !items.length) return;
+      var html = '';
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        if (!it) continue;
+        var name = it.name || '';
+        var logo = it.logo || '';
+        // logo 路径归一化：允许 assets/img/brands/x 或 ./assets/... 或裸文件名
+        var src = logo;
+        if (src && !/^https?:\/\//i.test(src) && !/^\//.test(src) && !/^assets\//i.test(src)) {
+          src = 'assets/img/brands/' + src.replace(/^\.\//, '');
+        }
+        html += '<div class="brand-card">';
+        if (src) {
+          html += '<img src="' + esc(src) + '" alt="' + esc(name) + '">';
+        } else {
+          html += '<span>' + esc(name || '&nbsp;') + '</span>';
+        }
+        html += '</div>';
+      }
+      if (html) grid.innerHTML = html;
+    }
+    renderGroup('global', b.global);
+    renderGroup('india', b.india);
+  }
+
   /* ---------- Home 页首屏 Hero（后台可编辑）----------
      HOME_HERO_V1
      线上 index.html 的首屏是写死的文字，而 HTML 不在「同步前台文件」白名单里
@@ -1620,6 +1670,7 @@
     renderSkd(data);
     renderOem(data);   // OEM_MODULE_V1
     renderHighBay(data);   // HB_MODULE_V1
+    renderCoBrands(data);   // BRANDS_V1：About 页合作品牌区块
 
     // 产品列表页：由 products 段重建大类与卡片（不用改 HTML，静态卡片作兜底）
     renderProductsPage(data);
