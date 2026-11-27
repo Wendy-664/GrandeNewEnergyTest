@@ -383,7 +383,7 @@
             "tag": "High Bay",
             "title": "High Bay ",
             "desc": "Die-cast aluminum housing with integrated DOB driver solution. 165-280Vac wide voltage input and 4kV surge protection, engineered for unstable grid environments in South Asia.",
-            "specsText": "Output | 144V / 610mA\nEfficiency | ≥ 91.8 %\nPF | 0.956\nSurge | 4 kV"
+            "specsText": "Output | 144V / 610mA\nEfficiency | ≥ 91.8 %\nPF | 0.9\nSurge | 4 kV"
           }
         ]
       },
@@ -400,7 +400,7 @@
             "tag": "Flood Light · SKD/CKD",
             "title": "Flood Light 50W",
             "desc": "FL-YE-01W050V144V01 · lab test report available",
-            "specsText": "Output | 144V / 310mA\nEfficiency | ≥ 91.4 %\nPF | 0.957\nSurge | 4 kV"
+            "specsText": "Output | 144V / 310mA\nEfficiency | ≥ 91.4 %\nPF | 0.9\nSurge | 4 kV"
           }
         ]
       },
@@ -417,7 +417,7 @@
             "tag": "Street Light · SKD/CKD",
             "title": "Street Light 40 / 60W",
             "desc": "Road & area lighting on the same verified driver platform.",
-            "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.95\nSurge | 4 kV (platform)"
+            "specsText": "Power | 40 / 60 W\nInput | 100–440 Vac\nPF | > 0.9\nSurge | 4 kV (platform)"
           }
         ]
       },
@@ -434,7 +434,7 @@
             "tag": "Indoor · SKD/CKD",
             "title": "Linear Bulb 9–50W",
             "desc": "High-power T-bulb series, PF 0.988, >105 lm/W.",
-            "specsText": "Input | 90–440 Vac\nPF | 0.988\nTHD | < 15 %\nEfficacy | > 105 lm/W"
+            "specsText": "Input | 90–440 Vac\nPF | 0.9\nTHD | < 15 %\nEfficacy | > 105 lm/W"
           },
           {
             "slug": "product-batten",
@@ -443,7 +443,7 @@
             "tag": "Indoor · SKD/CKD",
             "title": "Batten Drive 20 / 36W",
             "desc": "Surface-mount batten, high-integration driver.",
-            "specsText": "Output | 90V / 200·370mA\nEfficiency | ≥ 89–91 %\nPF | 0.98\nSurge | 4 kV"
+            "specsText": "Output | 90V / 200·370mA\nEfficiency | ≥ 89–91 %\nPF | 0.9\nSurge | 4 kV"
           },
           {
             "slug": "product-emergency-lamp",
@@ -452,7 +452,7 @@
             "tag": "Indoor · SKD/CKD",
             "title": "Emergency Lamp",
             "desc": "Fast-charging emergency bulb, battery management built in.",
-            "specsText": "Input | 90–440 Vac\nPF | > 0.97\nEfficiency | > 87 %\nSurge | 4 kV"
+            "specsText": "Input | 90–440 Vac\nPF | > 0.9\nEfficiency | > 87 %\nSurge | 4 kV"
           }
         ]
       }
