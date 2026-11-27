@@ -1254,5 +1254,47 @@
         "size": "pages 18"
       }
     ]
+  },
+  "brands": {
+    "global": [
+      {
+        "name": "Panasonic",
+        "logo": "assets/img/brands/panasonic.svg"
+      },
+      {
+        "name": "Philips",
+        "logo": "assets/img/brands/philips.svg"
+      },
+      {
+        "name": "OSRAM",
+        "logo": "assets/img/brands/osram.png"
+      },
+      {
+        "name": "Haier",
+        "logo": "assets/img/brands/haier.svg"
+      }
+    ],
+    "india": [
+      {
+        "name": "Havells",
+        "logo": "assets/img/brands/havells.svg"
+      },
+      {
+        "name": "Orient",
+        "logo": "assets/img/brands/orient.svg"
+      },
+      {
+        "name": "Century",
+        "logo": "assets/img/brands/century.svg"
+      },
+      {
+        "name": "Bajaj",
+        "logo": "assets/img/brands/bajaj.png"
+      }
+    ],
+    "title": "Brands we work with",
+    "intro": "Luminaires and driver platforms deployed with our partners across global and Indian markets.",
+    "globalLabel": "Global",
+    "indiaLabel": "India"
   }
 }
