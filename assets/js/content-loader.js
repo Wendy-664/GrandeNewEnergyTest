@@ -1143,7 +1143,26 @@
         '</div>';
     }
 
-    jump.innerHTML = p.categories.map(function (cat) {
+    /* 类别跳转栏 = 全员展示：每个大类下的每个产品各一个标签（共 6 个），
+       不再只显示 4 个大类。Indoor Lighting 展开成 Linear Bulb / Batten Drive / Emergency Lamp。
+       标签文字取产品名称去掉功率后缀（如 "Flood Light 50W" -> "Flood Light"），
+       链接直接跳该产品详情页；产品名/链接都来自后台 products.categories，增删自动同步。 */
+    function shortName(title) {
+      // 去掉功率后缀："Flood Light 50W" -> "Flood Light"，"Street Light 40 / 60W" -> "Street Light"
+      return String(title || '').trim().replace(/\s+\d[\d\s–\-\/]*\s*W\b.*$/i, '').trim();
+    }
+    var jumpHtml = '', jumpN = 0;
+    p.categories.forEach(function (cat) {
+      (cat.cards || []).forEach(function (card) {
+        if (!card || !card.slug) return;
+        jumpN++;
+        var num = ('0' + jumpN).slice(-2);
+        var label = shortName(card.title) || card.slug;
+        jumpHtml += '<a href="' + esc(card.slug) + '.html"><span class="cnt">' + num +
+          '</span> ' + esc(label) + '</a>';
+      });
+    });
+    jump.innerHTML = jumpHtml || p.categories.map(function (cat) {
       return '<a href="#' + esc(cat.id) + '"><span class="cnt">' + esc(cat.num) +
         '</span> ' + esc(cat.name) + '</a>';
     }).join('');
