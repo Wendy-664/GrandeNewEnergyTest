@@ -2219,6 +2219,13 @@
       var ogT = document.querySelector('meta[property="og:title"]');
       if (ogT) ogT.setAttribute('content', document.title);
     }
+    /* 旧版 title 残留 (SKD / CKD)：独立页已删除并入首页，运行时去掉旧后缀。
+       HTML 不在同步白名单，故按 title 内容匹配、所有页面通用，不写死文件名。 */
+    if (/\(SKD\s*\/\s*CKD\)/i.test(document.title || '')) {
+      document.title = (document.title || '').replace(/\s*\(SKD\s*\/\s*CKD\)/i, '');
+      var ogT2 = document.querySelector('meta[property="og:title"]');
+      if (ogT2) ogT2.setAttribute('content', document.title);
+    }
   }
 
   function boot() {
