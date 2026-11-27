@@ -251,25 +251,41 @@
       if (!prodA || prodA.parentNode.querySelector('.np-wrap')) return;  // 已注入 / 找不到锚点
       var activeCls = (prodA.className || '').indexOf('active') > -1 ? ' active' : '';
       var topHref = prodA.getAttribute('href') || (prefix + 'products.html');
-      var megaCats = '', megaPanels = '';
+      // 顶部导航左侧只分 Outdoor / Indoor 两组；右侧横向列出该组下的所有产品。
+      // 归属规则：大类 id/name 含 indoor 的进 Indoor，其余进 Outdoor。
+      // 产品文字去掉功率后缀（"Flood Light 50W" -> "Flood Light"），链接直达详情页。
+      function shortNameNav(title) {
+        return String(title || '').trim().replace(/\s+\d[\d\s–\-\/]*\s*W\b.*$/i, '').trim();
+      }
+      var groups = [
+        { label: 'Outdoor', anchor: '', cards: [] },
+        { label: 'Indoor',  anchor: '', cards: [] }
+      ];
       for (var c = 0; c < cats.length; c++) {
         var cat = cats[c];
-        var name = cat.name || cat.title || '';
-        if (!name) continue;
-        var anchor = cat.id || '';
-        var catHref = prefix + 'products.html' + (anchor ? '#' + anchor : '');
-        megaCats += '<a class="np-cat' + (c === 0 ? ' on' : '') + '" href="' + esc(catHref) +
-          '" data-np="' + c + '">' + esc(name) + '</a>';
+        var gi = /indoor/i.test((cat.id || '') + ' ' + (cat.name || cat.title || '')) ? 1 : 0;
+        if (!groups[gi].anchor) groups[gi].anchor = cat.id || '';
         var cards = cat.cards || [];
-        var row = '<div class="np-subhead"' + (c === 0 ? '' : ' hidden') +
-          ' data-np-head="' + c + '">' + esc(name) + '</div><div class="np-subrow"' +
-          (c === 0 ? '' : ' hidden') + ' data-np-panel="' + c + '">';
         for (var k = 0; k < cards.length; k++) {
-          var card = cards[k];
+          if (cards[k] && cards[k].slug) groups[gi].cards.push(cards[k]);
+        }
+      }
+      var megaCats = '', megaPanels = '', wi = 0;
+      for (var g = 0; g < groups.length; g++) {
+        var grp = groups[g];
+        if (!grp.cards.length) continue;           // 空组不渲染，避免出现空的分类
+        var idx = wi++;
+        var grpHref = prefix + 'products.html' + (grp.anchor ? '#' + grp.anchor : '');
+        megaCats += '<a class="np-cat' + (idx === 0 ? ' on' : '') + '" href="' + esc(grpHref) +
+          '" data-np="' + idx + '">' + esc(grp.label) + '</a>';
+        var row = '<div class="np-subhead"' + (idx === 0 ? '' : ' hidden') +
+          ' data-np-head="' + idx + '">' + esc(grp.label) + '</div><div class="np-subrow"' +
+          (idx === 0 ? '' : ' hidden') + ' data-np-panel="' + idx + '">';
+        for (var m = 0; m < grp.cards.length; m++) {
+          var card = grp.cards[m];
           var slug = card.slug || '';
-          if (!slug) continue;
           var href = /\.html$/.test(slug) ? prefix + slug : prefix + slug + '.html';
-          var title = card.title || card.name || slug;
+          var title = shortNameNav(card.title || card.name || slug) || slug;
           row += '<a href="' + esc(href) + '">' + esc(title) + '</a>';
         }
         row += '</div>';
